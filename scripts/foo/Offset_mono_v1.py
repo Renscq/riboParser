@@ -234,7 +234,7 @@ class Offset(object):
         return offset_norm_row
 
     def draw_tis_heatmap(self):
-        # draw the offset heatmap
+        # draw the offset heatmap,
         def draw_figure(tis_5end, tis_3end, tts_5end, tts_3end, out_pdf, out_png):
             matplotlib.use('Agg')
             now_cmap = 'Blues'

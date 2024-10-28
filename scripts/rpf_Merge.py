@@ -39,7 +39,7 @@ def merge_rpf(sp_dict, output_prefix):
             total_rpf = total_rpf.join(rpf, on=['name', 'now_nt'])
         now_sample_num += 1
 
-    output_name = output_prefix + "_rpf_merged.txt"
+    output_name = output_prefix + "_merged.txt"
     total_rpf = total_rpf.with_columns(total_rpf['codon'].str.to_uppercase())
     total_rpf = total_rpf.filter(~total_rpf['codon'].str.contains('N'))
 
