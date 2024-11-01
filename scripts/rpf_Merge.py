@@ -8,7 +8,7 @@ from collections import OrderedDict
 import pandas as pd
 import polars as pl
 
-from foo import ArgsParser
+from .foo import ArgsParser
 
 
 def read_sample_list(sample_list):

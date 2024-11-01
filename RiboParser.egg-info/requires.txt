@@ -1,0 +1,15 @@
+numpy
+pandas
+pyarrow
+polars
+biopython
+scipy
+scikit-learn
+statsmodels
+pysam
+joblib
+interval
+matplotlib
+seaborn
+plotly
+seqlogo

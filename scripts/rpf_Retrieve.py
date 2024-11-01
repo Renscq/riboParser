@@ -4,8 +4,8 @@
 # @Script  : rpf_Retrieve.py
 
 
-from foo import ArgsParser
-from foo.Retrieve import *
+from .foo import ArgsParser
+from .foo.Retrieve import *
 
 
 def main():

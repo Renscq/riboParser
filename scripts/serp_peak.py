@@ -6,8 +6,8 @@
 
 import time
 
-from foo import ArgsParser
-from foo.SeRP import *
+from .foo import ArgsParser
+from .foo.SeRP import *
 
 
 # main programme is here

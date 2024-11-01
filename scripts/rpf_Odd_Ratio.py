@@ -4,8 +4,8 @@
 # @Script  : rpf_odd_ratio.py
 
 
-from foo import ArgsParser
-from foo import Odd_Ratio
+from .foo import ArgsParser
+from .foo import Odd_Ratio
 
 
 def main():

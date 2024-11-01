@@ -4,8 +4,8 @@
 # @Script  : detect_offset.py
 
 
-from foo import ArgsParser
-from foo.Offset import *
+from .foo import ArgsParser
+from .foo.Offset import *
 
 
 def main():

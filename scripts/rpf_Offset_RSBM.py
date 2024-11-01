@@ -4,8 +4,8 @@
 # @Script  : rpf_Offset_RSBM.py
 
 
-from foo import ArgsParser
-from foo.Offset_RSBM import *
+from .foo import ArgsParser
+from .foo.Offset_RSBM import *
 
 
 def main():

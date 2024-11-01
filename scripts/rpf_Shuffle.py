@@ -3,8 +3,8 @@
 # @Script  : rpf_Shuffle.py
 
 
-from foo import ArgsParser
-from foo.Shuffle import *
+from .foo import ArgsParser
+from .foo.Shuffle import *
 
 
 def main():

@@ -4,8 +4,8 @@
 # @Script  : rpf_meta_codon.py
 
 
-from foo.ArgsParser import *
-from foo.MetaCodon import *
+from .foo.ArgsParser import *
+from .foo.MetaCodon import *
 
 
 def main():

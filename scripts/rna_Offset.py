@@ -4,7 +4,7 @@
 # @Script  : rna_Offset.py
 
 
-from foo import ArgsParser
+from .foo import ArgsParser
 import pandas as pd
 import numpy as np
 

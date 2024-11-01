@@ -4,8 +4,8 @@
 # @Project : riboParser
 # @Script  : rpf_occupancy.py
 
-from foo import ArgsParser
-from foo import Occupancy
+from .foo import ArgsParser
+from .foo import Occupancy
 
 
 def main():
