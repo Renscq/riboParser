@@ -167,8 +167,8 @@ def offset_args_parser():
                              help="the prefix of output file. (prefix + _offset.txt)")
 
     # arguments for the offset detection
-    # parser.add_argument('--mode', dest="mode", required=False, type=str, default='tis',
-    #                     help="specify the mode of offset detect [frame, tis]. (default: %(default)s).")
+    parser.add_argument('--mode', dest="mode", required=False, type=str, default='SSCBM',
+                        help="specify the mode of offset detect [SSCBM, RSBM]. (default: %(default)s).")
     parser.add_argument('-l', dest="longest", action='store_true', required=False, default=False,
                         help="only retain the transcript with longest CDS of each gene (default: %(default)s).")
     parser.add_argument('-m', dest="min", required=False, type=int, default=27,
@@ -190,7 +190,7 @@ def offset_args_parser():
     return args
 
 
-def offset1_args_parser():
+def offset_rsbm_args_parser():
     parser = argparse.ArgumentParser(description="This script is used to detect the P-site offset.")
 
     # arguments for the Required arguments
@@ -202,15 +202,15 @@ def offset1_args_parser():
                              help="the prefix of output file. (prefix + _offset.txt)")
 
     # arguments for the offset detection
-    parser.add_argument('--mode', dest="mode", required=False, type=str, default='tis',
-                        help="specify the mode of offset detect [frame, tis]. (default: %(default)s).")
+    # parser.add_argument('--mode', dest="mode", required=False, type=str, default='SSCBM',
+    #                     help="specify the mode of offset detect [RSBM, SSCBM]. (default: %(default)s).")
     parser.add_argument('-l', dest="longest", action='store_true', required=False, default=False,
                         help="only retain the transcript with longest CDS of each gene (default: %(default)s).")
     parser.add_argument('-m', dest="min", required=False, type=int, default=27,
                         help="the minimum reads length to keep (default: %(default)s nt).")
     parser.add_argument('-M', dest="max", required=False, type=int, default=33,
                         help="the maximum reads length to keep (default: %(default)s nt).")
-    parser.add_argument('-p', dest="exp_peak", required=False, type=int, default=30,
+    parser.add_argument('-p', dest="exp_peak", required=False, type=int, default=29,
                         help="RPFs peak length [~30 nt] (default: %(default)s nt).")
     parser.add_argument('-e', dest="exp_offset", required=False, type=int, default=11,
                         help="expected offset length (default: %(default)s).")
@@ -227,6 +227,26 @@ def offset1_args_parser():
 
     return args
 
+def rna_offset_args_parser():
+    parser = argparse.ArgumentParser(description="This script is used to create the offset table of RNA-seq.")
+
+    # arguments for the Required arguments
+    input_group = parser.add_argument_group('Required arguments')
+    input_group.add_argument('-o', dest="output", required=True, type=str,
+                             help="the prefix of output file. (prefix + _offset.txt)")
+
+    # arguments for the offset table creation
+    parser.add_argument('-m', dest="min", required=False, type=int, default=25,
+                        help="the minimum reads length to keep (default: %(default)s nt).")
+    parser.add_argument('-M', dest="max", required=False, type=int, default=151,
+                        help="the maximum reads length to keep (default: %(default)s nt).")
+    parser.add_argument('-e', dest="exp_offset", required=False, type=int, default=12,
+                        help="Expected offset (default: %(default)s nt).")
+
+    args = parser.parse_args()
+    args_print(args)
+
+    return args
 
 def rpf_bam2bw_args_parser():
     parser = argparse.ArgumentParser(description="This script is used to convert the bam to bedgraph.")

@@ -20,12 +20,12 @@ import argparse
 
 def merge_offset_args_parser():
 
-    parser = argparse.ArgumentParser(description='This script is used to merge the details of tis offset files')
+    parser = argparse.ArgumentParser(description='This script is used to merge the details of offset files')
 
     # needed arguments
     input_group = parser.add_argument_group('Required arguments')
     input_group.add_argument(
-        "-l", "--list", nargs='+', required=True, help="List for frame/tis offset files (e.g., '*end.txt')."
+        "-l", "--list", nargs='+', required=True, help="List for offset end site files (e.g., '*end.txt')."
     )
     input_group.add_argument(
         '-o', dest='output', required=True, type=str, help='output file name.'
@@ -109,8 +109,6 @@ def process_offset_dict(offset_dict):
     # for each gene file
     for file, offset in offset_dict.items():
         
-        offset_df = pd.DataFrame()
-
         # for each offset model
         offset_5end = pd.concat([offset['tis_5end'], offset['tts_5end']], axis=0).reset_index(drop=True)
         offset_3end = pd.concat([offset['tis_3end'], offset['tts_3end']], axis=0).reset_index(drop=True)
@@ -126,6 +124,8 @@ def process_offset_dict(offset_dict):
         else:
             offset_3end_merge = pd.concat([offset_3end_merge, offset_3end], axis=0)
 
+    offset_3end_merge = offset_3end_merge.dropna(axis=1, how='all')
+    offset_5end_merge = offset_5end_merge.dropna(axis=1, how='all')
     offset_merged = pd.concat([offset_5end_merge, offset_3end_merge], axis=0)
 
     return offset_merged

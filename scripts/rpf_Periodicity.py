@@ -3,11 +3,6 @@
 # @Project : riboParser
 # @Script  : rpf_periodicity.py
 
-from collections import OrderedDict
-
-import matplotlib
-import matplotlib.pyplot as plt
-import pandas as pd
 
 from foo import ArgsParser
 from foo import Periodicity

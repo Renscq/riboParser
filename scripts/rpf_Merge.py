@@ -12,12 +12,12 @@ from foo import ArgsParser
 
 
 def read_sample_list(sample_list):
-    # sp_list = pd.read_csv(sample_list, header=None, names=None)
+    sp_list = pd.read_csv(sample_list, header=0, names=None, sep = '\t')
+
     sp_dict = OrderedDict()
-    with open(sample_list, 'r') as sp_list_in:
-        for line in sp_list_in:
-            rec = line.strip().split('\t')
-            sp_dict[rec[0]] = rec[1]
+    
+    for _, rec in sp_list.iterrows():
+        sp_dict[rec.iloc[0]] = rec.iloc[1]
 
     return sp_dict
 

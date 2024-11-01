@@ -28,7 +28,7 @@ def main():
 
     print('\nStep6: Draw the seq logo of digestion sites.\n', flush=True)
     ribo_attr.output_counts()
-    # ribo_attr.seq_logo_plot()
+    
     ribo_attr.seq_logo_plot2()
 
     print('\nAll done.\n', flush=True)

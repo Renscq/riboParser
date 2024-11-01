@@ -94,14 +94,14 @@ $ tree
 │   ├── 3.star
 │   ├── 4.quantification
 │   └── 5.riboparser
-│       ├── 1.qc
-│       ├── 3.offset
-│       ├── 4.density
-│       ├── 5.merge
-│       ├── 6.periodicity
-│       ├── 7.metaplot
-│       ├── 8.coverage
-│       ├── 9.correlation
+│       ├── 01.qc
+│       ├── 03.offset
+│       ├── 04.density
+│       ├── 05.merge
+│       ├── 06.periodicity
+│       ├── 07.metaplot
+│       ├── 08.coverage
+│       ├── 09.correlation
 │       ├── 10.quantification
 │       └── 11.gene_density
 ├── 4.ribo-seq
@@ -110,15 +110,15 @@ $ tree
 │   ├── 3.star
 │   ├── 4.quantification
 │   └── 5.riboparser
-│       ├── 1.qc
-│       ├── 2.digestion
-│       ├── 3.offset
-│       ├── 4.density
-│       ├── 5.merge
-│       ├── 6.periodicity
-│       ├── 7.metaplot
-│       ├── 8.coverage
-│       ├── 9.correlation
+│       ├── 01.qc
+│       ├── 02.digestion
+│       ├── 03.offset
+│       ├── 04.density
+│       ├── 05.merge
+│       ├── 06.periodicity
+│       ├── 07.metaplot
+│       ├── 08.coverage
+│       ├── 09.correlation
 │       ├── 10.quantification
 │       ├── 11.pausing_score
 │       ├── 12.codon_occupancy
@@ -346,7 +346,7 @@ done
 
 2. 清洗 Ribo-seq 数据
 ```bash
-$ cd /mnt/t64/test/sce/3.ribo-seq/1.cleandata/
+$ cd /mnt/t64/test/sce/4.ribo-seq/1.cleandata/
 
 #################################################
 # run the cutadapt
@@ -649,13 +649,14 @@ merge_rsem -c FPKM -l *.isoforms.results -o isoforms.FPKM.txt
 #### 3.2.1 测序数据的质量检查
 1. 检查 Ribo-seq 数据的测序质量
 ```bash
-$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/1.qc/
+$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/01.qc/
 
 #################################################
 # check the ribo-seq quality
-for bam in /mnt/t64/test/sce/3.ribo-seq/3.star/*Aligned.toTranscriptome.out.bam
+for bam in /mnt/t64/test/sce/4.ribo-seq/3.star/*Aligned.toTranscriptome.out.bam
 do
-prefix_name=$(basename $fastq Aligned.toTranscriptome.out.bam)
+prefix_name=$(basename $bam Aligned.toTranscriptome.out.bam)
+
 rpf_Check -b $bam -s --thread 10 -t /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
   -o $prefix_name &> $prefix_name".log"
 
@@ -668,21 +669,21 @@ $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/
 
 #################################################
 # merge the ribo-seq quality results
-merge_length -l ./1.qc/*length_distribution.txt -o sce
-merge_saturation -l ./1.qc/*gene_saturation.txt -o sce
+merge_length -l ./01.qc/*length_distribution.txt -o sce
+merge_saturation -l ./01.qc/*gene_saturation.txt -o sce
 
 ```
 
 
 3. 检查 RNA-seq 数据的测序质量
 ```bash
-$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/1.qc/
+$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/01.qc/
 
 #################################################
 # check the ribo-seq quality
 for bam in /mnt/t64/test/sce/3.rna-seq/3.star/*Aligned.toTranscriptome.out.bam
 do
-prefix_name=$(basename $fastq Aligned.toTranscriptome.out.bam)
+prefix_name=$(basename $bam Aligned.toTranscriptome.out.bam)
 
 rpf_Check -b $bam -s --thread 10 -t /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
   -o $prefix_name &> $prefix_name".log"
@@ -696,8 +697,8 @@ $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/
 
 #################################################
 # merge the rna-seq quality results
-merge_length -l ./1.qc/*length_distribution.txt -o sce
-merge_saturation -l ./1.qc/*gene_saturation.txt -o sce
+merge_length -l ./01.qc/*length_distribution.txt -o sce
+merge_saturation -l ./01.qc/*gene_saturation.txt -o sce
 
 ```
 
@@ -705,13 +706,13 @@ merge_saturation -l ./1.qc/*gene_saturation.txt -o sce
 #### 3.2.2 测序数据的酶切和酶连的偏好性
 1. 检查 Ribo-seq 数据的酶切和酶连的偏好性
 ```bash
-$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/2.digestion/
+$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/02.digestion/
 
 #################################################
 # check the reads digestion
-for bam in /mnt/t64/test/sce/3.ribo-seq/3.star/1.qc/*.bam
+for bam in /mnt/t64/test/sce/4.ribo-seq/3.star/01.qc/*.bam
 do
-prefix_name=$(basename $fastq .bam)
+prefix_name=$(basename $bam .bam)
 
 rpf_Digest -b $bam -m 27 -M 33 --scale \
  -s /mnt/t64/test/sce/1.reference/norm/sce.norm.rna.fa \
@@ -727,20 +728,20 @@ $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/
 
 #################################################
 # merge the rpf digestion
-merge_digestion -l ./2.digestion/*pwm.txt -o sce
+merge_digestion -l ./02.digestion/*pwm.txt -o sce
 
 ```
 
 
 3. 检查 RNA-seq 数据的酶切和酶连的偏好性
 ```bash
-$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/2.digestion/
+$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/02.digestion/
 
 #################################################
 # check the reads digestion
-for bam in /mnt/t64/test/sce/3.rna-seq/3.star/1.qc/*.bam
+for bam in /mnt/t64/test/sce/3.rna-seq/3.star/01.qc/*.bam
 do
-prefix_name=$(basename $fastq .bam)
+prefix_name=$(basename $bam .bam)
 
 rpf_Digest -b $bam -m 25 -M 50 --scale \
  -s /mnt/t64/test/sce/1.reference/norm/sce.norm.rna.fa \
@@ -756,7 +757,7 @@ $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/
 
 #################################################
 # merge the rpf digestion
-merge_digestion -l ./2.digestion/*pwm.txt -o sce
+merge_digestion -l ./02.digestion/*pwm.txt -o sce
 
 ```
 
@@ -764,15 +765,16 @@ merge_digestion -l ./2.digestion/*pwm.txt -o sce
 #### 3.2.3 使用 RiboParser 做质量检查
 1. 预测 Ribo-seq 中的最佳 offset
 ```bash
-$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/3.offset/
+$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/03.offset/
 
 #################################################
 # predict the offset table
-for bam in /mnt/t64/test/sce/3.rna-seq/3.star/1.qc/*.bam
+for bam in /mnt/t64/test/sce/3.rna-seq/3.star/01.qc/*.bam
 do
 prefix_name=$(basename $bam .bam)
 
 rpf_Offset -b $bam -m 27 -M 33 -p 30 -d \
+ --mode RSBM \
  -t /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
  -o $prefix_name &> $prefix_name".log"
 
@@ -785,22 +787,23 @@ $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/
 
 #################################################
 # merge the ribo-seq offset results
-merge_offset_detail -l ./3.offset/*end.txt -o sce
-merge_offset -l ./3.offset/*frame_offset.txt -o sce
+merge_offset_detail -l ./03.offset/*end.txt -o sce
+merge_offset -l ./03.offset/*sscbm_offset.txt -o sce_sscbm
+merge_offset -l ./03.offset/*rsbm_offset.txt -o sce_rsbm
 
 ```
 
 3. RNA-seq 无需预测 offset，这里直接创建一个文件，其中 offset 值均为 12。
 ```bash
-$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/3.offset/
+$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/03.offset/
 
 #################################################
 # set the offset table
-for bam in /mnt/t64/test/sce/3.rna-seq/3.star/1.qc/*.bam
+for bam in /mnt/t64/test/sce/3.rna-seq/3.star/01.qc/*.bam
 do
-prefix_name=$(basename $bam .bam)
 
-rna_Offset -b $bam -m 27 -M 50 -o $prefix_name &> $prefix_name".log"
+prefix_name=$(basename $bam .bam)
+rna_Offset -m 27 -M 50 -e 12 -o $prefix_name &> $prefix_name".log"
 
 done
 ```
@@ -809,16 +812,16 @@ done
 #### 3.2.4 把 bam 文件中的 reads 转换为 txt 文件中的 density。
 1. 转换 Ribo-seq 数据
 ```bash
-$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/4.density/
+$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/
 
 #################################################
 # convert the rpf to density
-for bam in /mnt/t64/test/sce/3.ribo-seq/3.star/1.qc/*.bam
+for bam in /mnt/t64/test/sce/4.ribo-seq/3.star/01.qc/*.bam
 do
 prefix_name=$(basename $bam .bam)
 
 rpf_Density -b $bam -m 27 -M 33 --period 40 -l --thread 10 \
- -p /mnt/t64/test/sce/3.ribo-seq/3.star/3.offset/$prefix_name"_frame_offset.txt" \
+ -p /mnt/t64/test/sce/4.ribo-seq/3.star/03.offset/$prefix_name"_rsbm_offset.txt" \
  -s /mnt/t64/test/sce/1.reference/norm/sce.norm.rna.fa \
  -t /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
  -o $prefix_name &> $prefix_name".log"
@@ -829,16 +832,16 @@ done
 
 2. 转换 RNA-seq 数据
 ```bash
-$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/4.density/
+$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/
 
 #################################################
 # convert the reads to density
-for bam in /mnt/t64/test/sce/3.rna-seq/3.star/1.qc/*.bam
+for bam in /mnt/t64/test/sce/3.rna-seq/3.star/01.qc/*.bam
 do
 prefix_name=$(basename $bam .bam)
 
-rpf_Density -b $bam -m 27 -M 33 --period 40 -l --thread 10 \
- -p /mnt/t64/test/sce/3.rna-seq/3.star/3.offset/$prefix_name"_frame_offset.txt" \
+rna_Density -b $bam -m 27 -M 33 --period 40 -l --thread 10 \
+ -p /mnt/t64/test/sce/3.rna-seq/3.star/03.offset/$prefix_name"_offset.txt" \
  -s /mnt/t64/test/sce/1.reference/norm/sce.norm.rna.fa \
  -t /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
  -o $prefix_name &> $prefix_name".log"
@@ -851,51 +854,62 @@ done
 #### 3.2.5 合并所有文件
 1. 合并 Ribo-seq density 文件
 ```bash
-$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/5.merge/
+$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/
 
 #################################################
 # create the samples file: Ribo.file.list
-wt_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/4.density/SRR1944912_rpf.txt
-wt_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/4.density/SRR1944913_rpf.txt
-wt_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/4.density/SRR1944914_rpf.txt
-ncs2d_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/4.density/SRR1944915_rpf.txt
-ncs2d_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/4.density/SRR1944916_rpf.txt
-ncs2d_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/4.density/SRR1944917_rpf.txt
-elp6d_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/4.density/SRR1944918_rpf.txt
-elp6d_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/4.density/SRR1944919_rpf.txt
-elp6d_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/4.density/SRR1944920_rpf.txt
-ncs2d_elp6d_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/4.density/SRR1944921_rpf.txt
-ncs2d_elp6d_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/4.density/SRR1944922_rpf.txt
-ncs2d_elp6d_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/4.density/SRR1944923_rpf.txt
+merge_dst_list -l ../04.density/*_rpf.txt -o RPF.file.list
+
+
+cat RPF.file.list
+
+Name File  Type
+wt_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944912_rpf.txt Ribo
+wt_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944913_rpf.txt Ribo
+wt_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944914_rpf.txt Ribo
+ncs2d_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944915_rpf.txt Ribo
+ncs2d_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944916_rpf.txt Ribo
+ncs2d_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944917_rpf.txt Ribo
+elp6d_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944918_rpf.txt Ribo
+elp6d_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944919_rpf.txt Ribo
+elp6d_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944920_rpf.txt Ribo
+ncs2d_elp6d_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944921_rpf.txt Ribo
+ncs2d_elp6d_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944922_rpf.txt Ribo
+ncs2d_elp6d_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944923_rpf.txt Ribo
 
 #################################################
 # merge all the Ribo-seq files
-rpf_Merge -l Ribo.file.list -o sce &> sce_ribo.log
+rpf_Merge -l RPF.file.list -o sce_rpf &> sce.log
 
 ```
 
 2. 合并 RNA-seq density 文件
 ```bash
-$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/5.merge/
+$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/05.merge/
 
 #################################################
 # create the samples file: RNA.file.list
-wt_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/4.density/SRR1944912_rna.txt
-wt_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/4.density/SRR1944913_rna.txt
-wt_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/4.density/SRR1944914_rna.txt
-ncs2d_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/4.density/SRR1944915_rna.txt
-ncs2d_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/4.density/SRR1944916_rna.txt
-ncs2d_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/4.density/SRR1944917_rna.txt
-elp6d_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/4.density/SRR1944918_rna.txt
-elp6d_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/4.density/SRR1944919_rna.txt
-elp6d_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/4.density/SRR1944920_rna.txt
-ncs2d_elp6d_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/4.density/SRR1944921_rna.txt
-ncs2d_elp6d_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/4.density/SRR1944922_rna.txt
-ncs2d_elp6d_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/4.density/SRR1944923_rna.txt
+merge_dst_list -l ../04.density/*_rna.txt -o RNA.file.list
+
+cat RNA.file.list
+
+Name File  Type
+wt_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944912_rna.txt RNA
+wt_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944913_rna.txt RNA
+wt_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944914_rna.txt RNA
+ncs2d_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944915_rna.txt RNA
+ncs2d_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944916_rna.txt RNA
+ncs2d_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944917_rna.txt RNA
+elp6d_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944918_rna.txt RNA
+elp6d_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944919_rna.txt RNA
+elp6d_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944920_rna.txt RNA
+ncs2d_elp6d_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944921_rna.txt RNA
+ncs2d_elp6d_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944922_rna.txt RNA
+ncs2d_elp6d_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944923_rna.txt RNA
 
 #################################################
 # merge all the RNA-seq files
-rpf_Merge -l RNA.file.list -o sce &> sce_rna.log
+rpf_Merge -l RNA.file.list -o sce_rna &> sce.log
 
 ```
 
@@ -903,22 +917,24 @@ rpf_Merge -l RNA.file.list -o sce &> sce_rna.log
 #### 3.2.6 计算三核苷酸周期性
 1. 检查 Ribo-seq 数据三核苷酸周期性
 ```bash
-$ cd /mnt/t64/test/sce/4.rna-seq/5.riboparser/6.periodicity/
+$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/06.periodicity/
 
 #################################################
 # check the periodicity
-rpf_Periodicity -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/5.merge/sce_rpf_merged.txt \
+rpf_Periodicity \
+ -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
  -m 30 --tis 0 --tts 0 -o sce &> sce.log
 
 ```
 
 2. 检查 RNA-seq 数据三核苷酸周期性
 ```bash
-$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/6.periodicity/
+$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/06.periodicity/
 
 #################################################
 # check the periodicity
-rpf_Periodicity -r /mnt/t64/test/sce/3.rna-seq/5.riboparser/5.merge/sce_rna_merged.txt \
+rpf_Periodicity \
+ -r /mnt/t64/test/sce/3.rna-seq/5.riboparser/05.merge/sce_rna_merged.txt \
  -m 30 --tis 0 --tts 0 -o sce &> sce.log
 
 ```
@@ -927,26 +943,26 @@ rpf_Periodicity -r /mnt/t64/test/sce/3.rna-seq/5.riboparser/5.merge/sce_rna_merg
 #### 3.2.7 起始和终止密码子前后的 meta-gene 分析
 1. Ribo-seq 数据 meta-gene 分析
 ```bash
-$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/7.metaplot/
+$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/07.metaplot/
 
 #################################################
 # metagene analysis
 rpf_Metaplot \
  -t /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
- -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/5.merge/sce_rpf_merged.txt \
+ -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
  -m 50 --mode bar -o sce &> sce.log
 
 ```
 
 2. RNA-seq 数据 meta-gene 分析
 ```bash
-$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/7.metaplot/
+$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/07.metaplot/
 
 #################################################
 # metagene analysis
 rpf_Metaplot \
  -t /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
- -r /mnt/t64/test/sce/3.rna-seq/5.riboparser/5.merge/sce_rna_merged.txt \
+ -r /mnt/t64/test/sce/3.rna-seq/5.riboparser/05.merge/sce_rna_merged.txt \
  -m 50 --mode bar -o sce &> sce.log
 
 ```
@@ -955,13 +971,13 @@ rpf_Metaplot \
 #### 3.2.8 检查基因上的整体 density 覆盖情况
 1. 检查 Ribo-seq 数据的 density 覆盖
 ```bash
-$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/8.coverage/
+$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/08.coverage/
 
 #################################################
 # check the rpf density along with the gene body
 rpf_Coverage \
  -t /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
- -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/5.merge/sce_rpf_merged.txt \
+ -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
  -m 50 --outlier \
  -b 10,100,10 \
  -n --heat \
@@ -971,13 +987,13 @@ rpf_Coverage \
 
 2. 检查 RNA-seq 数据的 density 覆盖
 ```bash
-$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/8.coverage/
+$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/08.coverage/
 
 #################################################
 # check the reads density along with the gene body
 rpf_Coverage \
  -t /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
- -r /mnt/t64/test/sce/3.rna-seq/5.riboparser/5.merge/sce_rna_merged.txt \
+ -r /mnt/t64/test/sce/3.rna-seq/5.riboparser/05.merge/sce_rna_merged.txt \
  -m 50 --outlier \
  -b 10,100,10 \
  -n --heat \
@@ -989,24 +1005,24 @@ rpf_Coverage \
 #### 3.2.9 检查样本之间的重复性
 1. 检查 Ribo-seq 数据样本重复性
 ```bash
-$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/9.correlation/
+$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/09.correlation/
 
 #################################################
 # calculate the samples replication of Ribo-seq
 rpf_Corr \
- -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/5.merge/sce_rpf_merged.txt \
+ -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
  -o sce &> sce.log
 
 ```
 
 2. 检查 RNA-seq 数据的重复性
 ```bash
-$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/9.correlation/
+$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/09.correlation/
 
 #################################################
 # calculate the samples replication of RNA-seq
 rpf_Corr \
- -r /mnt/t64/test/sce/3.rna-seq/5.riboparser/5.merge/sce_rna_merged.txt \
+ -r /mnt/t64/test/sce/3.rna-seq/5.riboparser/05.merge/sce_rna_merged.txt \
  -o sce &> sce.log
 
 ```
@@ -1020,7 +1036,7 @@ $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/10.quantification/
 #################################################
 # quantify the gene expression
 rpf_Quant \
- -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/5.merge/sce_rpf_merged.txt \
+ -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
  --tis 15 \
  --tts 5 \
  -o sce &> sce.log 
@@ -1031,7 +1047,7 @@ rpf_Quant \
 #### 3.2.11 计算密码子水平的 pausing score
 1. 计算 Ribo-seq 数据中密码子水平的 pausing score
 ```bash
-$ cd /mnt/t64/test/sce/4.rna-seq/5.riboparser/11.pausing_score/
+$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/11.pausing_score/
 
 #################################################
 # calculate the codon pausing score of E/P/A site
@@ -1039,7 +1055,7 @@ for sites in E P A
 do
 rpf_Pausing \
  -l /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
- -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/5.merge/sce_rpf_merged.txt \
+ -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
  -b 0 --stop \
  -m 30 \
  -s $sites \
@@ -1062,7 +1078,7 @@ for sites in E P A
 do
 rpf_Occupancy \
  -l /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
- -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/5.merge/sce_rpf_merged.txt \
+ -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
  -m 30 \
  -s "$sites" \
  -f 0 --stop \
@@ -1076,7 +1092,7 @@ done
 #### 3.2.13 计算密码子水平的 decoding time
 1. 计算 Ribo-seq 数据中密码子水平的 decoding time
 ```bash
-$ cd /mnt/t64/test/sce/4.rna-seq/5.riboparser/13.codon_decoding_time/
+$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/13.codon_decoding_time/
 
 #################################################
 # calculate the codon decoding time of E/P/A site
@@ -1084,8 +1100,8 @@ for sites in E P A
 do
 rpf_CDT \
  -l /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
- --rna /mnt/t64/test/sce/3.rna-seq/5.riboparser/5.merge/sce_rna_merged.txt \
- --rpf /mnt/t64/test/sce/4.ribo-seq/5.riboparser/5.merge/sce_rpf_merged.txt \
+ --rna /mnt/t64/test/sce/3.rna-seq/5.riboparser/05.merge/sce_rna_merged.txt \
+ --rpf /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
  --stop \
  -m 50 \
  -f 0 \
@@ -1101,7 +1117,7 @@ done
 #### 3.2.14 计算密码子水平的 selection time
 1. 计算 Ribo-seq 数据中密码子水平的 selection time
 ```bash
-$ cd /mnt/t64/test/sce/4.rna-seq/5.riboparser/14.codon_selection_time/
+$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/14.codon_selection_time/
 
 #################################################
 # calculate the codon selection time of E/P/A site
@@ -1109,8 +1125,8 @@ for sites in E P A
 do
 rpf_CST \
  -l /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
- --rna /mnt/t64/test/sce/3.rna-seq/5.riboparser/5.merge/sce_rna_merged.txt \
- --rpf /mnt/t64/test/sce/4.ribo-seq/5.riboparser/5.merge/sce_rpf_merged.txt \
+ --rna /mnt/t64/test/sce/3.rna-seq/5.riboparser/05.merge/sce_rna_merged.txt \
+ --rpf /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
  --stop \
  -m 50 \
  -f 0 \
@@ -1149,7 +1165,7 @@ ncs2d_elp6d_ribo_YPD3	ncs2d_elp6d_ribo_YPD
 # calculate the coefficient of variation
 rpf_CoV \
  -l /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
- -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/5.merge/sce_rpf_merged.txt \
+ -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
  -f 0 \
  -m 30 \
  --tis 10 \
@@ -1181,7 +1197,7 @@ CCCGGG
 #################################################
 # codon meta analysis
 rpf_Meta_Codon \
- -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/5.merge/sce_rpf_merged.txt \
+ -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
  -m 50 -f 0 \
  -c codon_list.txt \
  -a 15 -u -n --fig \
@@ -1189,16 +1205,47 @@ rpf_Meta_Codon \
 
 ```
 
-#### 3.2.17 提取 gene density
+#### 3.2.17 Data shuffling
+1. 重新洗牌 Ribo-seq 数据的 gene density 文件
+```bash
+$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/17.shuffle/
+
+#################################################
+# codon meta analysis
+rpf_Shuffle \
+ -l /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
+ -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
+ -s 0 \
+ -i \
+ -o sce &> sce.log
+
+```
+
+2. 重新洗牌 RNA-seq 数据的 gene density 文件
+```bash
+$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/11.shuffle/
+
+#################################################
+# retrieve and format the gene density
+rpf_Shuffle \
+ -l /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
+ -r /mnt/t64/test/sce/3.rna-seq/5.riboparser/05.merge/sce_rna_merged.txt \
+ -s 0 \
+ -i \
+ -o sce &> sce.log
+
+```
+
+#### 3.2.18 提取 gene density
 1. 提取和格式化 Ribo-seq 数据中的 gene density
 ```bash
-$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/17.gene_density/
+$ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/18.gene_density/
 
 #################################################
 # codon meta analysis
 rpf_Retrieve \
  -l /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
- -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/5.merge/sce_rpf_merged.txt \
+ -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
  -m 0 \
  -f \
  -n \
@@ -1208,19 +1255,20 @@ rpf_Retrieve \
 
 2. 提取和格式化 RNA-seq 数据中的 gene density
 ```bash
-$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/11.gene_density/
+$ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/12.gene_density/
 
 #################################################
 # retrieve and format the gene density
 rpf_Retrieve \
  -l /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
- -r /mnt/t64/test/sce/3.rna-seq/5.riboparser/5.merge/sce_rna_merged.txt \
+ -r /mnt/t64/test/sce/3.rna-seq/5.riboparser/05.merge/sce_rna_merged.txt \
  -m 0 \
  -f \
  -n \
  -o sce &> sce.log
 
 ```
+
 
 ## 4. 贡献
 

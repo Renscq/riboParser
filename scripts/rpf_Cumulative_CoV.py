@@ -1,15 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-'''
-@Project      : riboparser
-@Script       : rpf_Cumulative_CoV.py
-@Environment  : python 3.8.5
-@Version      : 1.0
-@Author       : Rensc 
-@Time         : 2023/06/02 16:41:55
-@E-mail       : rensc0718@163.com
-@License      : (C)Copyright 2023-2025, Ren Shuchao
-'''
+# @Project : riboParser
+# @Script  : rpf_Cumulative_CoV.py
 
 
 from foo import ArgsParser

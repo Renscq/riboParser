@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-# Author    : Rensc, Liyn
-# Email     : 851458021@qq.com
-# Time      : 2023/4/10 10:36
-# Project   : Coefficient_of_Variation.py
+# -*- encoding: utf-8 -*-
+# @Project : riboParser
+# @Script  : Coefficient_of_Variation.py
 
 
 from collections import OrderedDict
@@ -196,7 +195,7 @@ class CoV(object):
 
 
         # import the group file
-        uniq_group = self.group.group.unique()
+        uniq_group = self.group.Group.unique()
         print('Now groups: ', uniq_group, flush=True)
         
         # split group to each comparasion
@@ -210,14 +209,14 @@ class CoV(object):
             group2 = comparasion[1]
 
             # reterieve the samples and CoV
-            samples1 = self.group[self.group['group'] == group1]
-            samples2 = self.group[self.group['group'] == group2]
+            samples1 = self.group[self.group['Group'] == group1]
+            samples2 = self.group[self.group['Group'] == group2]
 
-            CoV1 = self.merge_file[samples1['name'] + '_CoV'].mean(axis=1)
-            CoV2 = self.merge_file[samples2['name'] + '_CoV'].mean(axis=1)
+            CoV1 = self.merge_file[samples1['Name'] + '_CoV'].mean(axis=1)
+            CoV2 = self.merge_file[samples2['Name'] + '_CoV'].mean(axis=1)
             
-            mean1 = self.merge_file[samples1['name'] + '_mean'].mean(axis=1)
-            mean2 = self.merge_file[samples2['name'] + '_mean'].mean(axis=1)
+            mean1 = self.merge_file[samples1['Name'] + '_mean'].mean(axis=1)
+            mean2 = self.merge_file[samples2['Name'] + '_mean'].mean(axis=1)
 
             # calculate the differential pvalue with ks-test and student's-test
             t_statistic, t_p_value = stats.ttest_ind(CoV1, CoV2)
@@ -266,9 +265,9 @@ class CoV(object):
         
         # split group to each comparasion
         if self.group is None:
-            self.group = pd.DataFrame({'name': self.sample_name, 'group': self.sample_name})
+            self.group = pd.DataFrame({'Name': self.sample_name, 'Group': self.sample_name})
 
-        uniq_group = self.group['group'].unique()
+        uniq_group = self.group['Group'].unique()
         combinations = self.re_combination(uniq_group)
         
         matplotlib.use('AGG')
@@ -284,14 +283,14 @@ class CoV(object):
             fig, axs = plt.subplots(1, 3, figsize=(20, 5))
             
             # reterieve the samples and CoV
-            samples1 = self.group[self.group['group'] == group1]
-            samples2 = self.group[self.group['group'] == group2]
+            samples1 = self.group[self.group['Group'] == group1]
+            samples2 = self.group[self.group['Group'] == group2]
 
-            CoV1 = self.merge_file[samples1['name'] + '_CoV'].mean(axis=1)
-            CoV2 = self.merge_file[samples2['name'] + '_CoV'].mean(axis=1)
+            CoV1 = self.merge_file[samples1['Name'] + '_CoV'].mean(axis=1)
+            CoV2 = self.merge_file[samples2['Name'] + '_CoV'].mean(axis=1)
             
-            mean1 = self.merge_file[samples1['name'] + '_mean'].mean(axis=1)
-            mean2 = self.merge_file[samples2['name'] + '_mean'].mean(axis=1)
+            mean1 = self.merge_file[samples1['Name'] + '_mean'].mean(axis=1)
+            mean2 = self.merge_file[samples2['Name'] + '_mean'].mean(axis=1)
 
             # fit the data
             params1, covariance1 = curve_fit(fitting_function, mean1, CoV1, p0=initial_guess)

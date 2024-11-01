@@ -1,6 +1,66 @@
 {
     "configurations": [
         {
+            "name": "Python: merge_dst_list.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceRoot}/base/merge_ribo/merge_dst_list.py",
+            "args": [
+                "-l",
+                "/mnt/t64/rensc/serp/GSE67387/ribo/test/5.merge/SRR1944912_rpf.txt",
+                "/mnt/t64/rensc/serp/GSE67387/ribo/test/5.merge/SRR1944913_rpf.txt",
+                "/mnt/t64/rensc/serp/GSE67387/ribo/test/5.merge/SRR1944914_rpf.txt",
+                "/mnt/t64/rensc/serp/GSE67387/ribo/test/5.merge/SRR1944915_rpf.txt",
+                "/mnt/t64/rensc/serp/GSE67387/ribo/test/5.merge/SRR1944916_rpf.txt",
+                "/mnt/t64/rensc/serp/GSE67387/ribo/test/5.merge/SRR1944917_rpf.txt",
+                "/mnt/t64/rensc/serp/GSE67387/ribo/test/5.merge/SRR1944918_rpf.txt",
+                "-o",
+                "RPF.file.list",
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: rna_Offset.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceRoot}/scripts/rna_Offset.py",
+            "args": [
+                "-o",
+                "/mnt/t64/rensc/serp/GSE67387/ribo/test/3.offset/test",
+                "-m",
+                "27",
+                "-M",
+                "33",
+                "-e",
+                "11",
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: rpf_Offset.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceRoot}/scripts/rpf_Offset.py",
+            "args": [
+                "-t",
+                "/mnt/t64/database/sce/ncbi/norm/sce.norm.txt",
+                "-b",
+                "/mnt/t64/rensc/serp/GSE67387/ribo/test/1.qc/SRR1944915.bam",
+                "-o",
+                "/mnt/t64/rensc/serp/GSE67387/ribo/test/3.offset/SRR1944915",
+                "--mode",
+                "SSCBM",
+                "-m",
+                "27",
+                "-M",
+                "33"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
             "name": "Python: get_negative_ppi.py",
             "type": "debugpy",
             "request": "launch",
@@ -23,36 +83,6 @@
                 "-o",
                 "/mnt/t64/rensc/herr/hsa/pc-b5-20240113/ribo/ribo/test/hsa_2"
                 // "/home/rensc/software/temp/tests/ncr",
-            ],
-            "console": "integratedTerminal",
-            "justMyCode": true
-        },
-        {
-            "name": "Python: serp_retrieve_seq.py",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${workspaceRoot}/scripts/serp_retrieve_seq.py",
-            "args": [
-                "-r",
-                "/mnt/t64/rensc/1404/clipseq/ribop/step05-merge/ncr_rpf_merged.txt",
-                "-o",
-                "/mnt/t64/rensc/1404/clipseq/ribop/serp/sm_ip_in",
-                "-a",
-                "/mnt/t64/rensc/1404/clipseq/ribop/serp/sm_ip_in_peaks.txt",
-                "--ip",
-                "SM_IP_1,SM_IP_2",
-                "--ck",
-                "SM_IN_1,SM_IN_2",
-                "-u",
-                "10",
-                "-d",
-                "10",
-                "-c",
-                "1",
-                "--back",
-                "0",
-                "--rpm",
-                "--ratio"
             ],
             "console": "integratedTerminal",
             "justMyCode": true
