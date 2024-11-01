@@ -4,7 +4,7 @@
 # @Script  : rna_density.py
 
 
-from foo import ArgsParser
+from .foo import ArgsParser
 
 
 def main():

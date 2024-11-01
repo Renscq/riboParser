@@ -4,8 +4,8 @@
 # @Script  : rpf_digest.py
 
 
-from foo.ArgsParser import *
-from foo.Digestion import *
+from .foo.ArgsParser import *
+from .foo.Digestion import *
 
 
 def main():

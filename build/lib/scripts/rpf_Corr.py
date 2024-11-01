@@ -10,7 +10,7 @@ import pandas as pd
 import polars as pl
 import seaborn as sns
 
-from foo import ArgsParser
+from .foo import ArgsParser
 
 
 def read_rpf(rpf_file):

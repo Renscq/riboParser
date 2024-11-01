@@ -4,8 +4,8 @@
 # @Script  : rpf_metaplot.py
 
 
-from foo import ArgsParser
-from foo import Metaplot
+from .foo import ArgsParser
+from .foo import Metaplot
 
 
 def main():

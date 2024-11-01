@@ -1,4 +1,5 @@
 [console_scripts]
+merge_bwt_log = base.bowtie.merge_bwt_log:main
 rna_Density = scripts.rna_Density:main
 rpf_Bam2bw = scripts.rpf_Bam2bw:main
 rpf_CDT = scripts.rpf_CDT:main

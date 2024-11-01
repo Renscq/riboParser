@@ -4,8 +4,8 @@
 # @Script  : rpf_Check.py
 
 
-from foo import ArgsParser
-from foo.Quality import *
+from .foo import ArgsParser
+from .foo.Quality import *
 
 
 def main():

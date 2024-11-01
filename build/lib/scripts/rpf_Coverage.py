@@ -4,8 +4,8 @@
 # @Script  : rpf_coverage.py
 
 
-from foo import ArgsParser
-from foo import Coverage
+from .foo import ArgsParser
+from .foo import Coverage
 
 
 def main():

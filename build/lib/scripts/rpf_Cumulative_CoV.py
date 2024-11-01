@@ -4,8 +4,8 @@
 # @Script  : rpf_Cumulative_CoV.py
 
 
-from foo import ArgsParser
-from foo.Cumulative_CoV import *
+from .foo import ArgsParser
+from .foo.Cumulative_CoV import *
 
 
 def main():

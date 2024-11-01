@@ -4,8 +4,8 @@
 # @Script  : rpf_CoV.py
 
 
-from foo import ArgsParser
-from foo import Coefficient_of_Variation
+from .foo import ArgsParser
+from .foo import Coefficient_of_Variation
 
 
 def main():

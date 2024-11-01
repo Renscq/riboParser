@@ -59,6 +59,7 @@ setup(
             "serp_overlap=scripts.serp_overlap:main",
             "serp_peak=scripts.serp_peak:main",
             "serp_properties=scripts.serp_properties:main",
+            "merge_bwt_log=base.bowtie.merge_bwt_log:main",
         ],
     },
 
