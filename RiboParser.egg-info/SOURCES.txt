@@ -5,6 +5,9 @@ RiboParser.egg-info/dependency_links.txt
 RiboParser.egg-info/entry_points.txt
 RiboParser.egg-info/requires.txt
 RiboParser.egg-info/top_level.txt
+base/__init__.py
+base/bowtie/__init__.py
+base/bowtie/merge_bwt_log.py
 scripts/__init__.py
 scripts/make_ensb_ref.py
 scripts/make_ribo_ref.py
