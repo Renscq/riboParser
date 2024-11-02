@@ -1375,4 +1375,4 @@ Contact rensc0718@163.com for more information.
 
 ## 5. License
 
-CC-BY-NC-SA。
+GPL License.
