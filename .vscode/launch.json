@@ -9,7 +9,7 @@
                 "-f",
                 "/mnt/t64/database/sce/ncbi/norm/sce.norm.cds.fa",
                 "-o",
-                "sce"
+                "/mnt/t64/database/sce/ncbi/norm/sce_cds"
             ],
             "console": "integratedTerminal",
             "justMyCode": true

@@ -4,8 +4,8 @@
 # @Script  : serp_properties.py
 
 
-from ribo import ArgsParser
-from serp import Properties
+from .ribo import ArgsParser
+from .serp import Properties
 
 
 def main():

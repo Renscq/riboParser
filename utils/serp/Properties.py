@@ -12,8 +12,6 @@ import numpy as np
 import pandas as pd
 
 from Bio import SeqIO
-from Bio.Seq import Seq
-from Bio.SeqUtils import CodonUsage
 from Bio.SeqUtils import ProtParam
 
 
@@ -21,10 +19,10 @@ class SeqProperties(object):
 
     def __init__(self, seq):
         '''
-        @Message  : function for sequence properties 
-        @Input    : param --> pr
-        @Return   : output --> description
-        @Flow     : step1 --> run
+        @Message  : function for sequence properties calculation
+        @Input    : param --> properties
+        @Return   : output --> sequence propeerties
+        @Flow     : step1 --> run ProteinAnalysis
         '''
         
         self.prpt = ProtParam.ProteinAnalysis(seq)
@@ -120,12 +118,20 @@ class Sequence(object):
 
         # opts for file output
         self.output_prefix = args.output
-        self.output_gene_cu = self.output_prefix + '.Gene.CodonUsage.txt'
+        self.output_gene_cu = self.output_prefix + '.Gene.CodonUsage.xlsx'
         self.output_whole_cu = self.output_prefix + '.Whole.CodonUsage.txt'
         self.output_seq = self.output_prefix + '.Properties.txt'
 
 
     def count_codons_numpy(self, cds_sequence):
+        '''
+        @Message  : function for codon count summary.
+        @Input    : param --> cds_sequence
+        @Return   : output --> codon and count
+        @Flow     : step1 --> split the cds sequence to codon sequence
+                    step2 --> summary the codon count
+        '''
+        
         # ensure the length of the sequence is a multiple of 3
         if len(cds_sequence) % 3 != 0:
             raise ValueError("CDS length is not a multiple of 3")
@@ -136,6 +142,13 @@ class Sequence(object):
         return dict(zip(unique, counts))
     
     def create_codon_table(self):
+        '''
+        @Message  : create the codon and amino acid table.
+        @Input    : param --> self.fasta
+        @Return   : output --> self.cds_data_frame
+        @Flow     : step1 --> summary the codon and count of cds sequence
+                    step2 --> merge all gene codon count to one data table
+        '''
         
         codon_dict = OrderedDict()
 
@@ -161,7 +174,16 @@ class Sequence(object):
 
 
     def calc_gene_codon_usage(self):
-
+        '''
+        @Message  : function for gene codon usage calculation
+        @Input    : param --> self.cds_data_frame
+        @Return   : output --> Frequency, RSCU, CAI
+        @Flow     : step1 --> calculate the codon frequency
+                    step2 --> calculate the RSCU and CAI
+                    step3 --> fill NA with 0 and round the value
+                    step4 --> convert the data frame to wide format
+        '''
+        
         # calculate codon frequency
         self.cds_data_frame['Frequency'] = self.cds_data_frame['Count'] / self.cds_data_frame['Length'] * 1000
 
@@ -182,23 +204,49 @@ class Sequence(object):
         cds_rscu_data_frame_wide = self.cds_data_frame.pivot_table(index=['Gene', 'Length'], columns='Codon', values='RSCU').reset_index()
         cds_cai_data_frame_wide = self.cds_data_frame.pivot_table(index=['Gene', 'Length'], columns='Codon', values='CAI').reset_index()
 
-        # output the three data frame to one excel
-        with pd.ExcelWriter(self.output_gene_cu) as writer:
-            cds_freq_data_frame_wide.to_excel(writer, sheet_name='Frequency', index=False)
-            cds_rscu_data_frame_wide.to_excel(writer, sheet_name='RSCU', index=False)
-            cds_cai_data_frame_wide.to_excel(writer, sheet_name='CAI', index=False)
+        # output the three data frame
+        cds_freq_data_frame_wide.to_csv(self.output_prefix + '_frequency.txt', sep='\t', index=False)
+        cds_rscu_data_frame_wide.to_csv(self.output_prefix + '_rscu.txt', sep='\t', index=False)
+        cds_cai_data_frame_wide.to_csv(self.output_prefix + '_cai.txt', sep='\t', index=False)
 
+        # with pd.ExcelWriter(self.output_gene_cu) as writer:
+        #     cds_freq_data_frame_wide.to_excel(writer, sheet_name='Frequency', index=False)
+        #     cds_rscu_data_frame_wide.to_excel(writer, sheet_name='RSCU', index=False)
+        #     cds_cai_data_frame_wide.to_excel(writer, sheet_name='CAI', index=False)
 
     def calc_whole_codon_usage(self):
+        '''
+        @Message  : function for whole codon usage calculation
+        @Input    : param --> self.cds_data_frame
+        @Return   : output --> Frequency, RSCU, CAI
+        @Flow     : step1 --> calculate the codon frequency
+                    step2 --> calculate the RSCU and CAI
+                    step3 --> fill NA with 0 and round the value
+                    step4 --> save the data frame to file
+        '''
         
         cds_data_frame_sum = self.cds_data_frame.groupby(['Codon', 'AA', 'Abbr.'])['Count'].sum().reset_index()
         cds_data_frame_sum['Frequency'] = cds_data_frame_sum['Count'] / cds_data_frame_sum['Count'].sum() * 1000
         cds_data_frame_sum['RSCU'] = cds_data_frame_sum['Frequency'] / cds_data_frame_sum.groupby('AA')['Frequency'].transform('mean')
         cds_data_frame_sum['CAI'] = cds_data_frame_sum['Frequency'] / cds_data_frame_sum.groupby('AA')['Frequency'].transform('max')
         
-        cds_data_frame_sum.to_csv(self.output_whole_cu, index=False)
+        cds_data_frame_sum.fillna({'Frequency': 0, 'RSCU': 0, 'CAI': 0}, inplace=True)
+
+        cds_data_frame_sum['Frequency'] = cds_data_frame_sum['Frequency'].round(4)
+        cds_data_frame_sum['RSCU'] = cds_data_frame_sum['RSCU'].round(4)
+        cds_data_frame_sum['CAI'] = cds_data_frame_sum['CAI'].round(4)
+
+        cds_data_frame_sum.to_csv(self.output_prefix + '_whole_codon_usage.txt', sep='\t', index=False)
 
     def protein_analysis(self):
+        '''
+        @Message  : function for protein properties calculation
+        @Input    : param --> self.fasta
+        @Return   : output --> sequence properties
+        @Flow     : step1 --> read the fasta file
+                    step2 --> write the sequence properties to file
+        '''
+        
         with open(self.output_seq, 'w') as out_seq:
             out_seq.writelines('\t'.join(['ID', 'Seq', 'Length', 'Gravy', 'Flexibility', 'Instability',
                                           'Isoelectric_Point', 'Helix', 'Turn', 'Sheet']) + '\n')
@@ -207,10 +255,16 @@ class Sequence(object):
             for now_idx, now_seq in fa_seq.items():
                 now_aa = str(now_seq.seq.translate())
                 now_len = str(len(now_aa))
+
+                if now_aa[-1] == '*':
+                    now_aa = now_aa[:-1]
+                    now_len = str(len(now_aa))
+
                 if '*' in now_aa:
                     sys.stdout.writelines(
                         'Skip sequence contain stop codon: {id}\t{aa}'.format(id=now_idx, aa=now_aa) + '\n')
                     continue
+
                 prpt = SeqProperties(now_aa)
                 out_seq.writelines('\t'.join([now_idx, now_aa, now_len, prpt.gravy, prpt.flexibility, prpt.instability,
                                               prpt.isoelectric_point, prpt.helix, prpt.turn, prpt.sheet]) + '\n')
