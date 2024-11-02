@@ -7,12 +7,30 @@ FilePath: \RiboParser\setup.py
 Description:
 """
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
 
 setup(
     name="RiboParser",
     version="0.1.3",
     packages=find_packages(),
+    
+    author="Ren Shuchao",
+    author_email="rensc0718@163.com",
+    description="A pipeline for ribosome profiling data analysis",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
+    url="https://github.com/renscq/RiboParser",
+    license="GPL",
+    platforms=['linux-x86_64'],
+    classifiers=[
+        "Programming Language :: Python :: 3.12",
+        "License :: OSI Approved :: GPL License",
+        'Operating System :: POSIX :: Linux',
+        "Topic :: Scientific/Engineering :: Bio-Informatics",
+        "Intended Audience :: Science/Research",
+    ],
+    python_requires=">=3.12",
+
     install_requires=[
         "numpy~=1.26.4",
         "pandas~=2.2.2",
@@ -86,7 +104,6 @@ setup(
             "retrieve_seq=scripts.fasta.retrieve_seq:main",
             "revs=scripts.fasta.revs:main",
             # fastq
-            "fq_cutting=scripts.fastq.fq_cutting:main",
             "fq_len_flt=scripts.fastq.fq_len_flt:main",
             "fq_len_sum=scripts.fastq.fq_len_sum:main",
             "fq_split=scripts.fastq.fq_split:main",
@@ -126,16 +143,4 @@ setup(
         ],
     },
 
-    author="Ren Shuchao",
-    author_email="rensc0718@163.com",
-    description="A pipeline for ribosome profiling data analysis",
-    long_description=open("README-CN.md").read(),
-    long_description_content_type="text/markdown",
-    url="https://github.com/renscq/RiboParser",
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-    ],
-    python_requires=">=3.12",
 )

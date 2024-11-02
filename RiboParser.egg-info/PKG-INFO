@@ -5,26 +5,31 @@ Summary: A pipeline for ribosome profiling data analysis
 Home-page: https://github.com/renscq/RiboParser
 Author: Ren Shuchao
 Author-email: rensc0718@163.com
-Classifier: Programming Language :: Python :: 3
-Classifier: License :: OSI Approved :: MIT License
-Classifier: Operating System :: OS Independent
+License: GPL
+Platform: linux-x86_64
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: GPL License
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Intended Audience :: Science/Research
 Requires-Python: >=3.12
 Description-Content-Type: text/markdown
-Requires-Dist: numpy
-Requires-Dist: pandas
-Requires-Dist: pyarrow
-Requires-Dist: polars
-Requires-Dist: biopython
-Requires-Dist: scipy
-Requires-Dist: scikit-learn
-Requires-Dist: statsmodels
-Requires-Dist: pysam
-Requires-Dist: joblib
-Requires-Dist: interval
-Requires-Dist: matplotlib
-Requires-Dist: seaborn
-Requires-Dist: plotly
-Requires-Dist: seqlogo
+Requires-Dist: numpy~=1.26.4
+Requires-Dist: pandas~=2.2.2
+Requires-Dist: pyarrow~=16.1.0
+Requires-Dist: polars~=0.20.31
+Requires-Dist: biopython~=1.78
+Requires-Dist: scipy~=1.12.0
+Requires-Dist: scikit-learn~=1.4.2
+Requires-Dist: statsmodels~=0.14.2
+Requires-Dist: pysam~=0.22.1
+Requires-Dist: joblib~=1.4.2
+Requires-Dist: interval~=1.0.0
+Requires-Dist: matplotlib~=3.8.4
+Requires-Dist: matplotlib-venn~=1.1.1
+Requires-Dist: seaborn~=0.13.2
+Requires-Dist: plotly~=5.22.0
+Requires-Dist: seqlogo~=5.29.9
+Requires-Dist: kaleido~=0.2.1
 
 <!--
  * @Author: 'rensc' 'rensc0718@163.com'
@@ -37,30 +42,36 @@ Requires-Dist: seqlogo
 
 # RiboParser
 
-为了便于理解和使用，这里对公开的项目数据进行分析，并拆解每一个分析步骤，来展示完整的工作流程。
-这个过程包括了通用的分析步骤，以及定制的 `RiboParser` 和 `RiboShiny` 的分析和可视化步骤。
+To streamline understanding and application, we will analyze publicly accessible project data, breaking down each analytical step to illustrate the complete workflow.
 
-1. 软件的安装
-2. 参考文件的创建
-3. 原始数据的下载
-4. 原始数据清洗
-5. 数据比对
-6. 测序质量分析
-7. 基因水平分析
-8. 密码子水平分析
+This process encompasses both general analysis steps and specialized analysis and visualization techniques, facilitated by `RiboParser` and `RiboShiny`.
 
-以上的数据分析输出的结果可以在 `RiboShiny` 中进行下游的分析和可视化。
+The specific steps involved are:
+
+1. Software installation
+2. Reference file creation
+3. Raw data download
+4. Raw data cleaning
+5. Data alignment
+6. Sequencing quality analysis
+7. Gene-level analysis
+8. Codon-level analysis
+
+The results of this data analysis can be further analyzed and visualized in `RiboShiny`.
 
 
-## 1. 软件的安装
+## 1. Software configuration
 
-### 1. conda 创建环境
+### 1. create the environment with `conda`
+
 ```bash
 conda create -n ribo
 conda activate ribo
+
 ```
 
-### 2. conda 安装软件依赖
+### 2. Install software dependencies using conda
+
 ```bash
 conda install cutadapt
 conda install bowtie
@@ -79,23 +90,40 @@ conda install ucsc-bedgraphtobigwig
 conda install ucsc-bedsort
 ```
 
-### 3. conda 安装 RiboParser
-```bash
-conda install riboparser -c rensc
-```
+### 3. pip install RiboParser
 
-### 4. 测试安装状态：
-测试软件的依赖、安装和运行问题。
+When the server is connected to the network, we can use pip to install software directly. 
 
 ```bash
-rpf_test
+
+pip install riboparser
+
 ```
 
-## 2. 准备参考文件
+Alternatively, we can download the version from GitHub, re-setup and then install it.
 
-### 1. 完整项目目录示例如下：
+```bash
+cd RiboParser
 
-完整的数据分析包含了参考文献的准备、RNA-seq的数据分析、Ribo-seq 的数据分析。
+python3 setup.py sdist bdist_wheel
+pip install dist/RiboParser-0.1.3-py3-none-any.whl
+
+```
+
+### 4. run the test
+Test software for dependency, installation, and operation issues.
+
+```bash
+rpf_Check -h
+
+rpf_CST -h
+```
+
+## 2. Prepare reference files
+
+### 1. An example of the complete project directory is shown below
+
+The complete data analysis includes reference preparation, RNA-seq data analysis, and Ribo-seq data analysis.
 
 ```
 $ cd /mnt/t64/test/sce/
@@ -159,9 +187,10 @@ $ tree
 
 ```
 
-### 2. 准本参考基因组索引
-#### 2.1. 创建目录
-创建文件夹用于放置不同类型的参考序列文件。
+### 2. Prepare the reference genome index
+#### 2.1. Create the directory
+
+Create folders to hold different types of reference sequence files.
 
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/
@@ -169,8 +198,9 @@ $ cd /mnt/t64/test/sce/1.reference/
 $ mkdir cdna genome gtf mrna ncrna rrna trna norm rsem-index
 ```
 
-#### 2.2 从 NCBI 下载参考文件
-使用最常用的数据分析文件格式，基因组序列为 fasta 格式，参考文件为 GTF 或者 GFF3 格式。
+#### 2.2 Download reference files from NCBI
+
+Use the most common data analysis file format, the genome sequence in fasta format, and the reference file in GTF or GFF3 format.
 
 ```bash
 # genome sequence
@@ -192,14 +222,16 @@ $ gunzip *.gz
 $ gffread -g GCF_000146045.2_R64_genomic.fna GCF_000146045.2_R64_genomic.gff -F -w cdna.fa
 ```
 
-#### 2.3 使用 bowtie 创建 genome 索引
+#### 2.3 Create the `genome` index using `bowtie`
+
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/genome
 
 $ bowtie-build ../GCF_000146045.2_R64_genomic.fna genome.fa genome
 ```
 
-#### 2.4 使用 bowtie 创建 mRNA 索引
+#### 2.4 Create an `mRNA` index using `bowtie`
+
 ```bash
 $ cd mrna
 
@@ -211,7 +243,7 @@ $ retrieve_seq -i cdna.fa -n mrna.ids -o mrna.fa
 $ bowtie-build mrna.fa mrna
 ```
 
-#### 2.5 使用 bowtie 创建 rRNA 索引
+#### 2.5 Create an `rRNA` index using `bowtie`
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/rrna
 
@@ -223,7 +255,7 @@ $ retrieve_seq -i cdna.fa -n rrna.ids -o rrna.fa
 $ bowtie-build rrna.fa rrna
 ```
 
-#### 2.6 使用 bowtie 创建 tRNA 索引
+#### 2.6 Create an `tRNA` index using `bowtie`
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/trna
 
@@ -236,7 +268,7 @@ $ bowtie-build trna.fa trna
 ```
 
 
-#### 2.7 使用 bowtie 创建 ncRNA 索引
+#### 2.7 Create an `ncRNA` index using `bowtie`
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/ncrna
 
@@ -248,7 +280,8 @@ $ retrieve_seq -i cdna.fa -n ncrna.ids -o ncrna.fa
 $ bowtie-build ncrna.fa ncrna
 ```
 
-#### 2.8 标准化 gtf 文件
+#### 2.8 Standardized `gtf` or `gff3` files
+
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/norm/
 
@@ -258,7 +291,8 @@ $ rpf_Reference \
  -u 30 -o sce
 ```
 
-#### 2.9 使用 star 创建 genome 索引
+#### 2.9 Create a `genome` index using `star`
+
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/
 
@@ -272,7 +306,8 @@ $ STAR \
 
 ```
 
-#### 2.10 使用 rsem 创建 transcriptome 索引
+#### 2.10 Create a `transcriptome` index using `rsem`
+
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/rsem-index/
 
@@ -283,8 +318,9 @@ $ rsem-prepare-reference \
 ```
 
 
-## 3. 示例
-为了展示 RiboParser 的分析流程和使用方法，这里使用数据集 GSE67387 的 RNA-seq 和 Ribo-seq 数据做示例。
+## 3. Demo project
+
+In order to demonstrate the analysis process and usage of RiboParser, RNA-seq and Ribo-seq data from dataset GSE67387 are used as examples here.
 
 ```shell
 # dataset
@@ -296,11 +332,14 @@ PMID: 26052047
 ```
 
 
-### 3.1 GSE67387 数据基础分析
+### 3.1 Fundamental analysis of data in GSE67387 dataset
 
-#### 3.1.1 下载原始数据
-1. 下载 RNA-seq 数据
-使用 `sra-tools` 中的 `prefetch` 下载原始的 sra 格式数据，并解压为 fastq 格式文件。
+#### 3.1.1 Download raw data
+
+1. Download RNA-seq data
+
+Use `prefetch` in `sra-tools` to download the raw SRA-format data and extract it into fastq format files.
+
 ```bash
 $ cd /mnt/t64/test/sce/2.rawdata/rna-seq/
 
@@ -327,6 +366,7 @@ done
 ```
 
 2. 下载 Ribo-seq 数据
+
 ```bash
 cd /mnt/t64/test/sce/2.rawdata/ribo-seq/
 
@@ -354,10 +394,12 @@ done
 ```
 
 
-#### 3.1.2 数据清洗
-因为该项目提供的原始数据是清洗后的，所以并不包含接头序列，这里只展示通用步骤。
+#### 3.1.2 Data cleaning
 
-1. 清洗 RNA-seq 数据
+Because the data from the gse project is cleaned, it does not include adapter and index sequences. So the following is just to show the general steps, do not need to run.
+
+1. RNA-seq data cleaning
+
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/1.cleandata/
 
@@ -372,7 +414,8 @@ cutadapt --match-read-wildcards \
 done
 ```
 
-2. 清洗 Ribo-seq 数据
+2. Ribo-seq data cleaning
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/1.cleandata/
 
@@ -388,11 +431,13 @@ done
 ```
 
 
-#### 3.1.3 把 clean data 比对到不同类型的参考文件
-为了确定文库的质量，排除不同 ncRNA 来源的 reads 对后续分析的影响，这里使用 `bowtie` 对数据进行分类。
-正常情况下，尤其是使用 oligoDT 方法构建的 RNA-seq 文库，其中的 reads 大多来源于 mRNA。所以对于 RNA-seq 的分析而言，这个步骤不是必须的。
+#### 3.1.3 Align clean data to different types of reference files
 
-1. 比对 RNA-seq 数据
+To assess library quality and eliminate the impact of reads originating from different non-coding RNAs (ncRNAs) on subsequent analysis, we employed bowtie to classify the reads form sequencing data.
+
+Under normal circumstances, especially for RNA-seq libraries constructed using the oligo(dT) method, most reads originate from mRNA. Therefore, for RNA-seq analysis, this step is generally not necessary. It is suitable for use in libraries constructed by the rRNA-depletion method.
+
+1. Aligning RNA-seq data
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/2.bowtie/
 
@@ -442,7 +487,7 @@ done
 done
 ```
 
-2. 统计所有数据库的比对结果
+2. Statistical alignment results for all databases.
 ```bash
 #################################################
 # merge all log files
@@ -452,7 +497,7 @@ merge_bwt_log \
 
 ```
 
-3. 比对 Ribo-seq 数据
+3. Aligning Ribo-seq data
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/2.bowtie/
 
@@ -503,7 +548,7 @@ done
 
 ```
 
-4. 统计所有数据库的比对结果
+4. Statistical alignment results for all databases.
 ```bash
 #################################################
 # merge all log files
@@ -514,10 +559,11 @@ merge_bwt_log \
 ```
 
 
-#### 3.1.4 使用 STAR 比对 mRNA 的 reads
-去除掉 ncRNA 的 reads 之后，使用 star 重新比对到酵母的基因组。
+#### 3.1.4 Aligning mRNA reads using `STAR`
 
-1. 使用 star 比对 RNA-seq 的数据
+Following the removal of ncRNA reads, the remaining clean reads were realigned to the yeast genome using `STAR`.
+
+1. Aligning mRNA reads (RNA-seq) using `STAR`
 ```bash
 cd /mnt/t64/test/sce/3.rna-seq/3.star/
 
@@ -563,7 +609,7 @@ rm $output"Aligned.out.bam"
 done
 ```
 
-2. 使用 star 比对 Ribo-seq 的数据
+2. Aligning mRNA reads (Ribo-seq) using `STAR`
 ```bash
 cd /mnt/t64/test/sce/4.ribo-seq/3.star/
 
@@ -610,10 +656,12 @@ done
 ```
 
 
-#### 3.1.5 使用 RSEM 或者 featureCounts 定量基因表达水平
-我们可以已使用 RSEM 或者 featureCounts来对基因的表达水平进行定量，二者各有特色，这里使用 RSEM 做示例。
+#### 3.1.5 Estimating gene expression levels with either `RSEM` or `featureCounts`
 
-1. 定量 RNA-seq 的转录水平
+Both RSEM and featureCounts can be employed to quantify gene expression levels. For the purpose of this analysis, we will utilize RSEM as a representative tool.
+
+1. Estimating transcript abundance using RNA-seq data
+
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/4.quantification/
 
@@ -626,7 +674,8 @@ rsem-calculate-expression -p 10 --no-bam-output --alignments -q $bam /mnt/t64/te
 done
 ```
 
-2. 合并 RNA-seq 的数据定量结果
+2. Integrating RNA-seq quantification values for all samples
+
 ```bash
 #################################################
 # merge the gene expression
@@ -643,7 +692,8 @@ merge_rsem -c FPKM -l *.isoforms.results -o isoforms.FPKM.txt
 ```
 
 
-3. 定量 Ribo-seq 的转录水平
+3. Estimating transcript abundance using Ribo-seq data
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/4.quantification/
 
@@ -656,7 +706,8 @@ rsem-calculate-expression -p 10 --no-bam-output --alignments -q $bam /mnt/t64/te
 done
 ```
 
-4. 合并 Ribo-seq 的数据定量结果
+4. Integrating Ribo-seq quantification values for all samples
+
 ```bash
 #################################################
 # merge the gene expression
@@ -673,9 +724,11 @@ merge_rsem -c FPKM -l *.isoforms.results -o isoforms.FPKM.txt
 ```
 
 
-### 3.2 使用 RiboParser 继续完成 GSE67387 的数据分析
-#### 3.2.1 测序数据的质量检查
-1. 检查 Ribo-seq 数据的测序质量
+### 3.2 Perform subsequent data analysis of GSE67387 with RiboParser
+#### 3.2.1 Quality check of sequencing data
+
+1. Quality check of ribo-seq data
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/01.qc/
 
@@ -691,7 +744,8 @@ rpf_Check -b $bam -s --thread 10 -t /mnt/t64/test/sce/1.reference/norm/sce.norm.
 done
 ```
 
-2. 合并所有样本的质量分析结果
+2. Integrating Ribo-seq quality check results for all samples
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/
 
@@ -703,7 +757,7 @@ merge_saturation -l ./01.qc/*gene_saturation.txt -o sce
 ```
 
 
-3. 检查 RNA-seq 数据的测序质量
+3. Quality check of RNA-seq data
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/01.qc/
 
@@ -719,7 +773,7 @@ rpf_Check -b $bam -s --thread 10 -t /mnt/t64/test/sce/1.reference/norm/sce.norm.
 done
 ```
 
-4. 合并所有样本的质量分析结果
+4. Integrating RNA-seq quality check results for all samples
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/
 
@@ -731,8 +785,8 @@ merge_saturation -l ./01.qc/*gene_saturation.txt -o sce
 ```
 
 
-#### 3.2.2 测序数据的酶切和酶连的偏好性
-1. 检查 Ribo-seq 数据的酶切和酶连的偏好性
+#### 3.2.2 Enzymatic bias in NGS library preparation
+1. Bias in restriction enzyme digestion and ligation in sequencing data
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/02.digestion/
 
@@ -750,7 +804,7 @@ rpf_Digest -b $bam -m 27 -M 33 --scale \
 done
 ```
 
-2. 合并所有样本的 reads digestion
+2. Integrating reads digestion results for all samples
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/
 
@@ -761,7 +815,7 @@ merge_digestion -l ./02.digestion/*pwm.txt -o sce
 ```
 
 
-3. 检查 RNA-seq 数据的酶切和酶连的偏好性
+3. Bias in restriction enzyme digestion and ligation in sequencing data
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/02.digestion/
 
@@ -779,7 +833,7 @@ rpf_Digest -b $bam -m 25 -M 50 --scale \
 done
 ```
 
-4. 合并所有样本的 reads digestion
+4. Integrating reads digestion results for all samples
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/
 
@@ -790,8 +844,9 @@ merge_digestion -l ./02.digestion/*pwm.txt -o sce
 ```
 
 
-#### 3.2.3 使用 RiboParser 做质量检查
-1. 预测 Ribo-seq 中的最佳 offset
+#### 3.2.3 Use RiboParser for quality checks
+1. Predict the optimal offset of Ribo-seq
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/03.offset/
 
@@ -809,7 +864,8 @@ rpf_Offset -b $bam -m 27 -M 33 -p 30 -d \
 done
 ```
 
-2. 合并所有样本的 offset 预测结果
+2. Integrating offset table results for all samples
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/
 
@@ -821,7 +877,10 @@ merge_offset -l ./03.offset/*rsbm_offset.txt -o sce_rsbm
 
 ```
 
-3. RNA-seq 无需预测 offset，这里直接创建一个文件，其中 offset 值均为 12。
+3. Create the offset table for RNA-seq
+
+Offset prediction is unnecessary for RNA-seq analysis. A constant offset of 12 can be assigned to all entries in the table.
+
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/03.offset/
 
@@ -837,8 +896,12 @@ done
 ```
 
 
-#### 3.2.4 把 bam 文件中的 reads 转换为 txt 文件中的 density。
-1. 转换 Ribo-seq 数据
+#### 3.2.4 Convert the bam file to reads density
+
+Transform the read counts in a BAM file into density values and save them in a TXT format file.
+
+1. Transform Ribo-seq data output
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/
 
@@ -858,7 +921,8 @@ done
 
 ```
 
-2. 转换 RNA-seq 数据
+2. Transform RNA-seq data output
+
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/
 
@@ -879,8 +943,12 @@ done
 ```
 
 
-#### 3.2.5 合并所有文件
-1. 合并 Ribo-seq density 文件
+#### 3.2.5 Integrating density file for all samples
+
+Data from various batches and samples can be integrated for unified analysis. If not integrated, individual analysis for each sample is required, increasing the number of operational steps.
+
+1. Integrating Ribo-seq density results for all samples
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/
 
@@ -911,7 +979,7 @@ rpf_Merge -l RPF.file.list -o sce_rpf &> sce.log
 
 ```
 
-2. 合并 RNA-seq density 文件
+2. Integrating RNA-seq density results for all samples
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/05.merge/
 
@@ -942,8 +1010,10 @@ rpf_Merge -l RNA.file.list -o sce_rna &> sce.log
 ```
 
 
-#### 3.2.6 计算三核苷酸周期性
-1. 检查 Ribo-seq 数据三核苷酸周期性
+#### 3.2.6 Calculate tri-nucleotide periodicity
+
+1. Check the tri-nucleotide periodicity of Ribo-seq
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/06.periodicity/
 
@@ -955,7 +1025,7 @@ rpf_Periodicity \
 
 ```
 
-2. 检查 RNA-seq 数据三核苷酸周期性
+2. Check the tri-nucleotide periodicity of RNA-seq
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/06.periodicity/
 
@@ -968,8 +1038,12 @@ rpf_Periodicity \
 ```
 
 
-#### 3.2.7 起始和终止密码子前后的 meta-gene 分析
-1. Ribo-seq 数据 meta-gene 分析
+#### 3.2.7 Meta-gene analysis
+
+Investigation of reads density in the vicinity of start and stop codons using meta-gene analysis.
+
+1. Meta-gene analysis of Ribo-seq
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/07.metaplot/
 
@@ -982,7 +1056,8 @@ rpf_Metaplot \
 
 ```
 
-2. RNA-seq 数据 meta-gene 分析
+2. Meta-gene analysis of RNA-seq
+
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/07.metaplot/
 
@@ -996,8 +1071,12 @@ rpf_Metaplot \
 ```
 
 
-#### 3.2.8 检查基因上的整体 density 覆盖情况
-1. 检查 Ribo-seq 数据的 density 覆盖
+#### 3.2.8 Gene coverage
+
+Examine the distribution of read density along the gene body.
+
+1. Check gene density of Ribo-seq
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/08.coverage/
 
@@ -1013,7 +1092,8 @@ rpf_Coverage \
 
 ```
 
-2. 检查 RNA-seq 数据的 density 覆盖
+2. Check gene density of RNA-seq
+
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/08.coverage/
 
@@ -1030,8 +1110,10 @@ rpf_Coverage \
 ```
 
 
-#### 3.2.9 检查样本之间的重复性
-1. 检查 Ribo-seq 数据样本重复性
+#### 3.2.9 Check the repeatability of samples
+
+1. Check the repeatability of Ribo-seq
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/09.correlation/
 
@@ -1043,7 +1125,8 @@ rpf_Corr \
 
 ```
 
-2. 检查 RNA-seq 数据的重复性
+2. Check the repeatability of RNA-seq
+
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/09.correlation/
 
@@ -1056,8 +1139,10 @@ rpf_Corr \
 ```
 
 
-#### 3.2.10 基因表达和翻译水平定量
-1. 计算基因的翻译量（RPFs level）
+#### 3.2.10 Quantification of gene expression and translation levels
+
+1. Quantification of Ribo-seq
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/10.quantification/
 
@@ -1072,8 +1157,10 @@ rpf_Quant \
 ```
 
 
-#### 3.2.11 计算密码子水平的 pausing score
-1. 计算 Ribo-seq 数据中密码子水平的 pausing score
+#### 3.2.11 Calculate codon pausing score
+
+1. Calculate codon-level pausing scores in Ribo-seq data
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/11.pausing_score/
 
@@ -1095,8 +1182,10 @@ done
 ```
 
 
-#### 3.2.12 计算密码子水平的 occupancy
-1. 计算 Ribo-seq 数据中密码子水平的 occupancy
+#### 3.2.12 Calculate codon occupancy
+
+1. Calculate codon-level occupancy in Ribo-seq data
+
 ```bash
 $ cd /mnt/t64/test/sce/4.rpf-seq/5.riboparser/12.codon_occupancy/
 
@@ -1117,8 +1206,10 @@ done
 ```
 
 
-#### 3.2.13 计算密码子水平的 decoding time
-1. 计算 Ribo-seq 数据中密码子水平的 decoding time
+#### 3.2.13 Calculate decoding time
+
+1. Calculate codon-level decoding time in Ribo-seq data
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/13.codon_decoding_time/
 
@@ -1142,8 +1233,10 @@ done
 ```
 
 
-#### 3.2.14 计算密码子水平的 selection time
-1. 计算 Ribo-seq 数据中密码子水平的 selection time
+#### 3.2.14 Calculate selection time
+
+1. Calculate codon-level selection time in Ribo-seq data
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/14.codon_selection_time/
 
@@ -1167,8 +1260,10 @@ done
 ```
 
 
-#### 3.2.15 计算基因和密码子水平的变异系数
-1. 计算 Ribo-seq 数据中基因和密码子水平的变异系数
+#### 3.2.15 Calculate Coefficient of Variation
+
+1. Calculate gene coefficient of variation in Ribo-seq data
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/15.coefficient_of_variation/
 
@@ -1204,8 +1299,10 @@ rpf_CoV \
 
 ```
 
-#### 3.2.16 密码子 meta-codon 分析
-1. 计算 Ribo-seq 数据中密码子 meta density
+#### 3.2.16 Meta-codon analysis
+
+1. Calculate meta-codon density in Ribo-seq data
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/16.meta_codon/
 
@@ -1221,7 +1318,6 @@ ATGATG
 CCCGGG
 ...
 
-
 #################################################
 # codon meta analysis
 rpf_Meta_Codon \
@@ -1234,7 +1330,9 @@ rpf_Meta_Codon \
 ```
 
 #### 3.2.17 Data shuffling
-1. 重新洗牌 Ribo-seq 数据的 gene density 文件
+
+1. Shuffle gene density values in Ribo-seq data
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/17.shuffle/
 
@@ -1249,7 +1347,8 @@ rpf_Shuffle \
 
 ```
 
-2. 重新洗牌 RNA-seq 数据的 gene density 文件
+2. Shuffle gene density values in RNA-seq data
+
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/11.shuffle/
 
@@ -1264,8 +1363,10 @@ rpf_Shuffle \
 
 ```
 
-#### 3.2.18 提取 gene density
-1. 提取和格式化 Ribo-seq 数据中的 gene density
+#### 3.2.18 Retrieve gene density
+
+1. Extract and format gene density from Ribo-seq data
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/18.gene_density/
 
@@ -1281,7 +1382,8 @@ rpf_Retrieve \
 
 ```
 
-2. 提取和格式化 RNA-seq 数据中的 gene density
+2. Extract and format gene density from RNA-seq data
+
 ```bash
 $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/12.gene_density/
 
@@ -1298,11 +1400,12 @@ rpf_Retrieve \
 ```
 
 
-## 4. 贡献
+## 4. Contribution
 
-欢迎提交问题和贡献代码
-联系 rensc0718@163.com
+Contribute to our open-source project by submitting questions and code.
 
-## 5. 许可证
+Contact rensc0718@163.com for more information.
 
-本项目可免费用于学术研究，不得用于商业用途。
+## 5. License
+
+CC-BY-NC-SA。

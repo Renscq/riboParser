@@ -8,7 +8,6 @@ fa_len_sum = scripts.fasta.fa_len_sum:main
 fa_split = scripts.fasta.fa_split:main
 flt_bam_threads = scripts.bam.flt_bam_threads:main
 fq2fa = scripts.fastq.fq2fa:main
-fq_cutting = scripts.fastq.fq_cutting:main
 fq_len_flt = scripts.fastq.fq_len_flt:main
 fq_len_sum = scripts.fastq.fq_len_sum:main
 fq_split = scripts.fastq.fq_split:main

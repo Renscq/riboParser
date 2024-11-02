@@ -1,3 +1,4 @@
+README.md
 setup.py
 RiboParser.egg-info/PKG-INFO
 RiboParser.egg-info/SOURCES.txt
@@ -28,7 +29,6 @@ scripts/fasta/revs.py
 scripts/fastq/__init__.py
 scripts/fastq/fq2fa.py
 scripts/fastq/fq2txt.py
-scripts/fastq/fq_cutting.py
 scripts/fastq/fq_len_flt.py
 scripts/fastq/fq_len_sum.py
 scripts/fastq/fq_split.py
@@ -127,3 +127,6 @@ utils/ribo/Retrieve.py
 utils/ribo/Ribo.py
 utils/ribo/Shuffle.py
 utils/ribo/__init__.py
+utils/serp/Properties.py
+utils/serp/SeRP.py
+utils/serp/__init__.py

@@ -8,14 +8,25 @@
 import sys
 from collections import OrderedDict
 
-import CAI
+import numpy as np
+import pandas as pd
+
 from Bio import SeqIO
+from Bio.Seq import Seq
 from Bio.SeqUtils import CodonUsage
 from Bio.SeqUtils import ProtParam
 
 
 class SeqProperties(object):
+
     def __init__(self, seq):
+        '''
+        @Message  : function for sequence properties 
+        @Input    : param --> pr
+        @Return   : output --> description
+        @Flow     : step1 --> run
+        '''
+        
         self.prpt = ProtParam.ProteinAnalysis(seq)
         self.gravy = str(round(self.prpt.gravy(), 3))
         if self.prpt.flexibility():
@@ -33,81 +44,166 @@ class SeqProperties(object):
 class Sequence(object):
     def __init__(self, args):
         self.fasta = args.fasta
-        self.codon_anno = {
-            'AAA': ['Lys', 'K', 2], 'AAC': ['Asn', 'N', 2], 'AAG': ['Lys', 'K', 2], 'AAT': ['Asn', 'N', 2],
-            'ACA': ['Thr', 'T', 4], 'ACC': ['Thr', 'T', 4], 'ACG': ['Thr', 'T', 4], 'ACT': ['Thr', 'T', 4],
-            'AGA': ['Arg', 'R', 6], 'AGC': ['Ser', 'S', 6], 'AGG': ['Arg', 'R', 6], 'AGT': ['Ser', 'S', 6],
-            'ATA': ['Ile', 'I', 3], 'ATC': ['Ile', 'I', 3], 'ATG': ['Met', 'M', 1], 'ATT': ['Ile', 'I', 3],
-            'CAA': ['Gln', 'Q', 2], 'CAC': ['HIS', 'H', 2], 'CAG': ['Gln', 'Q', 2], 'CAT': ['HIS', 'H', 2],
-            'CCA': ['Pro', 'P', 4], 'CCC': ['Pro', 'P', 4], 'CCG': ['Pro', 'P', 4], 'CCT': ['Pro', 'P', 4],
-            'CGA': ['Arg', 'R', 6], 'CGC': ['Arg', 'R', 6], 'CGG': ['Arg', 'R', 6], 'CGT': ['Arg', 'R', 6],
-            'CTA': ['Leu', 'L', 6], 'CTC': ['Leu', 'L', 6], 'CTG': ['Leu', 'L', 6], 'CTT': ['Leu', 'L', 6],
-            'GAA': ['Glu', 'E', 2], 'GAC': ['Asp', 'D', 2], 'GAG': ['Glu', 'E', 2], 'GAT': ['Asp', 'D', 2],
-            'GCA': ['Ala', 'A', 4], 'GCC': ['Ala', 'A', 4], 'GCG': ['Ala', 'A', 4], 'GCT': ['Ala', 'A', 4],
-            'GGA': ['Gly', 'G', 4], 'GGC': ['Gly', 'G', 4], 'GGG': ['Gly', 'G', 4], 'GGT': ['Gly', 'G', 4],
-            'GTA': ['Val', 'V', 4], 'GTC': ['Val', 'V', 4], 'GTG': ['Val', 'V', 4], 'GTT': ['Val', 'V', 4],
-            'TAA': ['*', '*', 3], 'TAC': ['Tyr', 'Y', 2], 'TAG': ['*', '*', 3], 'TAT': ['Tyr', 'Y', 2],
-            'TCA': ['Ser', 'S', 6], 'TCC': ['Ser', 'S', 6], 'TCG': ['Ser', 'S', 6], 'TCT': ['Ser', 'S', 6],
-            'TGA': ['*', '*', 3], 'TGC': ['Cys', 'C', 2], 'TGG': ['Trp', 'W'], 'TGT': ['Cys', 'C', 2],
-            'TTA': ['Leu', 'L', 6], 'TTC': ['Phe', 'F', 2], 'TTG': ['Leu', 'L', 6], 'TTT': ['Phe', 'F', 2]
+
+        self.codon_dict = {
+            "AAA": ["Lys", "K"],
+            "AAC": ["Asn", "N"],
+            "AAG": ["Lys", "K"],
+            "AAT": ["Asn", "N"],
+            "ACA": ["Thr", "T"],
+            "ACC": ["Thr", "T"],
+            "ACG": ["Thr", "T"],
+            "ACT": ["Thr", "T"],
+            "AGA": ["Arg", "R"],
+            "AGC": ["Ser", "S"],
+            "AGG": ["Arg", "R"],
+            "AGT": ["Ser", "S"],
+            "ATA": ["Ile", "I"],
+            "ATC": ["Ile", "I"],
+            "ATG": ["Met", "M"],
+            "ATT": ["Ile", "I"],
+            "CAA": ["Gln", "Q"],
+            "CAC": ["HIS", "H"],
+            "CAG": ["Gln", "Q"],
+            "CAT": ["HIS", "H"],
+            "CCA": ["Pro", "P"],
+            "CCC": ["Pro", "P"],
+            "CCG": ["Pro", "P"],
+            "CCT": ["Pro", "P"],
+            "CGA": ["Arg", "R"],
+            "CGC": ["Arg", "R"],
+            "CGG": ["Arg", "R"],
+            "CGT": ["Arg", "R"],
+            "CTA": ["Leu", "L"],
+            "CTC": ["Leu", "L"],
+            "CTG": ["Leu", "L"],
+            "CTT": ["Leu", "L"],
+            "GAA": ["Glu", "E"],
+            "GAC": ["Asp", "D"],
+            "GAG": ["Glu", "E"],
+            "GAT": ["Asp", "D"],
+            "GCA": ["Ala", "A"],
+            "GCC": ["Ala", "A"],
+            "GCG": ["Ala", "A"],
+            "GCT": ["Ala", "A"],
+            "GGA": ["Gly", "G"],
+            "GGC": ["Gly", "G"],
+            "GGG": ["Gly", "G"],
+            "GGT": ["Gly", "G"],
+            "GTA": ["Val", "V"],
+            "GTC": ["Val", "V"],
+            "GTG": ["Val", "V"],
+            "GTT": ["Val", "V"],
+            "TAA": ["Stop", "*"],
+            "TAC": ["Tyr", "Y"],
+            "TAG": ["Stop", "*"],
+            "TAT": ["Tyr", "Y"],
+            "TCA": ["Ser", "S"],
+            "TCC": ["Ser", "S"],
+            "TCG": ["Ser", "S"],
+            "TCT": ["Ser", "S"],
+            "TGA": ["Stop", "*"],
+            "TGC": ["Cys", "C"],
+            "TGG": ["Trp", "W"],
+            "TGT": ["Cys", "C"],
+            "TTA": ["Leu", "L"],
+            "TTC": ["Phe", "F"],
+            "TTG": ["Leu", "L"],
+            "TTT": ["Phe", "F"],
         }
-        self.codon_anno_div = {}
-        self.seq_dict = OrderedDict()
+        
+        self.codon_anno = pd.DataFrame.from_dict(self.codon_dict).T
+        self.codon_anno = self.codon_anno.reset_index()
+        self.codon_anno.columns = ['Codon', 'AA', 'Abbr.']
+
+        self.cds_data_frame = ''
 
         # opts for file output
         self.output_prefix = args.output
-        self.output_aa = self.output_prefix + '.CodonUsage.txt'
+        self.output_gene_cu = self.output_prefix + '.Gene.CodonUsage.txt'
+        self.output_whole_cu = self.output_prefix + '.Whole.CodonUsage.txt'
         self.output_seq = self.output_prefix + '.Properties.txt'
 
-    def calc_cai(self):
-        cu = CodonUsage.CodonAdaptationIndex()
-        try:
-            cu.generate_index(self.fasta)
-        except ZeroDivisionError:
 
-            print('ZeroDivisionError', flush=True)
-            print('Sequence file is not suitable for CAI calculation.', flush=True)
-            print('Some codon is empty', flush=True)
-            sys.exit()
-        cai_dict = cu.index
-        frequency_dict = cu.codon_count
-        total_aa = sum(cu.codon_count.values())
+    def count_codons_numpy(self, cds_sequence):
+        # ensure the length of the sequence is a multiple of 3
+        if len(cds_sequence) % 3 != 0:
+            raise ValueError("CDS length is not a multiple of 3")
+        
+        # split the sequence into codons
+        codons = np.array([cds_sequence[i:i+3] for i in range(0, len(cds_sequence), 3)])
+        unique, counts = np.unique(codons, return_counts=True)
+        return dict(zip(unique, counts))
+    
+    def create_codon_table(self):
+        
+        codon_dict = OrderedDict()
 
-        fa_seq = [rec.seq for rec in SeqIO.parse(self.fasta, 'fasta')]
-        rscu_dict = CAI.RSCU(fa_seq)
+        for record in SeqIO.parse(self.fasta, "fasta"):
+            # convert the lower case to upper case
+            record.seq = record.seq.upper()
+            codon_count = self.count_codons_numpy(str(record.seq))
+            codon_count['Length'] = len(record.seq) / 3
+            codon_dict[record.id] = codon_count
 
-        for codon, aa in self.codon_anno.items():
-            # CAI
-            if codon in cai_dict.keys():
-                self.codon_anno[codon].append(str(round(cai_dict[codon], 3)))
-            else:
-                self.codon_anno[codon].append('nan')
-            # RSCU
-            if codon in rscu_dict.keys():
-                self.codon_anno[codon].append(str(round(rscu_dict[codon] / aa[2], 3)))
-            else:
-                self.codon_anno[codon].append('nan')
-            # frequency
-            if codon in frequency_dict.keys():
-                self.codon_anno[codon].append(str(round(frequency_dict[codon] * 1000 / total_aa, 3)))
-            else:
-                self.codon_anno[codon].append('nan')
-            # AA count
-            if codon in rscu_dict.keys():
-                self.codon_anno[codon].append(str(frequency_dict[codon]))
-            else:
-                self.codon_anno[codon].append('nan')
+        # convert codon count to codon table
+        codon_table = pd.DataFrame(codon_dict).T.fillna(0)
+        codon_table = codon_table.reset_index(names=['Gene'])
 
-        with open(self.output_aa, 'w') as out_aa:
-            out_aa.writelines('\t'.join(['Codon', 'AA', 'Abbr.', 'synonym', 'CAI', 'RSCU', 'frequency', 'Count']) + '\n')
-            for codon, usage in self.codon_anno.items():
-                out_aa.writelines('\t'.join([codon, '\t'.join(usage)]) + '\n')
+        # convert codon table to long format
+        self.cds_data_frame = pd.melt(codon_table, id_vars=['Gene', 'Length'], 
+                              value_vars=codon_table.columns.difference(['Gene', 'Length']),
+                              var_name='Codon', value_name='Count')
+        
+        # merge codon annotation and sort the table
+        self.cds_data_frame = self.cds_data_frame.merge(self.codon_anno, on='Codon', how='left')
+        self.cds_data_frame = self.cds_data_frame.sort_values(by=['Gene', 'Abbr.']).reset_index(drop=True)
+
+
+    def calc_gene_codon_usage(self):
+
+        # calculate codon frequency
+        self.cds_data_frame['Frequency'] = self.cds_data_frame['Count'] / self.cds_data_frame['Length'] * 1000
+
+        # calculate RSCU and CAI
+        self.cds_data_frame['RSCU'] = self.cds_data_frame.groupby(['Gene', 'AA'])['Frequency'].transform(lambda x: x / x.mean())
+        self.cds_data_frame['CAI'] = self.cds_data_frame.groupby(['Gene', 'AA'])['Frequency'].transform(lambda x: x / x.max())
+
+        # fill NA with 0
+        self.cds_data_frame.fillna({'Frequency': 0, 'RSCU': 0, 'CAI': 0}, inplace=True)
+
+        # round the value
+        self.cds_data_frame['Frequency'] = self.cds_data_frame['Frequency'].round(4)
+        self.cds_data_frame['RSCU'] = self.cds_data_frame['RSCU'].round(4)
+        self.cds_data_frame['CAI'] = self.cds_data_frame['CAI'].round(4)
+
+        # convert the data frame to wide format
+        cds_freq_data_frame_wide = self.cds_data_frame.pivot_table(index=['Gene', 'Length'], columns='Codon', values='Frequency').reset_index()
+        cds_rscu_data_frame_wide = self.cds_data_frame.pivot_table(index=['Gene', 'Length'], columns='Codon', values='RSCU').reset_index()
+        cds_cai_data_frame_wide = self.cds_data_frame.pivot_table(index=['Gene', 'Length'], columns='Codon', values='CAI').reset_index()
+
+        # output the three data frame to one excel
+        with pd.ExcelWriter(self.output_gene_cu) as writer:
+            cds_freq_data_frame_wide.to_excel(writer, sheet_name='Frequency', index=False)
+            cds_rscu_data_frame_wide.to_excel(writer, sheet_name='RSCU', index=False)
+            cds_cai_data_frame_wide.to_excel(writer, sheet_name='CAI', index=False)
+
+
+    def calc_whole_codon_usage(self):
+        
+        cds_data_frame_sum = self.cds_data_frame.groupby(['Codon', 'AA', 'Abbr.'])['Count'].sum().reset_index()
+        cds_data_frame_sum['Frequency'] = cds_data_frame_sum['Count'] / cds_data_frame_sum['Count'].sum() * 1000
+        cds_data_frame_sum['RSCU'] = cds_data_frame_sum['Frequency'] / cds_data_frame_sum.groupby('AA')['Frequency'].transform('mean')
+        cds_data_frame_sum['CAI'] = cds_data_frame_sum['Frequency'] / cds_data_frame_sum.groupby('AA')['Frequency'].transform('max')
+        
+        cds_data_frame_sum.to_csv(self.output_whole_cu, index=False)
 
     def protein_analysis(self):
         with open(self.output_seq, 'w') as out_seq:
             out_seq.writelines('\t'.join(['ID', 'Seq', 'Length', 'Gravy', 'Flexibility', 'Instability',
                                           'Isoelectric_Point', 'Helix', 'Turn', 'Sheet']) + '\n')
             fa_seq = SeqIO.to_dict(SeqIO.parse(self.fasta, "fasta"))
+
             for now_idx, now_seq in fa_seq.items():
                 now_aa = str(now_seq.seq.translate())
                 now_len = str(len(now_aa))

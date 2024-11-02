@@ -4,8 +4,8 @@
 # @Script  : serp_properties.py
 
 
-from .serp import Properties
-from .ribo import ArgsParser
+from ribo import ArgsParser
+from serp import Properties
 
 
 def main():
@@ -17,8 +17,12 @@ def main():
     print('\nStep2: Import the sequence.\n', flush=True)
     seq = Properties.Sequence(args)
 
-    print('\nStep3: Calculate the codon usage.\n', flush=True)
-    seq.calc_cai()
+    print('\nStep3: Calculate the gene codon usage.\n', flush=True)
+    seq.create_codon_table()
+    seq.calc_gene_codon_usage()
+
+    print('\nStep4: Calculate the whole codon usage.\n', flush=True)
+    seq.calc_whole_codon_usage()
 
     print('\nStep4: Calculate the properties of sequence.\n', flush=True)
     seq.protein_analysis()

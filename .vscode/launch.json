@@ -1,6 +1,20 @@
 {
     "configurations": [
         {
+            "name": "Python: serp_properties.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceRoot}/utils/serp_properties.py",
+            "args": [
+                "-f",
+                "/mnt/t64/database/sce/ncbi/norm/sce.norm.cds.fa",
+                "-o",
+                "sce"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
             "name": "Python: merge_dst_list.py",
             "type": "debugpy",
             "request": "launch",
@@ -24,7 +38,7 @@
             "name": "Python: rna_Offset.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rna_Offset.py",
+            "program": "${workspaceRoot}/utils/rna_Offset.py",
             "args": [
                 "-o",
                 "/mnt/t64/rensc/serp/GSE67387/ribo/test/3.offset/test",
@@ -42,7 +56,7 @@
             "name": "Python: rpf_Offset.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Offset.py",
+            "program": "${workspaceRoot}/utils/rpf_Offset.py",
             "args": [
                 "-t",
                 "/mnt/t64/database/sce/ncbi/norm/sce.norm.txt",
@@ -72,7 +86,7 @@
             "name": "Python: rpf_Shuffle.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Shuffle.py",
+            "program": "${workspaceRoot}/utils/rpf_Shuffle.py",
             "args": [
                 "-r",
                 "/mnt/t64/rensc/herr/hsa/pc-b5-20240113/ribo/ribo/step05-merge_2/hsa_rpf_merged.txt",
@@ -91,7 +105,7 @@
             "name": "Python: serp_peak.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/serp_peak.py",
+            "program": "${workspaceRoot}/utils/serp_peak.py",
             "args": [
                 "-r",
                 "/mnt/t64/rensc/1404/clipseq/ribop/step05-merge/ncr_rpf_merged.txt",
@@ -127,7 +141,7 @@
             "name": "Python: rpf_Quant.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Quant.py",
+            "program": "${workspaceRoot}/utils/rpf_Quant.py",
             "args": [
                 "-r",
                 "/mnt/t64/rensc/1404/ribo-2024-02-13/ribo/ribo/step05-merge/ncr_rpf_merged.txt",
@@ -145,7 +159,7 @@
             "name": "Python: rpf_Reference.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Reference.py",
+            "program": "${workspaceRoot}/utils/rpf_Reference.py",
             "args": [
                 "-g",
                 "/mnt/t64/database/hsa/chm13/chm13.fa",
@@ -164,7 +178,7 @@
             "name": "Python: rpf_Check.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Check.py",
+            "program": "${workspaceRoot}/utils/rpf_Check.py",
             "args": [
                 "-t",
                 "/mnt/t64/rensc/1404/ribo-2024-02-13/ribo/ribo-mt/v2/NC12.mito.norm.txt",
@@ -206,7 +220,7 @@
             "name": "Python: rpf_CST.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_CST.py",
+            "program": "${workspaceRoot}/utils/rpf_CST.py",
             "args": [
                 "-l",
                 // "/mnt/t64/database/gmx/ncbi/norm/gmx4.norm.txt",
@@ -259,7 +273,7 @@
             "name": "Python: rpf_Odd_Ratio.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Odd_Ratio.py",
+            "program": "${workspaceRoot}/utils/rpf_Odd_Ratio.py",
             "args": [
                 "-r",
                 "/home/rensc/software/riboParser/tests/density/hsa_rpf_retrieve.txt",
@@ -316,7 +330,7 @@
             "name": "Python: rpf_CDT.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_CDT.py",
+            "program": "${workspaceRoot}/utils/rpf_CDT.py",
             "args": [
                 "-l",
                 "/mnt/t64/database/sce/fungidb/norm/sce.norm.txt",
@@ -374,7 +388,7 @@
             "name": "Python: rpf_Occupancy.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Occupancy.py",
+            "program": "${workspaceRoot}/utils/rpf_Occupancy.py",
             "args": [
                 "-r",
                 "/home/rensc/software/temp/tests/density/usda_rpf_retrieve.txt",
@@ -419,7 +433,7 @@
             "name": "Python: rpf_Pausing.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Pausing.py",
+            "program": "${workspaceRoot}/utils/rpf_Pausing.py",
             "args": [
                 "-r",
                 // "/home/rensc/software/riboParser/tests/density/usda_rpf_retrieve.txt",
@@ -471,7 +485,7 @@
             "name": "Python: rpf_Coverage.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Coverage.py",
+            "program": "${workspaceRoot}/utils/rpf_Coverage.py",
             "args": [
                 "-t",
                 "/home/rensc/software/riboParser/tests/norm/retrieve.500nt.txt",
@@ -498,7 +512,7 @@
             "name": "Python: rpf_Periodicity.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Periodicity.py",
+            "program": "${workspaceRoot}/utils/rpf_Periodicity.py",
             "args": [
                 "-r",
                 "/home/rensc/software/temp/tests/density/usda_rpf_retrieve.txt",
@@ -696,7 +710,7 @@
             "name": "Python: rpf_Check.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Check.py",
+            "program": "${workspaceRoot}/utils/rpf_Check.py",
             "args": [
                 "-b",
                 "/home/rensc/software/riboParser/tests/bam/R_GR_in_25d_1.bam",
@@ -753,7 +767,7 @@
             "name": "Python: rpf_Offset.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Offset.py",
+            "program": "${workspaceRoot}/utils/rpf_Offset.py",
             "args": [
                 "-t",
                 // "/mnt/t64/database/usda110/norm/usda110.norm.txt",
@@ -776,7 +790,7 @@
             "name": "Python: rpf_Metaplot.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Metaplot.py",
+            "program": "${workspaceRoot}/utils/rpf_Metaplot.py",
             "args": [
                 "-t",
                 "/mnt/t64/database/usda110/norm/usda110.norm.txt",
@@ -803,13 +817,13 @@
             "name": "Python: rpf_Meta_Codon.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Meta_Codon.py",
+            "program": "${workspaceRoot}/utils/rpf_Meta_Codon.py",
             "args": [
                 "-r",
                 "/home/rensc/software/temp/tests/density/usda_rpf_retrieve.txt",
                 // "/mnt/t64/rensc/serp/GSE67387/ribo/ribo/step05-merge/sce_rpf_merged.txt",
                 "-c",
-                "/home/rensc/scripts/qsub/codon.txt",
+                "/home/rensc/utils/qsub/codon.txt",
                 "-o",
                 "/home/rensc/software/temp/tests/metacodon/usda",
                 "--thread",
@@ -829,7 +843,7 @@
             "name": "Python: rpf_Retrieve.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Retrieve.py",
+            "program": "${workspaceRoot}/utils/rpf_Retrieve.py",
             "args": [
                 "-r",
                 "/mnt/t64/rensc/1404/ribo-2024-02-13/ribo/ribo/step05-merge/ncr_rpf_merged.txt",
@@ -904,7 +918,7 @@
             "name": "Python: rpf_Density.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Density.py",
+            "program": "${workspaceRoot}/utils/rpf_Density.py",
             "args": [
                 "-b",
                 "/mnt/t64/rensc/serp/hvo/ribo2/step01-qc/SRR10294592.bam",
@@ -956,7 +970,7 @@
             "name": "Python: rna_Density.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rna_Density.py",
+            "program": "${workspaceRoot}/utils/rna_Density.py",
             "args": [
                 "-b",
                 "/mnt/t64/rensc/1404/ribo-2024-02-13/mrna/mrna/step01-qc/m_KO_1.bam",
@@ -990,7 +1004,7 @@
             "name": "Python: rpf_CoV.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_CoV.py",
+            "program": "${workspaceRoot}/utils/rpf_CoV.py",
             "args": [
                 "-r",
                 "/home/rensc/software/riboParser/tests/density/hsa_rpf_retrieve.txt",
@@ -1011,7 +1025,7 @@
             "name": "Python: rpf_Retrieve.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Retrieve.py",
+            "program": "${workspaceRoot}/utils/rpf_Retrieve.py",
             "args": [
                 "-l",
                 "/home/rensc/riboparser/tests/rpf/gene.list",
@@ -1116,7 +1130,7 @@
             "name": "Python: rpf_Bam_Filter.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Bam_Filter.py",
+            "program": "${workspaceRoot}/utils/rpf_Bam_Filter.py",
             "args": [
                 "-i",
                 "/home/rensc/riboparser/tests/bam/in_20d_1.bam",
@@ -1136,7 +1150,7 @@
             "name": "Python: rpf_Bam2bw.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceRoot}/scripts/rpf_Bam2bw.py",
+            "program": "${workspaceRoot}/utils/rpf_Bam2bw.py",
             "args": [
                 "-p",
                 "/home/rensc/riboparser/tests/bam/in_20d_1_frame_offset.txt",

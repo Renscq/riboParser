@@ -10,7 +10,7 @@ from matplotlib_venn import venn2
 import pandas as pd
 from interval import Interval
 
-from .serp import ArgsParser
+from .ribo import ArgsParser
 
 
 def import_peak_region(mock, flag):
