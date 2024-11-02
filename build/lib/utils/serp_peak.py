@@ -13,7 +13,7 @@ from .serp.SeRP import *
 # main programme is here
 def main():
     ArgsParser.now_time()
-    
+    print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
     print('Step1: Checking the input Arguments.\n', flush=True)
     args = ArgsParser.serp_peak_args_parser()
     serp = SeRP(args)

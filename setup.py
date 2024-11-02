@@ -11,7 +11,7 @@ from setuptools import setup, find_packages, Extension
 
 setup(
     name="RiboParser",
-    version="0.1.3",
+    version="0.1.4",
     packages=find_packages(),
     
     author="Ren Shuchao",
@@ -57,7 +57,7 @@ setup(
             "rpf_Check=utils.rpf_Check:main",
             "rpf_Digest=utils.rpf_Digest:main",
             "rpf_Offset=utils.rpf_Offset:main",
-            "rpf_Offset_v1=utils.rpf_Offset_v1:main",
+            "rpf_Offset_RSBM=utils.rpf_Offset_RSBM:main",
             "rpf_Density=utils.rpf_Density:main",
             "rpf_Merge=utils.rpf_Merge:main",
             "rpf_Periodicity=utils.rpf_Periodicity:main",
