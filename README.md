@@ -29,7 +29,7 @@ The results of this data analysis can be further analyzed and visualized in `Rib
 
 ## 1. Software configuration
 
-### 1. create the environment with `conda`
+### 1.1 create the environment with `conda`
 
 ```bash
 conda create -n ribo
@@ -37,7 +37,7 @@ conda activate ribo
 
 ```
 
-### 2. Install software dependencies using conda
+### 1.2 Install software dependencies using conda
 
 ```bash
 conda install cutadapt
@@ -57,7 +57,7 @@ conda install ucsc-bedgraphtobigwig
 conda install ucsc-bedsort
 ```
 
-### 3. pip install RiboParser
+### 1.3 pip install RiboParser
 
 When the server is connected to the network, we can use pip to install software directly. 
 
@@ -77,7 +77,7 @@ pip install dist/RiboParser-0.1.3-py3-none-any.whl
 
 ```
 
-### 4. run the test
+### 1.4 run the test
 Test software for dependency, installation, and operation issues.
 
 ```bash
@@ -88,7 +88,7 @@ rpf_CST -h
 
 ## 2. Prepare reference files
 
-### 1. An example of the complete project directory is shown below
+### 2.1 An example of the complete project directory is shown below
 
 The complete data analysis includes reference preparation, RNA-seq data analysis, and Ribo-seq data analysis.
 
@@ -154,8 +154,8 @@ $ tree
 
 ```
 
-### 2. Prepare the reference genome index
-#### 2.1. Create the directory
+### 2.2 Prepare the reference genome index
+#### 2.2.1 Create the directory
 
 Create folders to hold different types of reference sequence files.
 
@@ -165,7 +165,7 @@ $ cd /mnt/t64/test/sce/1.reference/
 $ mkdir cdna genome gtf mrna ncrna rrna trna norm rsem-index
 ```
 
-#### 2.2 Download reference files from NCBI
+#### 2.2.2 Download reference files from NCBI
 
 Use the most common data analysis file format, the genome sequence in fasta format, and the reference file in GTF or GFF3 format.
 
@@ -189,7 +189,7 @@ $ gunzip *.gz
 $ gffread -g GCF_000146045.2_R64_genomic.fna GCF_000146045.2_R64_genomic.gff -F -w cdna.fa
 ```
 
-#### 2.3 Create the `genome` index using `bowtie`
+#### 2.2.3 Create the `genome` index using `bowtie`
 
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/genome
@@ -197,7 +197,7 @@ $ cd /mnt/t64/test/sce/1.reference/genome
 $ bowtie-build ../GCF_000146045.2_R64_genomic.fna genome.fa genome
 ```
 
-#### 2.4 Create an `mRNA` index using `bowtie`
+#### 2.2.4 Create an `mRNA` index using `bowtie`
 
 ```bash
 $ cd mrna
@@ -210,7 +210,7 @@ $ retrieve_seq -i cdna.fa -n mrna.ids -o mrna.fa
 $ bowtie-build mrna.fa mrna
 ```
 
-#### 2.5 Create an `rRNA` index using `bowtie`
+#### 2.2.5 Create an `rRNA` index using `bowtie`
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/rrna
 
@@ -222,7 +222,7 @@ $ retrieve_seq -i cdna.fa -n rrna.ids -o rrna.fa
 $ bowtie-build rrna.fa rrna
 ```
 
-#### 2.6 Create an `tRNA` index using `bowtie`
+#### 2.2.6 Create an `tRNA` index using `bowtie`
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/trna
 
@@ -235,7 +235,7 @@ $ bowtie-build trna.fa trna
 ```
 
 
-#### 2.7 Create an `ncRNA` index using `bowtie`
+#### 2.2.7 Create an `ncRNA` index using `bowtie`
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/ncrna
 
@@ -247,7 +247,7 @@ $ retrieve_seq -i cdna.fa -n ncrna.ids -o ncrna.fa
 $ bowtie-build ncrna.fa ncrna
 ```
 
-#### 2.8 Standardized `gtf` or `gff3` files
+#### 2.2.8 Standardized `gtf` or `gff3` files
 
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/norm/
@@ -258,7 +258,7 @@ $ rpf_Reference \
  -u 30 -o sce
 ```
 
-#### 2.9 Create a `genome` index using `star`
+#### 2.2.9 Create a `genome` index using `star`
 
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/
@@ -273,7 +273,7 @@ $ STAR \
 
 ```
 
-#### 2.10 Create a `transcriptome` index using `rsem`
+#### 2.2.10 Create a `transcriptome` index using `rsem`
 
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/rsem-index/

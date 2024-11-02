@@ -26,13 +26,13 @@
 
 ## 1. 软件的安装
 
-### 1. conda 创建环境
+### 1.1 conda 创建环境
 ```bash
 conda create -n ribo
 conda activate ribo
 ```
 
-### 2. conda 安装软件依赖
+### 1.2 conda 安装软件依赖
 ```bash
 # install the base toolkits
 conda install cutadapt
@@ -72,7 +72,7 @@ conda install -c conda-forge kaleido~=0.2.1
 
 ```
 
-### 3. pip 安装 RiboParser
+### 1.3 pip 安装 RiboParser
 
 当服务器联网的时候，可以使用 pip 直接安装软件
 
@@ -90,7 +90,7 @@ pip install dist/RiboParser-0.1.3-py3-none-any.whl
 
 ```
 
-### 4. 测试安装状态：
+### 1.4 测试安装状态：
 测试软件的依赖、安装和运行问题。
 
 ```bash
@@ -99,7 +99,7 @@ rpf_Check -h
 
 ## 2. 准备参考文件
 
-### 1. 完整项目目录示例如下：
+### 2.1 完整项目目录示例如下：
 
 完整的数据分析包含了参考文献的准备、RNA-seq的数据分析、Ribo-seq 的数据分析。
 
@@ -166,9 +166,9 @@ $ tree
 
 ```
 
-### 2. 准本参考基因组索引
+### 2.2 准本参考基因组索引
 
-#### 2.1. 创建目录
+#### 2.2.1 创建目录
 
 创建文件夹用于放置不同类型的参考序列文件。
 
@@ -178,7 +178,7 @@ $ cd /mnt/t64/test/sce/1.reference/
 $ mkdir cdna genome gtf mrna ncrna rrna trna norm rsem-index
 ```
 
-#### 2.2 从 NCBI 下载参考文件
+#### 2.2.2 从 NCBI 下载参考文件
 
 使用最常用的数据分析文件格式，基因组序列为 fasta 格式，参考文件为 GTF 或者 GFF3 格式。
 
@@ -202,7 +202,7 @@ $ gunzip *.gz
 $ gffread -g GCF_000146045.2_R64_genomic.fna GCF_000146045.2_R64_genomic.gff -F -w cdna.fa
 ```
 
-#### 2.3 使用 bowtie 创建 genome 索引
+#### 2.2.3 使用 bowtie 创建 genome 索引
 
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/genome
@@ -210,7 +210,7 @@ $ cd /mnt/t64/test/sce/1.reference/genome
 $ bowtie-build ../GCF_000146045.2_R64_genomic.fna genome.fa genome
 ```
 
-#### 2.4 使用 bowtie 创建 mRNA 索引
+#### 2.2.4 使用 bowtie 创建 mRNA 索引
 
 ```bash
 $ cd mrna
@@ -223,7 +223,7 @@ $ retrieve_seq -i cdna.fa -n mrna.ids -o mrna.fa
 $ bowtie-build mrna.fa mrna
 ```
 
-#### 2.5 使用 bowtie 创建 rRNA 索引
+#### 2.2.5 使用 bowtie 创建 rRNA 索引
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/rrna
 
@@ -235,7 +235,7 @@ $ retrieve_seq -i cdna.fa -n rrna.ids -o rrna.fa
 $ bowtie-build rrna.fa rrna
 ```
 
-#### 2.6 使用 bowtie 创建 tRNA 索引
+#### 2.2.6 使用 bowtie 创建 tRNA 索引
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/trna
 
@@ -248,7 +248,7 @@ $ bowtie-build trna.fa trna
 ```
 
 
-#### 2.7 使用 bowtie 创建 ncRNA 索引
+#### 2.2.7 使用 bowtie 创建 ncRNA 索引
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/ncrna
 
@@ -260,7 +260,7 @@ $ retrieve_seq -i cdna.fa -n ncrna.ids -o ncrna.fa
 $ bowtie-build ncrna.fa ncrna
 ```
 
-#### 2.8 标准化 gtf 文件
+#### 2.2.8 标准化 gtf 文件
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/norm/
 
@@ -270,7 +270,7 @@ $ rpf_Reference \
  -u 30 -o sce
 ```
 
-#### 2.9 使用 star 创建 genome 索引
+#### 2.2.9 使用 star 创建 genome 索引
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/
 
@@ -284,7 +284,7 @@ $ STAR \
 
 ```
 
-#### 2.10 使用 rsem 创建 transcriptome 索引
+#### 2.2.10 使用 rsem 创建 transcriptome 索引
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/rsem-index/
 
