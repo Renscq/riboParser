@@ -66,7 +66,7 @@ def checkFq(input_fq, result_list):
 def args_parser():
     parser = argparse.ArgumentParser(description='This script is used to check the quality scores of FASTQ files.')
     parser.add_argument('-i', '--input', required=True, help='Specify the input FASTQ file (gzip format is OK).')
-    parser.add_argument('-n', '--number', type=int, default=10000, help='Specify the number of sequences to extract (default: 10000).')
+    parser.add_argument('-n', '--number', type=int, default=40000, help='Specify the number of sequences to extract (default: 40000).')
     args = parser.parse_args()
     return args
 
