@@ -1,15 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-'''
-@Project      : riboParser
-@Script       : merge_digestion.py
-@Environment  : python 3.8.5
-@Version      : 1.0
-@Author       : Rensc 
-@Time         : 2024/01/18 12:04:04
-@E-mail       : rensc0718@163.com
-@License      : (C)Copyright 2023-2025, Ren Shuchao
-'''
+#@Project : riboParser
+#@Script  : merge_digestion.py
 
 
 import os

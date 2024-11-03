@@ -1,15 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-'''
-@Project      : riboParser
-@Script       : dos2unix.py
-@Environment  : python 3.8.5
-@Version      : 1.0
-@Author       : Rensc 
-@Time         : 2023/11/29 16:02:13
-@E-mail       : rensc0718@163.com
-@License      : (C)Copyright 2023-2025, Ren Shuchao
-'''
+# @Project : riboParser
+# @Script  : dos2unix.py
 
 
 import sys

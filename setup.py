@@ -24,7 +24,6 @@ setup(
     platforms=['linux-x86_64'],
     classifiers=[
         "Programming Language :: Python :: 3.12",
-        "License :: OSI Approved :: GPL License",
         'Operating System :: POSIX :: Linux',
         "Topic :: Scientific/Engineering :: Bio-Informatics",
         "Intended Audience :: Science/Research",
@@ -85,12 +84,9 @@ setup(
             "serp_overlap=utils.serp_overlap:main",
             "serp_peak=utils.serp_peak:main",
             "serp_properties=utils.serp_properties:main",
-            # bam
-            "flt_bam_threads=scripts.bam.flt_bam_threads:main",
             # bedgraph
             "bg2meta=scripts.bedgraph.bg2meta:main",
             "rpm_smooth=scripts.bedgraph.rpm_smooth:main",
-            "site2base=scripts.bedgraph.site2base:main",
             # bowtie
             "merge_bwt_log=scripts.bowtie.merge_bwt_log:main",
             # fasta
@@ -109,7 +105,7 @@ setup(
             "fq_split=scripts.fastq.fq_split:main",
             "fq_trim=scripts.fastq.fq_trim:main",
             "fq2fa=scripts.fastq.fq2fa:main",
-            "fa2txt=scripts.fastq.fa2txt:main",
+            "fq2txt=scripts.fastq.fq2txt:main",
             "phred_quality=scripts.fastq.phred_quality:main",
             # merge_ribo
             "merge_cdt=scripts.merge_ribo.merge_cdt:main",
@@ -134,7 +130,7 @@ setup(
             # ribocode
             "ribocode_bed_format=scripts.ribocode.ribocode_bed_format:main",
             # ribotish
-            "ribotish_format=scripts.dribotish.ribotish_format:main",
+            "ribotish_format=scripts.ribotish.ribotish_format:main",
             # rsem
             "merge_rsem=scripts.rsem.merge_rsem:main",
             # unix

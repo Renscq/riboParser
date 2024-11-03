@@ -1,15 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-'''
-@Project      : riboParser
-@Script       : merge_length.py
-@Environment  : python 3.8.5
-@Version      : 1.0
-@Author       : Rensc 
-@Time         : 2024/01/17 15:31:06
-@E-mail       : rensc0718@163.com
-@License      : (C)Copyright 2023-2025, Ren Shuchao
-'''
+#@Project : riboParser
+#@Script  : merge_length.py
 
 
 import os

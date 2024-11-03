@@ -1,15 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-'''
-@Project      : riboParser
-@Script       : merge_offset_end.py
-@Environment  : python 3.8.5
-@Version      : 1.0
-@Author       : Rensc 
-@Time         : 2024/07/08 16:25:54
-@E-mail       : rensc0718@163.com
-@License      : (C)Copyright 2023-2025, Ren Shuchao
-'''
+#@Project : riboParser
+#@Script  : merge_offset_end.py
 
 
 import os

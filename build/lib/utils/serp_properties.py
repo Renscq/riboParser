@@ -10,6 +10,7 @@ from .serp import Properties
 
 def main():
     ArgsParser.now_time()
+    
     print('\nEvaluate the different properties of sequence.\n', flush=True)
     print('Step1: Checking the input Arguments.\n', flush=True)
     args = ArgsParser.serp_properties()

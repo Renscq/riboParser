@@ -1,15 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-'''
-@Project      : riboParser
-@Script       : merge_rsem.py
-@Environment  : python 3.8.5
-@Version      : 1.0
-@Author       : Rensc 
-@Time         : 2023/08/17 13:52:04
-@E-mail       : rensc0718@163.com
-@License      : (C)Copyright 2023-2025, Ren Shuchao
-'''
+#@Project : riboParser
+#@Script  : merge_rsem.py
 
 
 import pandas as pd
@@ -52,25 +44,28 @@ def merge_files(file_list, column_name):
     @Flow     : step1 --> run
     '''
     
-    merge_data = []
+    merged_data = []
     for file in file_list:
         data = pd.read_csv(file, sep='\t', index_col=0)
         selected_column = data[[column_name]]
         # remove the path and suffix
         filename = file.split('/')[-1]
         selected_column.columns = [filename]
-        merge_data.append(selected_column)
+        merged_data.append(selected_column)
 
-    return merge_data
+    return merged_data
 
 
 def output_file(merged_data, output_file):
     
-    merged_data = pd.concat(merge_data, axis=1)
+    merged_data = pd.concat(merged_data, axis=1)
     merged_data.to_csv(output_file, sep='\t')
 
 
-if __name__ == "__main__":
+def main():
     args = rsem_merge_args_parser()
-    merge_data = merge_files(args.list, args.column)
-    output_file(merge_data, args.output)
+    merged_data = merge_files(args.list, args.column)
+    output_file(merged_data, args.output)
+
+if __name__ == "__main__":
+    main()

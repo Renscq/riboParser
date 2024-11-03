@@ -7,13 +7,9 @@ RiboParser.egg-info/entry_points.txt
 RiboParser.egg-info/requires.txt
 RiboParser.egg-info/top_level.txt
 scripts/__init__.py
-scripts/bam/__init__.py
-scripts/bam/flt_bam_threads.py
-scripts/bam/test_flt.py
 scripts/bedgraph/__init__.py
 scripts/bedgraph/bg2meta.py
 scripts/bedgraph/rpm_smooth.py
-scripts/bedgraph/site2base.py
 scripts/bowtie/__init__.py
 scripts/bowtie/merge_bwt_log.py
 scripts/fasta/__init__.py

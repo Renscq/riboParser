@@ -1,15 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-'''
-@Project      : riboParser
-@Script       : rand_seq.py
-@Environment  : python 3.8.5
-@Version      : 1.0
-@Author       : Rensc 
-@Time         : 2023/11/07 17:19:21
-@E-mail       : rensc0718@163.com
-@License      : (C)Copyright 2023-2025, Ren Shuchao
-'''
+# @Project : riboParser
+# @Script  : rand_seq.py
 
 
 # import pandas as pd
@@ -100,6 +92,11 @@ def rand_seq(args):
         else:
             print(seq)
 
-if __name__ == '__main__':
+
+def main():
     args = rand_seq_args_parser()
     rand_seq(args)
+
+
+if __name__ == '__main__':
+    main()
