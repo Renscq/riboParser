@@ -1,13 +1,12 @@
 """
 Author: 'rensc' 'rensc0718@163.com'
-Date: 2024-10-15 11:15:05
 LastEditors: 'rensc' 'rensc0718@163.com'
 LastEditTime: 2024-10-16 10:53:31
 FilePath: \RiboParser\setup.py
 Description:
 """
 
-from setuptools import setup, find_packages, Extension
+from setuptools import setup, find_packages
 
 setup(
     name="RiboParser",

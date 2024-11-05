@@ -1347,6 +1347,10 @@ rpf_Retrieve \
 
 ## 4. 贡献
 
+感谢流程中使用到的所有开源工具。
+
+感谢 Nedialkova DD 和 Leidel SA 提供的优秀数据集。
+
 欢迎提交问题和贡献代码
 联系 rensc0718@163.com
 
