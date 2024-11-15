@@ -1,7 +1,7 @@
 """
 Author: 'rensc' 'rensc0718@163.com'
 LastEditors: 'rensc' 'rensc0718@163.com'
-LastEditTime: 2024-10-16 10:53:31
+LastEditTime: 2024-11-16 12:00:00
 FilePath: \RiboParser\setup.py
 Description:
 """
