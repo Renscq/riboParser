@@ -897,7 +897,7 @@ for bam in /mnt/t64/test/sce/3.rna-seq/3.star/01.qc/*.bam
 do
 prefix_name=$(basename $bam .bam)
 
-rna_Density -b $bam -m 27 -M 33 --period 40 -l --thread 10 \
+rna_Density -b $bam -m 27 -M 33 -l --thread 10 \
  -p /mnt/t64/test/sce/3.rna-seq/3.star/03.offset/$prefix_name"_offset.txt" \
  -s /mnt/t64/test/sce/1.reference/norm/sce.norm.rna.fa \
  -t /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
