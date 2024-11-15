@@ -932,7 +932,7 @@ for bam in /mnt/t64/test/sce/3.rna-seq/3.star/01.qc/*.bam
 do
 prefix_name=$(basename $bam .bam)
 
-rna_Density -b $bam -m 27 -M 33 --period 40 -l --thread 10 \
+rna_Density -b $bam -m 27 -M 33 -l --thread 10 \
  -p /mnt/t64/test/sce/3.rna-seq/3.star/03.offset/$prefix_name"_offset.txt" \
  -s /mnt/t64/test/sce/1.reference/norm/sce.norm.rna.fa \
  -t /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
@@ -990,18 +990,18 @@ merge_dst_list -l ../04.density/*_rna.txt -o RNA.file.list
 cat RNA.file.list
 
 Name File  Type
-wt_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944912_rna.txt RNA
-wt_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944913_rna.txt RNA
-wt_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944914_rna.txt RNA
-ncs2d_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944915_rna.txt RNA
-ncs2d_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944916_rna.txt RNA
-ncs2d_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944917_rna.txt RNA
-elp6d_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944918_rna.txt RNA
-elp6d_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944919_rna.txt RNA
-elp6d_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944920_rna.txt RNA
-ncs2d_elp6d_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944921_rna.txt RNA
-ncs2d_elp6d_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944922_rna.txt RNA
-ncs2d_elp6d_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944923_rna.txt RNA
+wt_rna_YPD1 /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944924_rna.txt RNA
+wt_rna_YPD2 /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944925_rna.txt RNA
+wt_rna_YPD3 /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944926_rna.txt RNA
+ncs2d_rna_YPD1  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944927rna.txt RNA
+ncs2d_rna_YPD2  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944928_rna.txt RNA
+ncs2d_rna_YPD3  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944929_rna.txt RNA
+elp6d_rna_YPD1  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944930_rna.txt RNA
+elp6d_rna_YPD2  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944931_rna.txt RNA
+elp6d_rna_YPD3  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944932_rna.txt RNA
+ncs2d_elp6d_rna_YPD1  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944933_rna.txt RNA
+ncs2d_elp6d_rna_YPD2  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944934_rna.txt RNA
+ncs2d_elp6d_rna_YPD3  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944935_rna.txt RNA
 
 #################################################
 # merge all the RNA-seq files
@@ -1270,7 +1270,7 @@ $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/15.coefficient_of_variation/
 #################################################
 # Here we can configure the design file to calculate differences between different groups.
 $ cat design.txt
-name	group
+Name	Group
 WT_ribo_YPD1	WT_ribo_YPD
 WT_ribo_YPD2	WT_ribo_YPD
 WT_ribo_YPD3	WT_ribo_YPD
@@ -1324,7 +1324,7 @@ rpf_Meta_Codon \
  -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
  -m 50 -f 0 \
  -c codon_list.txt \
- -a 15 -u -n --fig \
+ -a 15 -u -n \
  -o sce &> sce.log
 
 ```
