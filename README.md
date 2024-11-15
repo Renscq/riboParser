@@ -1237,7 +1237,7 @@ $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/15.coefficient_of_variation/
 #################################################
 # Here we can configure the design file to calculate differences between different groups.
 $ cat design.txt
-name	group
+Name	Group
 WT_ribo_YPD1	WT_ribo_YPD
 WT_ribo_YPD2	WT_ribo_YPD
 WT_ribo_YPD3	WT_ribo_YPD
