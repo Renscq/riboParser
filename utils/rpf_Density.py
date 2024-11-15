@@ -5,6 +5,7 @@
 
 
 from .ribo import ArgsParser
+from .ribo import Ribo
 
 
 def main():
@@ -13,8 +14,7 @@ def main():
     print('Step1: Checking the input Arguments.\n', flush=True)
     args = ArgsParser.ribo_args_parser()
 
-    import ribo.Ribo
-    ribo_attr = ribo.Ribo.Ribo(args)
+    ribo_attr = Ribo.Ribo(args)
 
     print('\nStep2: Import the P-site offset.\n', flush=True)
     ribo_attr.read_offset()
