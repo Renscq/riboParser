@@ -957,18 +957,18 @@ merge_dst_list -l ../04.density/*_rna.txt -o RNA.file.list
 cat RNA.file.list
 
 Name File  Type
-wt_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944912_rna.txt RNA
-wt_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944913_rna.txt RNA
-wt_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944914_rna.txt RNA
-ncs2d_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944915_rna.txt RNA
-ncs2d_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944916_rna.txt RNA
-ncs2d_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944917_rna.txt RNA
-elp6d_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944918_rna.txt RNA
-elp6d_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944919_rna.txt RNA
-elp6d_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944920_rna.txt RNA
-ncs2d_elp6d_rna_YPD1	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944921_rna.txt RNA
-ncs2d_elp6d_rna_YPD2	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944922_rna.txt RNA
-ncs2d_elp6d_rna_YPD3	/mnt/t64/test/sce/3.rna-seq/04.density/SRR1944923_rna.txt RNA
+wt_rna_YPD1 /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944924_rna.txt RNA
+wt_rna_YPD2 /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944925_rna.txt RNA
+wt_rna_YPD3 /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944926_rna.txt RNA
+ncs2d_rna_YPD1  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944927rna.txt RNA
+ncs2d_rna_YPD2  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944928_rna.txt RNA
+ncs2d_rna_YPD3  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944929_rna.txt RNA
+elp6d_rna_YPD1  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944930_rna.txt RNA
+elp6d_rna_YPD2  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944931_rna.txt RNA
+elp6d_rna_YPD3  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944932_rna.txt RNA
+ncs2d_elp6d_rna_YPD1  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944933_rna.txt RNA
+ncs2d_elp6d_rna_YPD2  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944934_rna.txt RNA
+ncs2d_elp6d_rna_YPD3  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944935_rna.txt RNA
 
 #################################################
 # merge all the RNA-seq files
