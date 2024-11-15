@@ -1275,7 +1275,7 @@ rpf_Meta_Codon \
  -r /mnt/t64/test/sce/4.ribo-seq/5.riboparser/05.merge/sce_rpf_merged.txt \
  -m 50 -f 0 \
  -c codon_list.txt \
- -a 15 -u -n --fig \
+ -a 15 -u -n \
  -o sce &> sce.log
 
 ```
