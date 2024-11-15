@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: RiboParser
-Version: 0.1.5
+Version: 0.1.6
 Summary: A pipeline for ribosome profiling data analysis
 Home-page: https://github.com/renscq/RiboParser
 Author: Ren Shuchao
@@ -1401,6 +1401,10 @@ rpf_Retrieve \
 
 
 ## 4. Contribution
+
+Thanks for all the open source tools used in the process.
+
+Thanks to Nedialkova DD and Leidel SA for providing the excellent dataset.
 
 Contribute to our open-source project by submitting questions and code.
 
