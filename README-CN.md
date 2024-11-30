@@ -207,7 +207,7 @@ $ gffread -g GCF_000146045.2_R64_genomic.fna GCF_000146045.2_R64_genomic.gff -F 
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/genome
 
-$ bowtie-build ../GCF_000146045.2_R64_genomic.fna genome.fa genome
+$ bowtie-build ../GCF_000146045.2_R64_genomic.fna genome
 ```
 
 #### 2.2.4 使用 bowtie 创建 mRNA 索引
@@ -438,7 +438,7 @@ bowtie -p 10 -v 1 --un="$fqname".nomrna.fq --al="$fqname".mrna.fq \
  -x $mrna "$fqname".noncrna.fq -S "$fqname".mrna.sam 2>> "$fqname".log
 
 ## genome
-bowtie -p 10 -v 1 --un="$fqname".nogenome.fq --al="$fqname".genome.fq 、
+bowtie -p 10 -v 1 --un="$fqname".nogenome.fq --al="$fqname".genome.fq \
  -x $chrom "$fqname".nomrna.fq -S "$fqname".genome.sam 2>> "$fqname".log
 
 ## compress fastq
@@ -755,7 +755,7 @@ $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/02.digestion/
 
 #################################################
 # check the reads digestion
-for bam in /mnt/t64/test/sce/4.ribo-seq/3.star/01.qc/*.bam
+for bam in /mnt/t64/test/sce/4.ribo-seq/5.riboparser/01.qc/*.bam
 do
 prefix_name=$(basename $bam .bam)
 
@@ -786,7 +786,7 @@ $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/02.digestion/
 
 #################################################
 # check the reads digestion
-for bam in /mnt/t64/test/sce/3.rna-seq/3.star/01.qc/*.bam
+for bam in /mnt/t64/test/sce/3.rna-seq/5.riboparser/01.qc/*.bam
 do
 prefix_name=$(basename $bam .bam)
 
@@ -819,7 +819,7 @@ $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/03.offset/
 
 #################################################
 # predict the offset table
-for bam in /mnt/t64/test/sce/3.rna-seq/3.star/01.qc/*.bam
+for bam in /mnt/t64/test/sce/3.rna-seq/5.riboparser/01.qc/*.bam
 do
 prefix_name=$(basename $bam .bam)
 
@@ -851,7 +851,7 @@ $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/03.offset/
 
 #################################################
 # set the offset table
-for bam in /mnt/t64/test/sce/3.rna-seq/3.star/01.qc/*.bam
+for bam in /mnt/t64/test/sce/3.rna-seq/5.riboparser/01.qc/*.bam
 do
 
 prefix_name=$(basename $bam .bam)
@@ -872,12 +872,12 @@ $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/
 
 #################################################
 # convert the rpf to density
-for bam in /mnt/t64/test/sce/4.ribo-seq/3.star/01.qc/*.bam
+for bam in /mnt/t64/test/sce/4.ribo-seq/5.riboparser/01.qc/*.bam
 do
 prefix_name=$(basename $bam .bam)
 
 rpf_Density -b $bam -m 27 -M 33 --period 40 -l --thread 10 \
- -p /mnt/t64/test/sce/4.ribo-seq/3.star/03.offset/$prefix_name"_rsbm_offset.txt" \
+ -p /mnt/t64/test/sce/4.ribo-seq/5.riboparser/03.offset/$prefix_name"_rsbm_offset.txt" \
  -s /mnt/t64/test/sce/1.reference/norm/sce.norm.rna.fa \
  -t /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
  -o $prefix_name &> $prefix_name".log"
@@ -893,12 +893,12 @@ $ cd /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/
 
 #################################################
 # convert the reads to density
-for bam in /mnt/t64/test/sce/3.rna-seq/3.star/01.qc/*.bam
+for bam in /mnt/t64/test/sce/3.rna-seq/5.riboparser/01.qc/*.bam
 do
 prefix_name=$(basename $bam .bam)
 
 rna_Density -b $bam -m 27 -M 33 -l --thread 10 \
- -p /mnt/t64/test/sce/3.rna-seq/3.star/03.offset/$prefix_name"_offset.txt" \
+ -p /mnt/t64/test/sce/3.rna-seq/5.riboparser/03.offset/$prefix_name"_offset.txt" \
  -s /mnt/t64/test/sce/1.reference/norm/sce.norm.rna.fa \
  -t /mnt/t64/test/sce/1.reference/norm/sce.norm.txt \
  -o $prefix_name &> $prefix_name".log"
@@ -925,18 +925,18 @@ merge_dst_list -l ../04.density/*_rpf.txt -o RPF.file.list
 cat RPF.file.list
 
 Name File  Type
-wt_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944912_rpf.txt Ribo
-wt_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944913_rpf.txt Ribo
-wt_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944914_rpf.txt Ribo
-ncs2d_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944915_rpf.txt Ribo
-ncs2d_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944916_rpf.txt Ribo
-ncs2d_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944917_rpf.txt Ribo
-elp6d_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944918_rpf.txt Ribo
-elp6d_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944919_rpf.txt Ribo
-elp6d_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944920_rpf.txt Ribo
-ncs2d_elp6d_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944921_rpf.txt Ribo
-ncs2d_elp6d_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944922_rpf.txt Ribo
-ncs2d_elp6d_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/04.density/SRR1944923_rpf.txt Ribo
+wt_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/SRR1944912_rpf.txt Ribo
+wt_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/SRR1944913_rpf.txt Ribo
+wt_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/SRR1944914_rpf.txt Ribo
+ncs2d_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/SRR1944915_rpf.txt Ribo
+ncs2d_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/SRR1944916_rpf.txt Ribo
+ncs2d_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/SRR1944917_rpf.txt Ribo
+elp6d_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/SRR1944918_rpf.txt Ribo
+elp6d_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/SRR1944919_rpf.txt Ribo
+elp6d_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/SRR1944920_rpf.txt Ribo
+ncs2d_elp6d_ribo_YPD1	/mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/SRR1944921_rpf.txt Ribo
+ncs2d_elp6d_ribo_YPD2	/mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/SRR1944922_rpf.txt Ribo
+ncs2d_elp6d_ribo_YPD3	/mnt/t64/test/sce/4.ribo-seq/5.riboparser/04.density/SRR1944923_rpf.txt Ribo
 
 #################################################
 # merge all the Ribo-seq files
@@ -956,18 +956,18 @@ merge_dst_list -l ../04.density/*_rna.txt -o RNA.file.list
 cat RNA.file.list
 
 Name File  Type
-wt_rna_YPD1 /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944924_rna.txt RNA
-wt_rna_YPD2 /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944925_rna.txt RNA
-wt_rna_YPD3 /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944926_rna.txt RNA
-ncs2d_rna_YPD1  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944927rna.txt RNA
-ncs2d_rna_YPD2  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944928_rna.txt RNA
-ncs2d_rna_YPD3  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944929_rna.txt RNA
-elp6d_rna_YPD1  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944930_rna.txt RNA
-elp6d_rna_YPD2  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944931_rna.txt RNA
-elp6d_rna_YPD3  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944932_rna.txt RNA
-ncs2d_elp6d_rna_YPD1  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944933_rna.txt RNA
-ncs2d_elp6d_rna_YPD2  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944934_rna.txt RNA
-ncs2d_elp6d_rna_YPD3  /mnt/t64/test/sce/3.rna-seq/04.density/SRR1944935_rna.txt RNA
+wt_rna_YPD1 /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/SRR1944924_rna.txt RNA
+wt_rna_YPD2 /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/SRR1944925_rna.txt RNA
+wt_rna_YPD3 /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/SRR1944926_rna.txt RNA
+ncs2d_rna_YPD1  /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/SRR1944927rna.txt RNA
+ncs2d_rna_YPD2  /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/SRR1944928_rna.txt RNA
+ncs2d_rna_YPD3  /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/SRR1944929_rna.txt RNA
+elp6d_rna_YPD1  /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/SRR1944930_rna.txt RNA
+elp6d_rna_YPD2  /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/SRR1944931_rna.txt RNA
+elp6d_rna_YPD3  /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/SRR1944932_rna.txt RNA
+ncs2d_elp6d_rna_YPD1  /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/SRR1944933_rna.txt RNA
+ncs2d_elp6d_rna_YPD2  /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/SRR1944934_rna.txt RNA
+ncs2d_elp6d_rna_YPD3  /mnt/t64/test/sce/3.rna-seq/5.riboparser/04.density/SRR1944935_rna.txt RNA
 
 #################################################
 # merge all the RNA-seq files
@@ -1281,7 +1281,9 @@ rpf_Meta_Codon \
 ```
 
 #### 3.2.17 Data shuffling
-1. 重新洗牌 Ribo-seq 数据的 gene density 文件
+1. 重新洗牌 Ribo-seq 数据的 gene density 文件。
+有一些分析的过程中需要随机分配的数据做对照，所以这里添加了一个步骤，用于数据的重新洗牌。
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/17.shuffle/
 
