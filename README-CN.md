@@ -498,7 +498,7 @@ bowtie -p 10 -v 1 --un="$fqname".nomrna.fq --al="$fqname".mrna.fq \
  -x $mrna "$fqname".noncrna.fq -S "$fqname".mrna.sam 2>> "$fqname".log
 
 ## genome
-bowtie -p 10 -v 1 --un="$fqname".nogenome.fq --al="$fqname".genome.fq 、
+bowtie -p 10 -v 1 --un="$fqname".nogenome.fq --al="$fqname".genome.fq \
  -x $chrom "$fqname".nomrna.fq -S "$fqname".genome.sam 2>> "$fqname".log
 
 ## compress fastq
