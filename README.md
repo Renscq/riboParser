@@ -40,22 +40,35 @@ conda activate ribo
 ### 1.2 Install software dependencies using conda
 
 ```bash
-conda install cutadapt
-conda install bowtie
-conda install samtools
-conda install star
-conda install bedtools
-conda install subread
-conda install rsem
-conda install pigz
-conda install gffread
-conda install sra-tools
-conda install ucsc-genepredtogtf
-conda install ucsc-gtftogenepred
-conda install ucsc-gff3togenepred
-conda install ucsc-bedgraphtobigwig
-conda install ucsc-bedsort
+conda install cutadapt -c bioconda
+conda install bowtie -c bioconda
+conda install samtools -c bioconda
+conda install star -c bioconda
+conda install bedtools -c bioconda
+conda install subread -c bioconda
+conda install rsem -c bioconda
+conda install gffread -c bioconda
+conda install sra-tools -c bioconda
+conda install ucsc-genepredtogtf -c bioconda
+conda install ucsc-gtftogenepred -c bioconda
+conda install ucsc-gff3togenepred -c bioconda
+conda install ucsc-bedgraphtobigwig -c bioconda
+conda install ucsc-bedsort -c bioconda
+conda install pigz -c conda-forge
+
 ```
+
+or install the packages in a single command.
+
+```bash
+conda install cutadapt bowtie samtools star bedtools subread rsem gffread sra-tools \
+ ucsc-genepredtogtf ucsc-gtftogenepred ucsc-gff3togenepred ucsc-bedgraphtobigwig ucsc-bedsort \
+ -c bioconda
+
+conda install pigz -c conda-forge
+
+```
+
 
 ### 1.3 pip install RiboParser
 
@@ -73,7 +86,7 @@ Alternatively, we can download the version from GitHub, re-setup and then instal
 cd RiboParser
 
 python3 setup.py sdist bdist_wheel
-pip install dist/RiboParser-0.1.3-py3-none-any.whl
+pip install dist/RiboParser-0.1.6.1-py3-none-any.whl
 
 ```
 
@@ -195,9 +208,31 @@ $ gffread -g GCF_000146045.2_R64_genomic.fna GCF_000146045.2_R64_genomic.gff -F 
 $ cd /mnt/t64/test/sce/1.reference/genome
 
 $ bowtie-build ../GCF_000146045.2_R64_genomic.fna genome
+
 ```
 
 #### 2.2.4 Create an `mRNA` index using `bowtie`
+
+A custom script is used here to extract the corresponding sequence information 
+from the `fasta` file based on the sequence name.
+
+```bash
+$ retrieve_seq -h
+
+usage: retrieve_seq [-h] [-v] -i INPUT -n NAME [-u UNMAPPED] -o OUTPUT
+
+This script is used to retrieve the fasta sequence by name.
+
+options:
+  -h, --help     show this help message and exit
+  -v, --version  show program's version number and exit
+  -i INPUT       input the fasta file
+  -n NAME        gene ids in txt format
+  -u UNMAPPED    output the unmapped gene ids
+  -o OUTPUT      prefix of output file name (default results_peaks.txt)
+
+```
+
 
 ```bash
 $ cd mrna
@@ -208,6 +243,7 @@ $ grep -i 'gbkey=mRNA' cdna.fa | cut -d ' ' -f 1 | cut -c 2- > mrna.ids
 $ retrieve_seq -i cdna.fa -n mrna.ids -o mrna.fa
 
 $ bowtie-build mrna.fa mrna
+
 ```
 
 #### 2.2.5 Create an `rRNA` index using `bowtie`
@@ -249,6 +285,31 @@ $ bowtie-build ncrna.fa ncrna
 
 #### 2.2.8 Standardized `gtf` or `gff3` files
 
+- usage of `rpf_Reference` 
+
+```bash
+$ rpf_Reference -h
+
+usage: rpf_Reference [-h] -g GENOME -t GTF -o OUTPUT [-u UTR] [-c] [-l] [-w]
+
+This script is used to build the references for the RiboParser.
+
+options:
+  -h, --help  show this help message and exit
+  -u UTR      add the pseudo UTR to the leaderless transcripts (default: 0 nt).
+  -c          only retain the protein coding transcripts (default: False).
+  -l          only retain the longest protein coding transcripts (default: False).
+  -w          output whole message (default: False).
+
+Required arguments:
+  -g GENOME   the input file name of genome sequence
+  -t GTF      the input file name of gtf file
+  -o OUTPUT   the prefix of output file. (prefix + _norm.gtf)
+
+```
+
+- create the references from GTF and 
+
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/norm/
 
@@ -256,6 +317,7 @@ $ rpf_Reference \
  -g ../GCF_000146045.2_R64_genomic.fna \
  -t ../GCF_000146045.2_R64_genomic.gff \
  -u 30 -o sce
+
 ```
 
 #### 2.2.9 Create a `genome` index using `star`

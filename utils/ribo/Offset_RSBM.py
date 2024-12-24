@@ -62,7 +62,7 @@ class Offset(object):
         self.merge_frame_offset = pd.DataFrame(columns=["length", "frame0", "rpfs0", "frame1", "rpfs1",
                                                         "frame2", "rpfs2", "p_site", "rpfs"])
         self.frame_offset_len = {}
-        self.mode = args.mode
+        self.mode = "RSBM"
         self.shift_nt = args.shift
 
         self.mrna_dict = OrderedDict()

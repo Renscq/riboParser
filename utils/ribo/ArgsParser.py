@@ -1127,11 +1127,21 @@ def serp_peak_args_parser():
          (1): [30] average of the first 30 AA  is used (or other length); 
          (2): [-1] the average RPFs value of current gene is used; 
          (3): [0] the average RPF of total genes is used.''')
+    
     peak_group.add_argument("-s", dest="size", required=False, type=int, default=3,
                             help="Specifies the window size, the numbers must be odd. "
                                  "(default %(default)s AA)."
                                  "The sequencing data is usually noisy, and need to be smoothed."
-                                 "Mean filtering is used here. ")
+                                 "savgol_filter is used here. ")
+    peak_group.add_argument("-k", dest="k", required=False, type=int, default=1,
+                            help="Specifies the polyorder, the numbers must be odd. "
+                                 "(default %(default)s AA)."
+                                 "The sequencing data is usually noisy, and need to be smoothed."
+                                 "savgol_filter is used here. ")
+    # peak_group.add_argument("--mode", dest="k", required=False, type=str, default="nearest", 
+    #                         choices=["mirror", "nearest", "constant", "wrap"],
+    #                         help="Specifies the smooth mode options, (default %(default)s AA).")
+    
     peak_group.add_argument("-w", dest="width", required=False, type=int, default=5,
                             help="specify the width of binding peaks (default %(default)s AA)."
                                  "By default, the width of each peak is not less than 5 amino acids.")
@@ -1164,6 +1174,7 @@ def serp_peak_args_parser():
         Enrichment after background region need greater than before (HSP70 binding model). 
         backFold used to filter the strong binding peak.
         ''')
+    
     peak_group.add_argument("--up", dest="upstream", required=False, type=int, default=10,
                             help='''retrieve the upstream sequence of binding peaks, (default %(default)s codon.)''')
     peak_group.add_argument("--down", dest="downstream", required=False, type=int, default=10,
@@ -1173,7 +1184,7 @@ def serp_peak_args_parser():
     output_group = parser.add_argument_group('Output files arguments')
     output_group.add_argument("-o", dest="output", required=False, type=str, default='results',
                               help='''prefix of output file name (default %(default)s_ratio.txt).
-        This prefix will be used as the output of Peak/Ratio/Matlab Script/Bed files.''')
+        This prefix will be used as the output of Peak / Ratio / Matlab Script / Bed files.''')
     output_group.add_argument("--all", dest="all", required=False, action='store_true', default=False,
                               help='''output all the peak region. If this option on, all peak 
         regions include overlapped items in same gene are retained. Instead, 

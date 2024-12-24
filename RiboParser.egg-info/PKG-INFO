@@ -73,22 +73,35 @@ conda activate ribo
 ### 1.2 Install software dependencies using conda
 
 ```bash
-conda install cutadapt
-conda install bowtie
-conda install samtools
-conda install star
-conda install bedtools
-conda install subread
-conda install rsem
-conda install pigz
-conda install gffread
-conda install sra-tools
-conda install ucsc-genepredtogtf
-conda install ucsc-gtftogenepred
-conda install ucsc-gff3togenepred
-conda install ucsc-bedgraphtobigwig
-conda install ucsc-bedsort
+conda install cutadapt -c bioconda
+conda install bowtie -c bioconda
+conda install samtools -c bioconda
+conda install star -c bioconda
+conda install bedtools -c bioconda
+conda install subread -c bioconda
+conda install rsem -c bioconda
+conda install gffread -c bioconda
+conda install sra-tools -c bioconda
+conda install ucsc-genepredtogtf -c bioconda
+conda install ucsc-gtftogenepred -c bioconda
+conda install ucsc-gff3togenepred -c bioconda
+conda install ucsc-bedgraphtobigwig -c bioconda
+conda install ucsc-bedsort -c bioconda
+conda install pigz -c conda-forge
+
 ```
+
+or install the packages in a single command.
+
+```bash
+conda install cutadapt bowtie samtools star bedtools subread rsem gffread sra-tools \
+ ucsc-genepredtogtf ucsc-gtftogenepred ucsc-gff3togenepred ucsc-bedgraphtobigwig ucsc-bedsort \
+ -c bioconda
+
+conda install pigz -c conda-forge
+
+```
+
 
 ### 1.3 pip install RiboParser
 
@@ -106,7 +119,7 @@ Alternatively, we can download the version from GitHub, re-setup and then instal
 cd RiboParser
 
 python3 setup.py sdist bdist_wheel
-pip install dist/RiboParser-0.1.3-py3-none-any.whl
+pip install dist/RiboParser-0.1.6.1-py3-none-any.whl
 
 ```
 

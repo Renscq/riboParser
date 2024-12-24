@@ -35,21 +35,21 @@ conda activate ribo
 ### 1.2 conda 安装软件依赖
 ```bash
 # install the base toolkits
-conda install cutadapt
-conda install bowtie
-conda install samtools
-conda install star
-conda install bedtools
-conda install subread
-conda install rsem
-conda install pigz
-conda install gffread
-conda install sra-tools
-conda install ucsc-genepredtogtf
-conda install ucsc-gtftogenepred
-conda install ucsc-gff3togenepred
-conda install ucsc-bedgraphtobigwig
-conda install ucsc-bedsort
+conda install cutadapt -c bioconda
+conda install bowtie -c bioconda
+conda install samtools -c bioconda
+conda install star -c bioconda
+conda install bedtools -c bioconda
+conda install subread -c bioconda
+conda install rsem -c bioconda
+conda install gffread -c bioconda
+conda install sra-tools -c bioconda
+conda install ucsc-genepredtogtf -c bioconda
+conda install ucsc-gtftogenepred -c bioconda
+conda install ucsc-gff3togenepred -c bioconda
+conda install ucsc-bedgraphtobigwig -c bioconda
+conda install ucsc-bedsort -c bioconda
+conda install pigz -c conda-forge
 
 # install the python packages for riboparser
 conda install -c conda-forge numpy~=1.26.4
