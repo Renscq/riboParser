@@ -298,7 +298,8 @@ options:
   -h, --help  show this help message and exit
   -u UTR      add the pseudo UTR to the leaderless transcripts (default: 0 nt).
   -c          only retain the protein coding transcripts (default: False).
-  -l          only retain the longest protein coding transcripts (default: False).
+  -l          only retain the longest protein coding transcripts, it is recommended to select 
+              the longest transcript for subsequent analysis. (default: False).
   -w          output whole message (default: False).
 
 Required arguments:
@@ -308,7 +309,7 @@ Required arguments:
 
 ```
 
-- create the references from GTF and 
+- create the references from GTF and Genome fasta
 
 ```bash
 $ cd /mnt/t64/test/sce/1.reference/norm/
@@ -349,7 +350,7 @@ $ rsem-prepare-reference \
 
 ## 3. Demo project
 
-In order to demonstrate the analysis process and usage of RiboParser, RNA-seq and Ribo-seq data from dataset GSE67387 are used as examples here.
+In order to introduce the analysis process and usage of RiboParser, RNA-seq and Ribo-seq data from dataset GSE67387 are used as examples here.
 
 ```shell
 # dataset
@@ -758,6 +759,41 @@ merge_rsem -c FPKM -l *.isoforms.results -o isoforms.FPKM.txt
 
 1. Quality check of ribo-seq data
 
+- Explanation of `rpf_Check`
+
+```bash
+$ rpf_Check -h
+
+Check the RPFs mapping condition.
+
+Step1: Checking the input Arguments.
+
+usage: rpf_Check [-h] -t TRANSCRIPT -b BAM -o OUTPUT [--thread THREAD] [-g {0,1}] [-a {star,hisat2,bowtie2}] [-r] [-l] [-s]
+
+This script is used to summary the BAM condition.
+
+options:
+  -h, --help            show this help message and exit.
+  --thread THREAD       the number of threads (default: 1). Suitable for large bam files > 1G.
+                        It will take a lot of memory.
+  -g {0,1}              filter the number of reads mapped loci (default: 0). [0]: all reads will be
+                        used; [1]: reads with unique mapped loci will be used
+  -a {star,hisat2,bowtie2}
+                        screen the reads mapped loci from BAM file generate with different reads alignment methods (default: star).
+  -r                    reads aligned to negative strand will also be counted. (default: False).
+  -l                    only keep the longest transcripts (default: False).
+  -s                    whether to calculate RPF saturation. (default: False). This step will take 
+                        a lot of time and memory.
+
+Required arguments:
+  -t TRANSCRIPT         the input file name of gene annotation
+  -b BAM                the input file name of bam
+  -o OUTPUT             the prefix of output file.
+
+```
+
+- Usage of `rpf_Check`
+
 ```bash
 $ cd /mnt/t64/test/sce/4.ribo-seq/5.riboparser/01.qc/
 
@@ -771,7 +807,16 @@ rpf_Check -b $bam -s --thread 10 -t /mnt/t64/test/sce/1.reference/norm/sce.norm.
   -o $prefix_name &> $prefix_name".log"
 
 done
+
 ```
+
+- Results of `rpf_Check`
+
+```bash
+
+
+```
+
 
 2. Integrating Ribo-seq quality check results for all samples
 

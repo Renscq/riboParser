@@ -33,6 +33,9 @@ conda activate ribo
 ```
 
 ### 1.2 conda 安装软件依赖
+
+单独安装每个依赖的软件。
+
 ```bash
 # install the base toolkits
 conda install cutadapt -c bioconda
@@ -69,6 +72,17 @@ conda install -c conda-forge seaborn~=0.13.2
 conda install -c conda-forge plotly~=5.22.0
 conda install -c conda-forge seqlogo~=5.29.9
 conda install -c conda-forge kaleido~=0.2.1
+
+```
+
+或者可以使用单一命令同时安装。
+
+```bash
+conda install cutadapt bowtie samtools star bedtools subread rsem gffread sra-tools \
+ ucsc-genepredtogtf ucsc-gtftogenepred ucsc-gff3togenepred ucsc-bedgraphtobigwig ucsc-bedsort \
+ -c bioconda
+
+conda install pigz -c conda-forge
 
 ```
 

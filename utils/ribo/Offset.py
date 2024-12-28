@@ -264,7 +264,9 @@ class Offset(object):
             # shift 1 nt for the both 5/3 reads end (5end + 3end = 2)
             # Empirical value: 2nt for Eukaryotes, 1nt for prokaryotes
             shift_nt = (length - self.peak_length) // self.shift_nt
-            candidate_offset = [i for i in range(8 + shift_nt, 16 + shift_nt + 1)]
+            # candidate_offset = [i for i in range(8 + shift_nt, 16 + shift_nt + 1)]
+            candidate_offset = [i for i in range(int(self.peak_length / 3) + shift_nt, 
+                                                 int(self.peak_length * 2 / 3) + shift_nt + 1)]
 
             # compare the max rpfs at same offset of 5end and 3end
             max_offset_site = offset_rpfs[length].idxmax()
