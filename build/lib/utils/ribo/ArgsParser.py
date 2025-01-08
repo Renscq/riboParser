@@ -167,8 +167,10 @@ def offset_args_parser():
                              help="the prefix of output file. (prefix + _offset.txt)")
 
     # arguments for the offset detection
-    parser.add_argument('--mode', dest="mode", required=False, type=str, default='SSCBM',
+    parser.add_argument('--mode', dest="mode", required=False, type=str, default='SSCBM', choices=['SSCBM', 'RSBM'],
                         help="specify the mode of offset detect [SSCBM, RSBM]. (default: %(default)s).")
+    parser.add_argument('-a', dest="align", required=False, type=str, default='both', choices=['both', 'tis', 'tts'],
+                        help="specify the alignment of reads for offset detect [both, tis, tts]. (default: %(default)s).")
     parser.add_argument('-l', dest="longest", action='store_true', required=False, default=False,
                         help="only retain the transcript with longest CDS of each gene (default: %(default)s).")
     parser.add_argument('-m', dest="min", required=False, type=int, default=27,
@@ -1127,11 +1129,21 @@ def serp_peak_args_parser():
          (1): [30] average of the first 30 AA  is used (or other length); 
          (2): [-1] the average RPFs value of current gene is used; 
          (3): [0] the average RPF of total genes is used.''')
+    
     peak_group.add_argument("-s", dest="size", required=False, type=int, default=3,
                             help="Specifies the window size, the numbers must be odd. "
                                  "(default %(default)s AA)."
                                  "The sequencing data is usually noisy, and need to be smoothed."
-                                 "Mean filtering is used here. ")
+                                 "savgol_filter is used here. ")
+    peak_group.add_argument("-k", dest="k", required=False, type=int, default=1,
+                            help="Specifies the polyorder, the numbers must be odd. "
+                                 "(default %(default)s AA)."
+                                 "The sequencing data is usually noisy, and need to be smoothed."
+                                 "savgol_filter is used here. ")
+    # peak_group.add_argument("--mode", dest="k", required=False, type=str, default="nearest", 
+    #                         choices=["mirror", "nearest", "constant", "wrap"],
+    #                         help="Specifies the smooth mode options, (default %(default)s AA).")
+    
     peak_group.add_argument("-w", dest="width", required=False, type=int, default=5,
                             help="specify the width of binding peaks (default %(default)s AA)."
                                  "By default, the width of each peak is not less than 5 amino acids.")
@@ -1164,6 +1176,7 @@ def serp_peak_args_parser():
         Enrichment after background region need greater than before (HSP70 binding model). 
         backFold used to filter the strong binding peak.
         ''')
+    
     peak_group.add_argument("--up", dest="upstream", required=False, type=int, default=10,
                             help='''retrieve the upstream sequence of binding peaks, (default %(default)s codon.)''')
     peak_group.add_argument("--down", dest="downstream", required=False, type=int, default=10,
@@ -1173,7 +1186,7 @@ def serp_peak_args_parser():
     output_group = parser.add_argument_group('Output files arguments')
     output_group.add_argument("-o", dest="output", required=False, type=str, default='results',
                               help='''prefix of output file name (default %(default)s_ratio.txt).
-        This prefix will be used as the output of Peak/Ratio/Matlab Script/Bed files.''')
+        This prefix will be used as the output of Peak / Ratio / Matlab Script / Bed files.''')
     output_group.add_argument("--all", dest="all", required=False, action='store_true', default=False,
                               help='''output all the peak region. If this option on, all peak 
         regions include overlapped items in same gene are retained. Instead, 

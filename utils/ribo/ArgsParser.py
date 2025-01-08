@@ -167,8 +167,10 @@ def offset_args_parser():
                              help="the prefix of output file. (prefix + _offset.txt)")
 
     # arguments for the offset detection
-    parser.add_argument('--mode', dest="mode", required=False, type=str, default='SSCBM',
+    parser.add_argument('--mode', dest="mode", required=False, type=str, default='SSCBM', choices=['SSCBM', 'RSBM'],
                         help="specify the mode of offset detect [SSCBM, RSBM]. (default: %(default)s).")
+    parser.add_argument('-a', dest="align", required=False, type=str, default='both', choices=['both', 'tis', 'tts'],
+                        help="specify the alignment of reads for offset detect [both, tis, tts]. (default: %(default)s).")
     parser.add_argument('-l', dest="longest", action='store_true', required=False, default=False,
                         help="only retain the transcript with longest CDS of each gene (default: %(default)s).")
     parser.add_argument('-m', dest="min", required=False, type=int, default=27,

@@ -71,6 +71,7 @@ setup(
             "rpf_CDT=utils.rpf_CDT:main",
             "rpf_CST=utils.rpf_CST:main",
             "rpf_Odd_Ratio=utils.rpf_Odd_Ratio:main",
+            "rpf_Meta_Codon=utils.rpf_Meta_Codon:main",
             # Ribo-utils
             "rpf_Shuffle=utils.rpf_Shuffle:main",
             "rpf_Retrieve=utils.rpf_Retrieve:main",

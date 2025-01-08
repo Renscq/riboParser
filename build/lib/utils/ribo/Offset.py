@@ -49,6 +49,7 @@ class Offset(object):
         # self.column_name = ["length", "from_tis", "tis_5end", "tis_5end_per", "from_tts", "tts_3end", "tts_3end_per", "sum"]
 
         # self.tis_offset = {"start_codon": OrderedDict(), "stop_codon": OrderedDict()}
+        self.align = args.align
         self.tis_offset = {"tis_5end": OrderedDict(), "tis_3end": OrderedDict(),
                            "tts_5end": OrderedDict(), "tts_3end": OrderedDict()}
         self.adj_tis_offset = OrderedDict()
@@ -223,26 +224,28 @@ class Offset(object):
         offset_norm_row.fillna(0, inplace=True)
         return offset_norm_row
 
-    def shift_codon(self, now_psite, length):
+    def shift_codon(self, now_psite, length, left_offset, right_offset):
 
         # shift the codon with 3nt to the normal p-site range
-        if now_psite in range(7, 20):
+        if now_psite in range(left_offset, right_offset):
             return now_psite
 
         if self.adj_tis_offset:
-            if self.adj_tis_offset[length-1][-1]:
-                if self.adj_tis_offset[length-1][-1] + 2 < now_psite:
-                    return self.shift_codon(now_psite - 3, length)
-                elif now_psite < self.adj_tis_offset[length-1][-1] - 2:
-                    return self.shift_codon(now_psite + 3, length)
+            if self.adj_tis_offset[length - 1][-1]:
+                if self.adj_tis_offset[length - 1][-1] + 3 < now_psite:
+                    return self.shift_codon(now_psite - 3, length, left_offset, right_offset)
+                
+                elif now_psite < self.adj_tis_offset[length - 1][-1] - 3:
+                    return self.shift_codon(now_psite + 3, length, left_offset, right_offset)
             else:
                 return np.nan
 
         elif not self.adj_tis_offset:
-            if now_psite > 19:
-                return self.shift_codon(now_psite - 3, length)
-            elif now_psite < 7:
-                return self.shift_codon(now_psite + 3, length)
+            if now_psite > right_offset:
+                return self.shift_codon(now_psite - 3, length, left_offset, right_offset)
+            
+            elif now_psite < left_offset:
+                return self.shift_codon(now_psite + 3, length, left_offset, right_offset)
 
     def adjust_tis_offset(self):
         '''
@@ -256,15 +259,32 @@ class Offset(object):
         # monosome data only needs to align p-site on one side.
         tis_5end = self.tis_5end.T.copy()
         tis_5end.index = abs(tis_5end.index)
+
         tts_5end = self.tts_5end.T.copy()
         tts_5end.index = abs(tts_5end.index)
-        offset_rpfs = tis_5end + tts_5end
+        
+        if self.align == "tis":
+            offset_rpfs = tis_5end
+        elif self.align == "tts":
+            offset_rpfs = tts_5end
+        elif self.align == "both":
+            offset_rpfs = tis_5end + tts_5end
+        else:
+            print("Please input the correct align mode: tis, tts, both.", flush=True)
+            print("Use the default mode: both.", flush=True)
+            offset_rpfs = tis_5end + tts_5end
 
+        # adjust the offset to the normal p-site range
         for length in range(self.min_length, self.max_length + 1):
             # shift 1 nt for the both 5/3 reads end (5end + 3end = 2)
             # Empirical value: 2nt for Eukaryotes, 1nt for prokaryotes
             shift_nt = (length - self.peak_length) // self.shift_nt
-            candidate_offset = [i for i in range(8 + shift_nt, 16 + shift_nt + 1)]
+
+            left_offset = int(np.floor(self.peak_length / 3)) + shift_nt
+            right_offset = int(np.ceil(self.peak_length * 2 / 3)) + shift_nt + 1
+            
+            # candidate_offset = [i for i in range(8 + shift_nt, 16 + shift_nt + 1)]
+            candidate_offset = [i for i in range(left_offset, right_offset)]
 
             # compare the max rpfs at same offset of 5end and 3end
             max_offset_site = offset_rpfs[length].idxmax()
@@ -294,7 +314,7 @@ class Offset(object):
 
             # psite = offset + 1
             psite = max_offset_site + 1
-            psite = self.shift_codon(psite, length)
+            psite = self.shift_codon(psite, length, left_offset, right_offset + 1)
 
             self.adj_tis_offset[length] = [length,
                                            max_offset_site, frame0_offset_rpfs,

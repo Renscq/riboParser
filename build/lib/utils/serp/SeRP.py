@@ -61,6 +61,7 @@ class SeRP(object):
 
         # parameters for enrichment filter
         self.size = args.size
+        self.polyorder = args.k
         self.backFold = args.backFold
         self.enrich = args.enrich
         self.gaps = args.gaps
@@ -392,7 +393,7 @@ class SeRP(object):
             gene_ratio_smooth = pd.DataFrame(gene_ratio_mean, index=gene_rpf.from_tis, columns=['enrich'])
             return gene_ratio_mean, gene_ratio_smooth
         else:
-            gene_ratio_smooth = savgol_filter(gene_ratio_mean, self.size, 1, mode='nearest')
+            gene_ratio_smooth = savgol_filter(gene_ratio_mean, self.size, self.k, mode='nearest')
             gene_ratio_smooth = pd.DataFrame(gene_ratio_smooth, index=gene_rpf.from_tis, columns=['enrich'])
             return gene_ratio_mean, gene_ratio_smooth
 
