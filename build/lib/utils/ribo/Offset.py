@@ -277,13 +277,12 @@ class Offset(object):
         # adjust the offset to the normal p-site range
         for length in range(self.min_length, self.max_length + 1):
             # shift 1 nt for the both 5/3 reads end (5end + 3end = 2)
-            # Empirical value: 2nt for Eukaryotes, 1nt for prokaryotes
             shift_nt = (length - self.peak_length) // self.shift_nt
 
             left_offset = int(np.floor(self.peak_length / 3)) + shift_nt
-            right_offset = int(np.ceil(self.peak_length * 2 / 3)) + shift_nt + 1
+            right_offset = int(np.ceil(self.peak_length * 3 / 4)) + shift_nt + 2
             
-            # candidate_offset = [i for i in range(8 + shift_nt, 16 + shift_nt + 1)]
+            # candidate_offset = [i for i in range(8 + shift_nt, 16 + shift_nt + 2)]
             candidate_offset = [i for i in range(left_offset, right_offset)]
 
             # compare the max rpfs at same offset of 5end and 3end

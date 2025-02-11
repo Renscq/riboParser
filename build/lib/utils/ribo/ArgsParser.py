@@ -142,7 +142,7 @@ def digestion_args_parser():
                         help="only retain the transcript with longest CDS of each gene (default: %(default)s)."
                              "Recommended : True")
     parser.add_argument('--scale', dest="scale", action='store_true', required=False, default=False,
-                        help="only retain the transcript with longest CDS of each gene (default: %(default)s).")
+                        help="scale the motif matrix (default: %(default)s).")
     parser.add_argument('-m', dest="min", required=False, type=int, default=20,
                         help="the minimum reads length to keep (default: %(default)s nt).")
     parser.add_argument('-M', dest="max", required=False, type=int, default=100,
@@ -178,7 +178,7 @@ def offset_args_parser():
     parser.add_argument('-M', dest="max", required=False, type=int, default=33,
                         help="the maximum reads length to keep (default: %(default)s nt).")
     parser.add_argument('-p', dest="exp_peak", required=False, type=int, default=30,
-                        help="Expected RPFs peak length [~30 nt] (default: %(default)s nt).")
+                        help="Expected RPFs length fitted to ribosome structure [~30 nt] (default: %(default)s nt).")
     parser.add_argument('-s', dest="shift", required=False, type=int, default=2,
                         help="psite shift for different RPFs length. (default: %(default)s nt).")
     parser.add_argument('--silence', dest="silence", required=False, action='store_true', default=True,

@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="RiboParser",
-    version="0.1.6.1",
+    version="0.1.6.2",
     packages=find_packages(),
     
     author="Ren Shuchao",

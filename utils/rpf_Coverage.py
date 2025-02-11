@@ -31,7 +31,11 @@ def main():
     if args.heatmap:
         meta.draw_meta_gene_heat()
 
-    print('\nStep7: Output the metagene coverage.', flush=True)
+    print('\nStep7: Draw the barplot of metagene coverage.', flush=True)
+    if args.barplot:
+        meta.draw_meta_gene_bar()
+
+    print('\nStep8: Output the metagene coverage.', flush=True)
     meta.output_meta_gene()
 
     print('\nAll done.\n', flush=True)
