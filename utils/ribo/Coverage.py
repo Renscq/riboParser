@@ -5,6 +5,7 @@
 
 
 from concurrent.futures import ThreadPoolExecutor
+from scipy.stats import zscore
 from math import ceil
 from collections import OrderedDict
 import matplotlib
@@ -80,7 +81,9 @@ class Coverage(object):
         del rpf_results
 
         if self.norm:
-            self.high_rpf.loc[:, self.sample_name] = self.high_rpf[self.sample_name] * 1e6 / self.total_rpf_num
+            self.high_rpf[self.sample_name] = self.high_rpf[self.sample_name].astype(float)
+
+            self.high_rpf[self.sample_name] = self.high_rpf[self.sample_name].div(self.total_rpf_num) * 1e6
 
 
     def import_gene(self):
@@ -159,7 +162,7 @@ class Coverage(object):
         gene_cover_df_n.reset_index(inplace=True)
         gene_cover_df_n.rename(columns={'level_1': 'Bins'}, inplace=True)
         gene_cover_df_n['Bins'] = gene_coverage['Bins']
-        gene_coverage = gene_cover_df_n.groupby('Bins')[self.sample_name].sum() / self.gene_num
+        gene_coverage = gene_cover_df_n.groupby('Bins', observed=False)[self.sample_name].sum() / self.gene_num
         
         return gene_coverage
 
@@ -234,7 +237,7 @@ class Coverage(object):
             self.utr5_mean = self.filter_outliers(self, self.utr5_df)
         else:
             print('No outliers filter.', flush=True)
-            self.utr5_mean = self.utr5_df.groupby('Bins')[self.sample_name].sum() / self.gene_num
+            self.utr5_mean = self.utr5_df.groupby('Bins', observed=False)[self.sample_name].sum() / self.gene_num
 
 
     def process_cds(self):
@@ -281,7 +284,7 @@ class Coverage(object):
             self.cds_mean = self.filter_outliers(self, self.cds_df)
         else:
             print('No outliers filter.', flush=True)
-            self.cds_mean = self.cds_df.groupby('Bins')[self.sample_name].sum() / self.gene_num
+            self.cds_mean = self.cds_df.groupby('Bins', observed=False)[self.sample_name].sum() / self.gene_num.astype(float)
         
 
     def process_utr3(self):
@@ -327,39 +330,9 @@ class Coverage(object):
             self.utr3_mean = self.filter_outliers(self, self.utr3_df)
         else:
             print('No outliers filter.', flush=True)
-            self.utr3_mean = self.utr3_df.groupby('Bins')[self.sample_name].sum() / self.gene_num
+            self.utr3_mean = self.utr3_df.groupby('Bins', observed=False)[self.sample_name].sum() / self.gene_num.astype(float)
 
 
-    def output_meta_gene(self):
-        '''
-        @Message  : output the mean coverage of the gene rpfs
-        @Input    : self.utr5_mean, self.cds_mean, self.utr3_mean --> the mean of the gene rpfs dataframe
-        @Return   : self.utr5_mean, self.cds_mean, self.utr3_mean --> the mean of the gene rpfs dataframe
-        @Flow     : step1 --> output the mean coverage of the gene rpfs
-        '''
-
-        # output the mean coverage of
-        self.utr5_mean.insert(0, 'Region', '5-UTR')
-        self.cds_mean.insert(0, 'Region', 'CDS')
-        self.utr3_mean.insert(0, 'Region', '3-UTR')
-
-        self.utr5_mean.reset_index(inplace=True)
-        self.cds_mean.reset_index(inplace=True)
-        self.utr3_mean.reset_index(inplace=True)
-
-        self.utr5_mean['Bins'] = list(range(self.utr5_bin))
-        self.cds_mean['Bins'] = list(range(self.utr5_bin, self.utr5_bin + self.cds_bin))
-        self.utr3_mean['Bins'] = list(range(self.utr5_bin + self.cds_bin, self.utr5_bin + self.cds_bin + self.utr3_bin))
-
-        utr5_mean_melt = pd.melt(self.utr5_mean, id_vars=['Bins', 'Region'], var_name='Sample', value_name='Density')
-        cds_mean_melt = pd.melt(self.cds_mean, id_vars=['Bins', 'Region'], var_name='Sample', value_name='Density')
-        utr3_mean_melt = pd.melt(self.utr3_mean, id_vars=['Bins', 'Region'], var_name='Sample', value_name='Density')
-
-        mean_coverage = pd.concat([utr5_mean_melt, cds_mean_melt, utr3_mean_melt], ignore_index=True)
-        mean_coverage.sort_values(by=['Sample', 'Bins'], inplace=True)
-        mean_coverage = mean_coverage[['Sample', 'Region', 'Bins', 'Density']]
-        mean_coverage.to_csv(self.output + '_utr5_cds_utr3_mean_coverage.txt', sep='\t', index=False)
-        
     def draw_meta_gene_line(self):
         merge_coverage = pd.concat([self.utr5_mean, self.cds_mean, self.utr3_mean], ignore_index=True)
         merge_coverage.index = merge_coverage.index + 1
@@ -417,12 +390,13 @@ class Coverage(object):
             coverage_sp.to_csv(file_name, sep='\t', index=True)
 
             # out_pdf = sp + "_heat_plot.pdf"
+            out_pdf = sp + "_" + gene_bins + "_heat_plot.pdf"
             out_png = sp + "_" + gene_bins + "_heat_plot.png"
 
             matplotlib.use('AGG')
-            fig = plt.figure(figsize=(8, 4 + self.gene_num / 500), dpi=300)
-            # sns.clustermap(np.log2(coverage_sp + 1), col_cluster=False, cmap="YlGnBu")
-            sns.heatmap(np.log2(coverage_sp + 1), cmap="YlGnBu")
+            fig = plt.figure(figsize=(8, 8), dpi=300)
+            # sns.clustermap(np.log2(coverage_sp + 1), row_cluster=False, col_cluster=False, cmap="YlGnBu", z_score=0, cbar_kws={'label': 'log2(RPM)'})
+            sns.heatmap(zscore(np.log2(coverage_sp + 1), axis = 1), cmap="Blues", cbar_kws={'label': 'log2(RPM)'})
             plt.xticks([1, self.utr5_bin, self.utr5_bin + self.cds_bin, self.utr5_bin + self.cds_bin + self.utr3_bin], ['TSS', 'TIS', 'TTS', 'TES'])
             plt.title("Mean coverage of ({number} genes)".format(number=self.gene_num))
             fig.tight_layout()
@@ -444,16 +418,24 @@ class Coverage(object):
         utr3_df.loc[:, self.sample_name] = utr3_df[self.sample_name].map(lambda x: 1 if x > 0 else 0)
 
         # group the gene by the bins and sum the value
-        utr5_sp = utr5_df.groupby('Bins')[self.sample_name].sum().div(self.gene_num) * 100
-        cds_sp = cds_df.groupby('Bins')[self.sample_name].sum().div(self.gene_num) * 100
-        utr3_sp = utr3_df.groupby('Bins')[self.sample_name].sum().div(self.gene_num) * 100
+        utr5_sp = utr5_df.groupby('Bins', observed=False)[self.sample_name].sum().div(self.gene_num) * 100
+        cds_sp = cds_df.groupby('Bins', observed=False)[self.sample_name].sum().div(self.gene_num) * 100
+        utr3_sp = utr3_df.groupby('Bins', observed=False)[self.sample_name].sum().div(self.gene_num) * 100
 
-        utr5_sp['Region'] = '5-UTR'
-        cds_sp['Region'] = 'CDS'
-        utr3_sp['Region'] = '3-UTR'
+        utr5_sp.insert(0, 'Region', '5-UTR')
+        cds_sp.insert(0, 'Region', 'CDS')
+        utr3_sp.insert(0, 'Region', '3-UTR')
 
         merged_sp = pd.concat([utr5_sp, cds_sp, utr3_sp], axis=0, ignore_index=True).reset_index(names=['Bins'])
         merged_sp['Bins'] += 1
+
+        merged_sp_melt = pd.melt(merged_sp, id_vars=['Bins', 'Region'], var_name='Sample', value_name='Percentage')
+
+        merged_sp_melt.sort_values(by=['Sample', 'Bins'], inplace=True)
+        merged_sp_melt = merged_sp_melt[['Sample', 'Region', 'Bins', 'Percentage']]
+
+        # output the coverage percentage of the gene rpfs
+        merged_sp_melt.to_csv(self.output + '_utr5_cds_utr3_mean_coverage_percentage.txt', sep='\t', index=False)
 
         # draw the cds_sp bar plot, x= bins, y= cds_sp
         for sp in self.sample_name:
@@ -470,6 +452,7 @@ class Coverage(object):
             # set the xlabel and ylabel
             axes[0].set_ylabel('Percentage (%)')
             axes[0].set_xlabel("5' UTR")
+            axes[0].set_ylim(0, 100)
             axes[0].set_xlim(0, self.utr5_bin + 1)
 
             # barplot of the cds
@@ -477,6 +460,7 @@ class Coverage(object):
             axes[1].bar(cds_sp['Bins'], cds_sp[sp], color='#23a9f2')
             axes[1].set_ylabel('Percentage (%)')
             axes[1].set_xlabel("CDS")
+            axes[1].set_ylim(0, 100)
             axes[1].set_xlim(self.utr5_bin, self.utr5_bin + self.cds_bin + 1)
             
             # barplot of the utr3
@@ -484,9 +468,10 @@ class Coverage(object):
             axes[2].bar(utr3_sp['Bins'], utr3_sp[sp], color='#23a9f2')
             axes[2].set_ylabel('Percentage (%)')
             axes[2].set_xlabel("3' UTR")
+            axes[2].set_ylim(0, 100)
             axes[2].set_xlim(self.utr5_bin + self.cds_bin, self.utr5_bin + self.cds_bin + self.utr3_bin + 1)
 
-            fig.suptitle("Coverage percentage of ({number} genes)".format(number=self.gene_num), fontsize=16)
+            fig.suptitle("Coverage of ({number} genes)".format(number=self.gene_num), fontsize=16)
             fig.tight_layout()
             # plt.show()
             out_pdf = sp + "_coverage_bar_plot.pdf"
@@ -494,3 +479,26 @@ class Coverage(object):
             fig.savefig(fname=out_pdf)
             fig.savefig(fname=out_png)
             plt.close()
+
+
+    def output_meta_gene(self):
+        '''
+        @Message  : output the mean coverage of the gene rpfs
+        @Input    : self.utr5_mean, self.cds_mean, self.utr3_mean --> the mean of the gene rpfs dataframe
+        @Return   : self.utr5_mean, self.cds_mean, self.utr3_mean --> the mean of the gene rpfs dataframe
+        @Flow     : step1 --> output the mean coverage of the gene rpfs
+        '''
+
+        # output the mean coverage of
+        self.utr5_mean.insert(0, 'Region', '5-UTR')
+        self.cds_mean.insert(0, 'Region', 'CDS')
+        self.utr3_mean.insert(0, 'Region', '3-UTR')
+
+        mean_coverage = pd.concat([self.utr5_mean, self.cds_mean, self.utr3_mean], ignore_index=True).reset_index(names='Bins')
+        mean_coverage['Bins'] += 1
+        mean_coverage_melt = pd.melt(mean_coverage, id_vars=['Bins', 'Region'], var_name='Sample', value_name='Density')
+
+        mean_coverage_melt.sort_values(by=['Sample', 'Bins'], inplace=True)
+        mean_coverage_melt = mean_coverage_melt[['Sample', 'Region', 'Bins', 'Density']]
+        mean_coverage_melt.to_csv(self.output + '_utr5_cds_utr3_mean_coverage_density.txt', sep='\t', index=False)
+        

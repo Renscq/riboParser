@@ -541,7 +541,9 @@ def coverage_args_parser():
     parser.add_argument('--set', dest="set", choices=['intersect', 'union'], required=False, type=str, default='union',
                         help="filter the gene list with 5-UTR / CDS / 3-UTR. (default: %(default)s).")
     parser.add_argument('--heat', dest="heatmap", action='store_true', required=False, default=False,
-                        help="draw the coverage heatmap of whole gene (This step will take a long time). (default: %(default)s).")
+                        help="draw the coverage heatmap of whole gene. (default: %(default)s).")
+    parser.add_argument('--bar', dest="barplot", action='store_true', required=False, default=False,
+                        help="draw the coverage barplot of whole gene. (default: %(default)s).")
     args = parser.parse_args()
     file_check(args.rpf)
     args_print(args)
