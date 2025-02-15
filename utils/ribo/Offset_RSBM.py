@@ -426,7 +426,7 @@ class Offset(object):
 
         adj_tis_offset.sort_values(['length'], inplace=True)
         adj_tis_offset["ribo"] = ["first"] * self.nt_num
-        adj_tis_offset.to_csv(self.output_prefix + "_sscbm_offset.txt", sep='\t', index=False)
+        adj_tis_offset.to_csv(self.output_prefix + "_SSCBM_offset.txt", sep='\t', index=False)
 
     def make_frame_offset(self):
         '''
@@ -599,11 +599,11 @@ class Offset(object):
             self.merge_frame_offset.iloc[length, [1, 3, 5]] = offset_psite
             self.merge_frame_offset.iloc[length, [2, 4, 6]] = offset_rpfs
 
-        self.merge_frame_offset.to_csv(self.output_prefix + "_rsbm_offset.txt", sep='\t', index=False)
+        self.merge_frame_offset.to_csv(self.output_prefix + "_RSBM_offset.txt", sep='\t', index=False)
 
     def draw_frame_heatmap(self):
-        out_pdf = self.output_prefix + "_rsbm_offset.pdf"
-        out_png = self.output_prefix + "_rsbm_offset.png"
+        out_pdf = self.output_prefix + "_RSBM_offset.pdf"
+        out_png = self.output_prefix + "_RSBM_offset.png"
 
         # reterieve the psite and rpfs
         raw_frame_offset = self.merge_frame_offset.loc[:, ["length", "p_site", 'rpfs0', 'rpfs1', 'rpfs2']]

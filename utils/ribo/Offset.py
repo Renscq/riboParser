@@ -337,7 +337,7 @@ class Offset(object):
 
         adj_tis_offset.sort_values(['length'], inplace=True)
         adj_tis_offset["ribo"] = ["first"] * self.nt_num
-        adj_tis_offset.to_csv(self.output_prefix + "_sscbm_offset.txt", sep='\t', index=False)
+        adj_tis_offset.to_csv(self.output_prefix + "_SSCBM_offset.txt", sep='\t', index=False)
 
     def draw_tis_heatmap(self):
         # draw the offset heatmap
@@ -385,13 +385,13 @@ class Offset(object):
             fig.savefig(fname=out_png)
 
         # draw the raw offset heatmap
-        out_pdf = self.output_prefix + "_sscbm_offset.pdf"
-        out_png = self.output_prefix + "_sscbm_offset.png"
+        out_pdf = self.output_prefix + "_SSCBM_offset.pdf"
+        out_png = self.output_prefix + "_SSCBM_offset.png"
         draw_figure(self.tis_5end, self.tis_3end, self.tts_5end, self.tts_3end, out_pdf, out_png)
 
         # draw the scaled offset heatmap
-        out_pdf_s = self.output_prefix + "_sscbm_offset_scale.pdf"
-        out_png_s = self.output_prefix + "_sscbm_offset_scale.png"
+        out_pdf_s = self.output_prefix + "_SSCBM_offset_scale.pdf"
+        out_png_s = self.output_prefix + "_SSCBM_offset_scale.png"
         tis_5end_s = self.offset_scale(self.tis_5end)
         tis_3end_s = self.offset_scale(self.tis_3end)
         tts_5end_s = self.offset_scale(self.tts_5end)
@@ -597,11 +597,11 @@ class Offset(object):
             self.merge_frame_offset.iloc[length, [1, 3, 5]] = offset_psite
             self.merge_frame_offset.iloc[length, [2, 4, 6]] = offset_rpfs
 
-        self.merge_frame_offset.to_csv(self.output_prefix + "_rsbm_offset.txt", sep='\t', index=False)
+        self.merge_frame_offset.to_csv(self.output_prefix + "_RSBM_offset.txt", sep='\t', index=False)
 
     def draw_frame_heatmap(self):
-        out_pdf = self.output_prefix + "_rsbm_offset.pdf"
-        out_png = self.output_prefix + "_rsbm_offset.png"
+        out_pdf = self.output_prefix + "_RSBM_offset.pdf"
+        out_png = self.output_prefix + "_RSBM_offset.png"
 
         # reterieve the psite and rpfs
         raw_frame_offset = self.merge_frame_offset.loc[:, ["length", "p_site", 'rpfs0', 'rpfs1', 'rpfs2']]

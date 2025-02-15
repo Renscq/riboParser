@@ -338,8 +338,8 @@ class Coverage(object):
         merge_coverage.index = merge_coverage.index + 1
 
         for sp in self.sample_name:
-            out_pdf = sp + "_coverage_line_plot.pdf"
-            out_png = sp + "_coverage_line_plot.png"
+            out_pdf = self.output + "_" + sp + "_coverage_line_plot.pdf"
+            out_png = self.output + "_" + sp + "_coverage_line_plot.png"
             print('Draw {sp} line plot.'.format(sp=sp), flush=True)
             matplotlib.use('AGG')
             fig = plt.figure(figsize=(8, 5), dpi=300)
@@ -368,17 +368,15 @@ class Coverage(object):
         for sp in self.sample_name:
             print('Draw {sp} heatmap.'.format(sp=sp), flush=True)
             utr5_sp = pd.pivot_table(utr5_df.loc[:, ['Gene', "Bins", sp]],
-                                     index='Gene',
-                                     values=sp,
-                                     columns='Bins')
+                                     index='Gene', values=sp, columns='Bins', 
+                                     observed=False)
             cds_sp = pd.pivot_table(cds_df.loc[:, ['Gene', "Bins", sp]],
-                                     index='Gene',
-                                     values=sp,
-                                     columns='Bins')
+                                     index='Gene', values=sp,
+                                     columns='Bins', 
+                                     observed=False)
             utr3_sp = pd.pivot_table(utr3_df.loc[:, ['Gene', "Bins", sp]],
-                                     index='Gene',
-                                     values=sp,
-                                     columns='Bins')
+                                     index='Gene', values=sp, columns='Bins', 
+                                     observed=False)
             coverage_sp = pd.concat([utr5_sp, cds_sp, utr3_sp], axis=1, ignore_index=True).fillna(0)
             coverage_sp.index.name = 'Gene'
             coverage_sp = coverage_sp.reindex(coverage_sp.mean(axis=1).sort_values(ascending=False).index, axis=0)
@@ -390,8 +388,8 @@ class Coverage(object):
             coverage_sp.to_csv(file_name, sep='\t', index=True)
 
             # out_pdf = sp + "_heat_plot.pdf"
-            out_pdf = sp + "_" + gene_bins + "_heat_plot.pdf"
-            out_png = sp + "_" + gene_bins + "_heat_plot.png"
+            out_pdf = self.output + "_" + sp + "_" + gene_bins + "_heat_plot.pdf"
+            out_png = self.output + "_" + sp + "_" + gene_bins + "_heat_plot.png"
 
             matplotlib.use('AGG')
             fig = plt.figure(figsize=(8, 8), dpi=300)
@@ -441,6 +439,9 @@ class Coverage(object):
         for sp in self.sample_name:
             print('Draw percentage barplot of {sp}.'.format(sp=sp), flush=True)
 
+            out_pdf = self.output + "_" + sp + "_coverage_bar_plot.pdf"
+            out_png = self.output + "_" + sp + "_coverage_bar_plot.png"
+            
             matplotlib.use('AGG')
 
             fig, axes = plt.subplots(1, 3, figsize=(12, 3.5), 
@@ -474,8 +475,6 @@ class Coverage(object):
             fig.suptitle("Coverage of ({number} genes)".format(number=self.gene_num), fontsize=16)
             fig.tight_layout()
             # plt.show()
-            out_pdf = sp + "_coverage_bar_plot.pdf"
-            out_png = sp + "_coverage_bar_plot.png"
             fig.savefig(fname=out_pdf)
             fig.savefig(fname=out_png)
             plt.close()

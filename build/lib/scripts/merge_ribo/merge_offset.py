@@ -17,7 +17,7 @@ def merge_offset_args_parser():
     # needed arguments
     input_group = parser.add_argument_group('Required arguments')
     input_group.add_argument(
-        "-l", "--list", nargs='+', required=True, help="List for rsbm/sscbm offset files (e.g., '*rsbm_offset.txt')."
+        "-l", "--list", nargs='+', required=True, help="List for RSBM/SSCBM offset files (e.g., '*RSBM_offset.txt')."
     )
     input_group.add_argument(
         '-o', dest='output', required=True, type=str, help='prefix of output file name (default: prefix + _offset.txt).'
@@ -34,7 +34,7 @@ def merge_offset_args_parser():
 def process_offset_files(offset_list):
     '''
     @Message  : retrieve the offset table.
-    @Input    : list --> pattern for reads offset files (e.g., '*rsbm_offset.txt')
+    @Input    : list --> pattern for reads offset files (e.g., '*RSBM_offset.txt')
     @Return   : 
                 output --> output dataframe contain the reads offset
     @Flow     : step1 --> retrieve the reads offset
@@ -51,16 +51,16 @@ def process_offset_files(offset_list):
     for offset_file in offset_list:
         file_name = os.path.basename(offset_file).split('.')[0]
 
-        if file_name.endswith('_rsbm_offset'):
+        if file_name.endswith('_RSBM_offset'):
             offset_model = 'RSBM'
-        elif file_name.endswith('_sscbm_offset'):
+        elif file_name.endswith('_SSCBM_offset'):
             offset_model = 'SSCBM'
         else:
             print('Error: the file name is not correct, please check it.')
             exit()
 
         # import the offset file
-        file_prefix = file_name.replace('_rsbm_offset', '').replace('_sscbm_offset', '')
+        file_prefix = file_name.replace('_RSBM_offset', '').replace('_SSCBM_offset', '')
         offset_df = pd.read_csv(offset_file, sep='\t', index_col=False)
 
         # convert the first chr of columns to upper

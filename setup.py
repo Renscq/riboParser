@@ -1,7 +1,7 @@
 """
 Author: 'rensc' 'rensc0718@163.com'
 LastEditors: 'rensc' 'rensc0718@163.com'
-LastEditTime: 2024-11-16 12:00:00
+LastEditTime: 2025-02-13 12:00:00
 FilePath: \RiboParser\setup.py
 Description:
 """
@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="RiboParser",
-    version="0.1.6.2",
+    version="0.1.6.3",
     packages=find_packages(),
     
     author="Ren Shuchao",
