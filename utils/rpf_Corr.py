@@ -41,7 +41,7 @@ def read_rpf(rpf_file):
     return rpf, sample_name, frame_rpm, frame0_rpm, frame1_rpm, frame2_rpm
 
 
-def calc_gene_rpm(rpf, sample_name, frame_rpm, frame0_rpm, frame1_rpm, frame2_rpm):
+def calc_gene_rpm(rpf, sample_name, frame_rpm, frame0_rpm, frame1_rpm, frame2_rpm, out_prefix):
     # add the annotation
     merge_f_rpm = pd.concat([rpf.iloc[:, 0:5], frame_rpm], axis=1)
     merge_f0_rpm = pd.concat([rpf.iloc[:, 0:5], frame0_rpm], axis=1)
@@ -64,25 +64,25 @@ def calc_gene_rpm(rpf, sample_name, frame_rpm, frame0_rpm, frame1_rpm, frame2_rp
     gene_corr_f1 = cds_f1_rpm.corr(method='pearson')
     gene_corr_f2 = cds_f2_rpm.corr(method='pearson')
 
-    gene_corr_f.to_csv('gene_corr_frame.txt', sep='\t', index=True)
-    gene_corr_f0.to_csv('gene_corr_f0.txt', sep='\t', index=True)
-    gene_corr_f1.to_csv('gene_corr_f1.txt', sep='\t', index=True)
-    gene_corr_f2.to_csv('gene_corr_f2.txt', sep='\t', index=True)
+    gene_corr_f.to_csv(out_prefix + '_gene_corr_frame.txt', sep='\t', index=True)
+    gene_corr_f0.to_csv(out_prefix + '_gene_corr_f0.txt', sep='\t', index=True)
+    gene_corr_f1.to_csv(out_prefix + '_gene_corr_f1.txt', sep='\t', index=True)
+    gene_corr_f2.to_csv(out_prefix + '_gene_corr_f2.txt', sep='\t', index=True)
 
     return gene_corr_f, gene_corr_f0, gene_corr_f1, gene_corr_f2
 
 
-def calc_rpf_rpm(frame_rpm, frame0_rpm, frame1_rpm, frame2_rpm):
+def calc_rpf_rpm(frame_rpm, frame0_rpm, frame1_rpm, frame2_rpm, out_prefix):
     # calculate the correlation of samples at rpf level
     rpf_corr_f = frame_rpm.corr(method='pearson')
     rpf_corr_f0 = frame0_rpm.corr(method='pearson')
     rpf_corr_f1 = frame1_rpm.corr(method='pearson')
     rpf_corr_f2 = frame2_rpm.corr(method='pearson')
 
-    rpf_corr_f.to_csv('rpf_corr_frame.txt', sep='\t', index=True)
-    rpf_corr_f0.to_csv('rpf_corr_f0.txt', sep='\t', index=True)
-    rpf_corr_f1.to_csv('rpf_corr_f1.txt', sep='\t', index=True)
-    rpf_corr_f2.to_csv('rpf_corr_f2.txt', sep='\t', index=True)
+    rpf_corr_f.to_csv(out_prefix + '_rpf_corr_frame.txt', sep='\t', index=True)
+    rpf_corr_f0.to_csv(out_prefix + '_rpf_corr_f0.txt', sep='\t', index=True)
+    rpf_corr_f1.to_csv(out_prefix + '_rpf_corr_f1.txt', sep='\t', index=True)
+    rpf_corr_f2.to_csv(out_prefix + '_rpf_corr_f2.txt', sep='\t', index=True)
 
     return rpf_corr_f, rpf_corr_f0, rpf_corr_f1, rpf_corr_f2
 
@@ -127,10 +127,12 @@ def main():
 
     print('\nStep3: calculate the RPM.\n', flush=True)
     gene_corr_f, gene_corr_f0, gene_corr_f1, gene_corr_f2 = calc_gene_rpm(rpf,
-                                                                          sample_name, frame_rpm, frame0_rpm,
-                                                                          frame1_rpm, frame2_rpm)
+                                                                          sample_name, frame_rpm, 
+                                                                          frame0_rpm, frame1_rpm, frame2_rpm,
+                                                                          args.output)
     rpf_corr_f, rpf_corr_f0, rpf_corr_f1, rpf_corr_f2 = calc_rpf_rpm(frame_rpm,
-                                                                     frame0_rpm, frame1_rpm, frame2_rpm)
+                                                                     frame0_rpm, frame1_rpm, frame2_rpm,
+                                                                     args.output)
 
     print('\nStep4: Draw the correlation plot.\n', flush=True)
     draw_corr_plot(gene_corr_f, gene_corr_f0, gene_corr_f1, gene_corr_f2, 'gene', args.output)

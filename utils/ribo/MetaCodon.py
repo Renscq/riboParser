@@ -415,48 +415,44 @@ class MetaCodon(object):
     
     def draw_meta_codon(self):
         # draw the line meta plot of each codon
-        if self.fig:
+        for codon, mess in self.density_df.items():
+            out_pdf = self.output + '_' + codon + '.pdf'
+            out_png = self.output + '_' + codon + '.png'
 
-            for codon, mess in self.density_df.items():
-                out_pdf = self.output + '_' + codon + '.pdf'
-                out_png = self.output + '_' + codon + '.png'
+            # if self.scale:
+            #     mess[2] = mess[2]/mess[2].mean()
 
-                # if self.scale:
-                #     mess[2] = mess[2]/mess[2].mean()
+            matplotlib.use('AGG')
+            fig, ax = plt.subplots(figsize=(8, 5), dpi=300)
+            ax = sns.lineplot(data=mess[2], linewidth=1.2, ax=ax)
 
-                matplotlib.use('AGG')
-                fig, ax = plt.subplots(figsize=(8, 5), dpi=300)
-                ax = sns.lineplot(data=mess[2], linewidth=1.2, ax=ax)
+            # ax.set_xlim(left=-20, right=20)
+            ax.autoscale(enable=True, axis='y')
 
-                # ax.set_xlim(left=-20, right=20)
-                ax.autoscale(enable=True, axis='y')
+            plt.legend(loc='center left',
+                    bbox_to_anchor=(1, 0.5),
+                    fancybox=True,
+                    shadow=True,
+                    ncol=1)
 
-                plt.legend(loc='center left',
-                        bbox_to_anchor=(1, 0.5),
-                        fancybox=True,
-                        shadow=True,
-                        ncol=1)
+            ax.set_title(codon + '(' + str(mess[0]) + ', ' + str(mess[1]) + ')')
+            ax.set_xlabel('Distance from codon')
 
-                ax.set_title(codon + '(' + str(mess[0]) + ', ' + str(mess[1]) + ')')
-                ax.set_xlabel('Distance from codon')
-
-                # set the ylabel
-                if self.norm:
-                    if self.scale:
-                        ax.set_ylabel('Scaled mean RPM density')
-                    else:
-                        ax.set_ylabel('Mean RPM density')
+            # set the ylabel
+            if self.norm:
+                if self.scale:
+                    ax.set_ylabel('Scaled mean RPM density')
                 else:
-                    if self.scale:
-                        ax.set_ylabel('Scaled mean RPFs density')
-                    else:
-                        ax.set_ylabel('Mean RPFs density')
+                    ax.set_ylabel('Mean RPM density')
+            else:
+                if self.scale:
+                    ax.set_ylabel('Scaled mean RPFs density')
+                else:
+                    ax.set_ylabel('Mean RPFs density')
 
-                plt.tight_layout()
-                # plt.show()
+            plt.tight_layout()
+            # plt.show()
 
-                fig.savefig(fname=out_pdf)
-                fig.savefig(fname=out_png)
-                plt.close()
-        else:
-            pass
+            fig.savefig(fname=out_pdf)
+            fig.savefig(fname=out_png)
+            plt.close()
