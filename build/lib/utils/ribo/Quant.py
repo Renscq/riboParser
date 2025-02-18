@@ -220,7 +220,7 @@ class Quant(object):
         2. draw the stacked bar plot
         """
         
-        out_pdf = self.output_prefix + "_rpf_barplot.pdf"
+        out_pdf = self.output_prefix + "_cds_rpm_bar_plot.pdf"
         # out_png = self.output_prefix + "_rpf_barplot.png"
 
         rpf_sum = self.merged_rpf.groupby('region')[self.sample_name].apply(sum)
@@ -255,7 +255,7 @@ class Quant(object):
         1. log the cds rpm
         2. draw the eCDF plot of each sample with plotly
         """
-        out_pdf = self.output_prefix + "_rpf_cdfplot.pdf"
+        out_pdf = self.output_prefix + "_cds_rpm_cdf_plot.pdf"
         # out_png = self.output_prefix + "_rpf_cdfplot.png"
 
         # get the log2 values
@@ -283,11 +283,11 @@ class Quant(object):
         """
         from sklearn.decomposition import PCA
 
-        out_pdf = self.output_prefix + "_rpf_pcaplot.pdf"
+        out_pdf = self.output_prefix + "_cds_rpm_pca_plot.pdf"
         # out_png = self.output_prefix + "_rpf_pcaplot.png"
 
         # run the PCA with sklearn function
-        out_txt = self.output_prefix + "_cds_rpf_pca.txt"
+        out_txt = self.output_prefix + "_cds_rpm_pca.txt"
 
         pca = PCA(n_components=2)
         pca.fit(np.log2(self.cds_rpm.T + 1))
@@ -326,8 +326,8 @@ class Quant(object):
         3. draw the heatmap with di-cluster
         """
 
-        out_pdf = self.output_prefix + "_rpf_heatmap.pdf"
-        out_png = self.output_prefix + "_rpf_heatmap.png"
+        out_pdf = self.output_prefix + "_cds_rpm_heatmap.pdf"
+        out_png = self.output_prefix + "_cds_rpm_heatmap.png"
 
         cds_rpm = self.cds_rpm[(self.cds_rpm > 0).any(axis=1)]
         rpm_log = np.log2(cds_rpm + 1)
@@ -354,7 +354,7 @@ class Quant(object):
         3. draw the di-cluster heatmap with plotly
         """
 
-        out_pdf = self.output_prefix + "_rpf_heatmap.pdf"
+        out_pdf = self.output_prefix + "_cds_rpm_heatmap.pdf"
         # out_png = self.output_prefix + "_rpf_heatmap.png"
 
         rpm_log = np.log2(self.cds_rpm[(self.cds_rpm > 0).any(axis=1)] + 1)

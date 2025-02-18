@@ -601,7 +601,7 @@ class Offset(object):
 
     def draw_frame_heatmap(self):
         out_pdf = self.output_prefix + "_RSBM_offset.pdf"
-        out_png = self.output_prefix + "_RSBMoffset.png"
+        out_png = self.output_prefix + "_RSBM_offset.png"
 
         # reterieve the psite and rpfs
         raw_frame_offset = self.merge_frame_offset.loc[:, ["length", "p_site", 'rpfs0', 'rpfs1', 'rpfs2']]

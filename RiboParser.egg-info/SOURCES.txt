@@ -89,6 +89,7 @@ utils/rpf_Periodicity.py
 utils/rpf_Quant.py
 utils/rpf_Reference.py
 utils/rpf_Retrieve.py
+utils/rpf_Shift.py
 utils/rpf_Shuffle.py
 utils/rpf_end.py
 utils/serp_overlap.py
@@ -121,6 +122,7 @@ utils/ribo/RNA.py
 utils/ribo/RPFs.py
 utils/ribo/Retrieve.py
 utils/ribo/Ribo.py
+utils/ribo/Shift.py
 utils/ribo/Shuffle.py
 utils/ribo/__init__.py
 utils/serp/Properties.py

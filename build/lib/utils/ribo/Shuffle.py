@@ -21,7 +21,7 @@ class Shuffle(object):
         self.seed = args.seed
         self.individual = args.individual
 
-        self.output = args.output + '_rpf_shuffle.txt'
+        self.output = args.output + '_shuffle.txt'
 
     def import_rpf(self):
         '''

@@ -384,7 +384,7 @@ class Coverage(object):
             gene_bins = '{utr5}_{cds}_{utr3}'.format(utr5=str(self.utr5_bin),
                                                      cds=str(self.cds_bin),
                                                      utr3=str(self.utr3_bin))
-            file_name = "{sp}_{bins}_coverage.txt".format(sp=sp, bins=gene_bins)
+            file_name = "{prefix}_{sp}_{bins}_coverage.txt".format(prefix=self.output, sp=sp, bins=gene_bins)
             coverage_sp.to_csv(file_name, sep='\t', index=True)
 
             # out_pdf = sp + "_heat_plot.pdf"
@@ -441,7 +441,7 @@ class Coverage(object):
 
             out_pdf = self.output + "_" + sp + "_coverage_bar_plot.pdf"
             out_png = self.output + "_" + sp + "_coverage_bar_plot.png"
-            
+
             matplotlib.use('AGG')
 
             fig, axes = plt.subplots(1, 3, figsize=(12, 3.5), 

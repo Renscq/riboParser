@@ -18,6 +18,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import polars as pl
 import pandas as pd
+import numpy as np
 import seaborn as sns
 import math
 
@@ -75,15 +76,15 @@ class Periodicity(object):
 
     def calc_3nt_period(self):
         '''
-        @Message  : function for .
-        @Input    : param --> description
-        @Return   : output --> description
+        @Message  : function for 3nt periodicity calculation.
+        @Input    : param --> rpf density file
+        @Return   : output --> summary of 3nt periodicity
         @Flow     : step1 --> run
         '''
 
         raw_rpf = self.raw_rpf.drop(columns=["name", "now_nt", "from_tis", "from_tts", "region", "codon"])
         
-        period = raw_rpf.apply(sum).to_frame()
+        period = raw_rpf.apply(np.sum, axis=0).to_frame()
         period = period.reset_index()
         period.columns = ["Name", "Count"]
         period["Sample"] = period['Name'].str[:-3]

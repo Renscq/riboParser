@@ -33,7 +33,8 @@ def main():
     meta_codon.output_meta_codon_seq()
 
     print('\nStep7: Draw the specific codon.', flush=True)
-    meta_codon.draw_meta_codon()
+    if args.fig:
+        meta_codon.draw_meta_codon()
 
 
     print('\nAll done.', flush=True)
