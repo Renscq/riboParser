@@ -2240,7 +2240,7 @@ To resolve this, Peter et. al developed a gene-level analytical method that expl
 
 $$log_2(CV) = \frac{1}{2} log_2 (\frac{β}{μ} + α)$$
 
-where CV is the coefficient of variation in the ribosome profile of a given gene, m is meancoverage (RFreads percodon), and a and barefitting parameters. Importantly, whena = 0 and b = 1, Equation 1 results from a Poisson distribution, whereas a > 0 and b = 1 indicates a negative binomial distribution.
+where CV is the coefficient of variation in the ribosome profile of a given gene, μ is mean coverage (RPF reads percodon), and α and β are fitting parameters. Importantly, when α = 0 and β = 1, Equation 1 results from a Poisson distribution, whereas α > 0 and β = 1 indicates a negative binomial distribution.
 
 1. Explanation of `rpf_CoV`
 
