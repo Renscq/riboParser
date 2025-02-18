@@ -2239,7 +2239,9 @@ Low-coverage genes may artifactually appear to exhibit more translational pausin
 To resolve this, Peter et. al developed a gene-level analytical method that explicitly models noise dependence on coverage. They fit the following two-parameter model to the data to accommodate a variety of statistical behaviors for counting noise:
 
 $$
-% Pythagorean Theorem
+
+% Pythagorean Theorem 
+
 log_2(CV) = \frac{1}{2} log_2 (\frac{β}{μ} + α)
 
 $$
