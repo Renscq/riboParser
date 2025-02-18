@@ -2565,7 +2565,7 @@ RIBO_gene_frame_shift_count_plot.pdf
 RIBO_gene_frame_shift_count_plot.png
 RIBO_gene_frame_shift_count.txt
 RIBO_gene_periodicity.txt
-RIBO_R_GR_in_25d_1_gene_frame_shift.txt
+RIBO_SRR1944912_gene_frame_shift.txt
 ```
 
 ## 7. 贡献
