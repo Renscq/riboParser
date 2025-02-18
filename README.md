@@ -155,7 +155,8 @@ $ tree -d
         ├── 15.coefficient_of_variation
         ├── 16.meta_codon
         ├── 17.shuffle
-        └── 18.retrieve
+        ├── 18.retrieve
+        └── 19.frame_shift
 ```
 
 ### 2.2 Prepare the reference genome index
