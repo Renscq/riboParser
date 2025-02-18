@@ -1,6 +1,28 @@
 {
     "configurations": [
         {
+            "name": "Python: rpf_Shift.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceRoot}/utils/rpf_Shift.py",
+            "args": [
+                "-r",
+                "/home/rensc/software/temp/tests/density/usda_rpf_retrieve.txt",
+                "-t",
+                "/mnt/t64/database/usda110/norm/usda110.norm.txt",
+                "-o",
+                "/home/rensc/software/temp/tests/period/usda",
+                "--tis",
+                "5",
+                "--tts",
+                "5",
+                "-m",
+                "50"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
             "name": "Python: serp_properties.py",
             "type": "debugpy",
             "request": "launch",

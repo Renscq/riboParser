@@ -34,10 +34,9 @@ The results of this data analysis can be further analyzed and visualized in `Rib
 ```bash
 conda create -n ribo
 conda activate ribo
-
 ```
 
-### 1.2 Install software dependencies using conda
+### 1.2 Install software dependencies using `conda`
 
 ```bash
 conda install cutadapt -c bioconda
@@ -55,7 +54,6 @@ conda install ucsc-gff3togenepred -c bioconda
 conda install ucsc-bedgraphtobigwig -c bioconda
 conda install ucsc-bedsort -c bioconda
 conda install pigz -c conda-forge
-
 ```
 
 or install the packages in a single command.
@@ -66,18 +64,15 @@ conda install cutadapt bowtie samtools star bedtools subread rsem gffread sra-to
  -c bioconda
 
 conda install pigz -c conda-forge
-
 ```
 
 
-### 1.3 pip install RiboParser
+### 1.3 `pip` install `RiboParser`
 
-When the server is connected to the network, we can use pip to install software directly. 
+When the server is connected to the network, we can use `pip` to install software directly. 
 
 ```bash
-
 pip install riboparser
-
 ```
 
 Alternatively, we can download the version from GitHub, re-setup and then install it.
@@ -87,7 +82,6 @@ cd RiboParser
 
 python3 setup.py sdist bdist_wheel
 pip install dist/RiboParser-0.1.6.1-py3-none-any.whl
-
 ```
 
 ### 1.4 run the test
@@ -95,9 +89,7 @@ Test software for dependency, installation, and operation issues.
 
 ```bash
 rpf_Check -h
-
 rpf_CST -h
-
 ```
 
 ## 2. Prepare reference files
@@ -164,7 +156,6 @@ $ tree -d
         ├── 16.meta_codon
         ├── 17.shuffle
         └── 18.retrieve
-
 ```
 
 ### 2.2 Prepare the reference genome index
@@ -176,7 +167,6 @@ Create folders to hold different types of reference sequence files.
 $ mkdir -p ./sce/1.reference/
 $ cd ./sce/1.reference/
 $ mkdir cdna genome gtf mrna ncrna rrna trna norm rsem-index
-
 ```
 
 #### 2.2.2 Download reference files from NCBI
@@ -207,7 +197,6 @@ $ gffread -g GCF_000146045.2_R64_genomic.fna GCF_000146045.2_R64_genomic.gff -F 
 
 ```bash
 $ bowtie-build ../GCF_000146045.2_R64_genomic.fna ./genome/genome --threads 12 &>> ./genome/genome_build.log
-
 ```
 
 #### 2.2.4 Create an `mRNA` index using `bowtie`
@@ -224,12 +213,11 @@ This script is used to retrieve the fasta sequence by name.
 
 options:
   -h, --help     show this help message and exit
-  -v, --version  show program's version number and exit
+  -v, --version  show programs version number and exit
   -i INPUT       input the fasta file
   -n NAME        gene ids in txt format
   -u UNMAPPED    output the unmapped gene ids
   -o OUTPUT      prefix of output file name (default results_peaks.txt)
-
 ```
 
 
@@ -239,7 +227,6 @@ $ grep -i 'gbkey=mRNA' ./cdna.fa | cut -d ' ' -f 1 | cut -c 2- > ./mrna/mrna.ids
 $ retrieve_seq -i ./cdna.fa -n ./mrna/mrna.ids -o ./mrna/mrna.fa &>> ./mrna/mrna_build.log
 # build the mrna index
 $ bowtie-build ./mrna/mrna.fa ./mrna/mrna --threads 12 &>> ./mrna/mrna_build.log
-
 ```
 
 #### 2.2.5 Create an `rRNA` index using `bowtie`
@@ -249,7 +236,6 @@ $ grep -i 'gbkey=rRNA' ./cdna.fa | cut -d ' ' -f 1 | cut -c 2- > ./rrna/rrna.ids
 $ retrieve_seq -i ./cdna.fa -n ./rrna/rrna.ids -o ./rrna/rrna.fa &>> ./rrna/rrna_build.log
 # build the rrna index
 $ bowtie-build ./rrna/rrna.fa ./rrna/rrna --threads 12 &>> ./rrna/rrna_build.log
-
 ```
 
 #### 2.2.6 Create an `tRNA` index using `bowtie`
@@ -259,7 +245,6 @@ $ grep -i 'gbkey=tRNA' ./cdna.fa | cut -d ' ' -f 1 | cut -c 2- > ./trna/trna.ids
 $ retrieve_seq -i ./cdna.fa -n ./trna/trna.ids -o ./trna/trna.fa &>> ./trna/trna_build.log
 # build the trna index
 $ bowtie-build ./trna/trna.fa ./trna/trna --threads 12 &>> ./trna/trna_build.log
-
 ```
 
 
@@ -270,12 +255,11 @@ $ grep -iE 'gbkey=ncRNA|gbkey=lnc_RNA|gbkey=miRNA|gbkey=snoRNA|gbkey=snRNA|gbkey
 $ retrieve_seq -i ./cdna.fa -n ./ncrna/ncrna.ids -o ./ncrna/ncrna.fa &>> ./ncrna/ncrna_build.log
 # build the ncrna index
 $ bowtie-build ./ncrna/ncrna.fa ./ncrna/ncrna --threads 12 &>> ./ncrna/ncrna_build.log
-
 ```
 
 #### 2.2.8 Standardized `gtf` or `gff3` files
 
-- usage of `rpf_Reference` 
+- Explanation of `rpf_Reference` 
 
 ```bash
 $ rpf_Reference -h
@@ -296,7 +280,6 @@ Required arguments:
   -g GENOME   the input file name of genome sequence
   -t GTF      the input file name of gtf file
   -o OUTPUT   the prefix of output file. (prefix + _norm.gtf)
-
 ```
 
 - create the references from GTF and Genome fasta
@@ -306,10 +289,9 @@ $ rpf_Reference \
  -g ../GCF_000146045.2_R64_genomic.fna \
  -t ../GCF_000146045.2_R64_genomic.gff \
  -u 30 -o ./norm/gene &>> ./norm/norm_build.log
-
 ```
 
-#### 2.2.9 Create a `genome` index using `star`
+#### 2.2.9 Create a `genome` index using `STAR`
 
 ```bash
 $ STAR \
@@ -319,7 +301,6 @@ $ STAR \
  --genomeDir ./star-index \
  --genomeFastaFiles GCF_000146045.2_R64_genomic.fna \
  --sjdbGTFfile ./norm/gene.norm.gtf
-
 ```
 
 #### 2.2.10 Create a `transcriptome` index using `rsem`
@@ -328,13 +309,12 @@ $ STAR \
 $ rsem-prepare-reference \
  -p 12 \
  --gtf ../norm/gene.norm.gtf ../GCF_000146045.2_R64_genomic.fna ./rsem-index/rsem
-
 ```
 
 
 ## 3. Data preprocessing and alignment
 
-In order to introduce the analysis process and usage of RiboParser, RNA-seq and Ribo-seq data from dataset GSE67387 are used as examples here.
+In order to introduce the analysis process and usage of `RiboParser`, RNA-seq and Ribo-seq data from dataset `GSE67387` are used as examples here.
 
 ```shell
 # dataset
@@ -346,11 +326,11 @@ PMID: 26052047
 ```
 
 
-### 3.1 Fundamental analysis of RNA-seq data in GSE67387 dataset
+### 3.1 Fundamental analysis of RNA-seq data in `GSE67387` dataset
 
 #### 3.1.1 Download RNA-seq raw data
 
-Use `prefetch` in `sra-tools` to download the raw SRA-format data and extract it into fastq format files.
+Use `prefetch` in `sra-tools` to download the raw SRA-format data and extract it into `fastq` format files.
 
 ```bash
 $ mkdir -p ./sce/2.rawdata/rna-seq/
@@ -378,7 +358,6 @@ fastq-dump $sra
 pigz *fastq
 
 done
-
 ```
 
 #### 3.1.2 RNA-seq data cleaning
@@ -402,12 +381,11 @@ cutadapt --match-read-wildcards \
  -o `\basename $fq fastq.gz`clean.fastq.gz $fq &> $fq".log"
 
 done
-
 ```
 
 #### 3.1.3 Align clean data to different types of reference files
 
-To assess library quality and eliminate the impact of reads originating from different non-coding RNAs (ncRNAs) on subsequent analysis, we employed bowtie to classify the reads form sequencing data.
+To assess library quality and eliminate the impact of reads originating from different non-coding RNAs (ncRNAs) on subsequent analysis, we employed `bowtie` to classify the reads form sequencing data.
 
 Under normal circumstances, especially for RNA-seq libraries constructed using the oligo(dT) method, most reads originate from mRNA. Therefore, for RNA-seq analysis, this step is generally not necessary. It is suitable for use in libraries constructed by the rRNA-depletion method.
 
@@ -490,7 +468,6 @@ Required arguments:
   -l LIST [LIST ...], --list LIST [LIST ...]
                         List for bowtie mapping log files (e.g., '*log').
   -o OUTPUT             prefix of output file name.
-
 ```
 
 - Statistical alignment results
@@ -499,7 +476,6 @@ Required arguments:
 #################################################
 # merge all log files
 merge_bwt_log -n rRNA,tRNA,ncRNA,mRNA,Genome -l *log -o RNA_seq &>> merge_bowtie.log
-
 ```
 
 #### 3.1.4 Aligning mRNA reads using `STAR`
@@ -557,7 +533,7 @@ done
 
 #### 3.1.5 Estimating gene expression levels with either `RSEM` or `featureCounts`
 
-Both RSEM and featureCounts can be employed to quantify gene expression levels. For the purpose of this analysis, we will utilize RSEM as a representative tool.
+Both `RSEM` and `featureCounts` can be employed to quantify gene expression levels. For the purpose of this analysis, we will utilize `RSEM` as a representative tool.
 
 1. Estimating transcript abundance using RNA-seq data
 
@@ -578,7 +554,6 @@ rsem-calculate-expression -p 10 \
 # -q $bam ../../1.reference/rsem-index/rsem `\basename $bam Aligned.toTranscriptome.out.bam`
 
 done
-
 ```
 
 2. Integrating RNA-seq quantification values for all samples
@@ -601,7 +576,6 @@ Required arguments:
   -l LIST [LIST ...], --list LIST [LIST ...]
                         List for result files (e.g., '*results').
   -o OUTPUT             output file name.
-
 ```
 
 - Integrating RNA-seq quantification values
@@ -618,15 +592,14 @@ merge_rsem -c FPKM -l *.genes.results -o gene.FPKM.txt &>> merge_rsem.log
 merge_rsem -c expected_count -l *.isoforms.results -o isoforms.expected_count.txt &>> merge_rsem.log
 merge_rsem -c TPM -l *.isoforms.results -o isoforms.TPM.txt &>> merge_rsem.log
 merge_rsem -c FPKM -l *.isoforms.results -o isoforms.FPKM.txt &>> merge_rsem.log
-
 ```
 
 
-### 3.2 Fundamental analysis of Ribo-seq data in GSE67387 dataset
+### 3.2 Fundamental analysis of Ribo-seq data in `GSE67387` dataset
 
 #### 3.2.1 Download Ribo-seq raw data
 
-Use `prefetch` in `sra-tools` to download the raw SRA-format data and extract it into fastq format files.
+Use `prefetch` in `sra-tools` to download the raw SRA-format data and extract it into `fastq` format files.
 
 ```bash
 $ cd
@@ -656,7 +629,6 @@ fastq-dump $sra
 pigz *fastq
 
 done
-
 ```
 
 #### 3.2.2 Ribo-seq data cleaning
@@ -675,13 +647,12 @@ cutadapt --match-read-wildcards \
  -m 25 -O 6 -j 10 \
  -o `\basename $fq fastq.gz`clean.fastq.gz $fq &> $fq".log"
 done
-
 ```
 
 
 #### 3.2.3 Align clean data to different types of reference files
 
-To assess library quality and eliminate the impact of reads originating from different non-coding RNAs (ncRNAs) on subsequent analysis, we employed bowtie to classify the reads form sequencing data.
+To assess library quality and eliminate the impact of reads originating from different non-coding RNAs (ncRNAs) on subsequent analysis, we employed `bowtie` to classify the reads form sequencing data.
 
 1. Aligning Ribo-seq data
 ```bash
@@ -738,7 +709,6 @@ rm $sam
 done
 
 done
-
 ```
 
 2. Statistical alignment results for all databases.
@@ -746,7 +716,6 @@ done
 #################################################
 # merge all log files
 merge_bwt_log -n rRNA,tRNA,ncRNA,mRNA,Genome -l *log -o sce &>> merge_bowtie.log
-
 ```
 
 
@@ -805,7 +774,7 @@ done
 
 #### 3.2.5 Estimating gene expression levels with either `RSEM` or `featureCounts`
 
-Both RSEM and featureCounts can be employed to quantify gene expression levels. For the purpose of this analysis, we will utilize RSEM as a representative tool.
+Both `RSEM` and `featureCounts` can be employed to quantify gene expression levels. For the purpose of this analysis, we will utilize `RSEM` as a representative tool.
 
 1. Estimating transcript abundance using Ribo-seq data
 
@@ -824,7 +793,6 @@ rsem-calculate-expression -p 12 \
  -q $bam ../../1.reference/rsem-index/rsem `\basename $bam Aligned.toTranscriptome.out.bam`
 
 done
-
 ```
 
 2. Integrating Ribo-seq quantification values for all samples
@@ -841,11 +809,10 @@ merge_rsem -c FPKM -l *.genes.results -o gene.FPKM.txt &>> merge_rsem.log
 merge_rsem -c expected_count -l *.isoforms.results -o isoforms.expected_count.txt &>> merge_rsem.log
 merge_rsem -c TPM -l *.isoforms.results -o isoforms.TPM.txt &>> merge_rsem.log
 merge_rsem -c FPKM -l *.isoforms.results -o isoforms.FPKM.txt &>> merge_rsem.log
-
 ```
 
 
-## 4. Perform RNA-seq data analysis of GSE67387 with RiboParser
+## 4. Perform RNA-seq data analysis of `GSE67387` with `RiboParser`
 
 ### 4.0 Prepare the directory to store the results
 
@@ -855,7 +822,6 @@ $ mkdir -p ./3.rna-seq/5.riboparser/
 $ cd ./3.rna-seq/5.riboparser/
 $ mkdir 01.qc 02.digestion 03.offset 04.density 05.merge \
  06.periodicity 07.metaplot 08.coverage 09.correlation 10.shuffle
-
 ```
 
 ### 4.1 Quality check of sequencing data
@@ -876,7 +842,6 @@ rpf_Check -b $bam -s --thread 10 \
  -o $prefix_name &> $prefix_name".log"
 
 done
-
 ```
 
 2. Integrating RNA-seq quality check results for all samples
@@ -920,11 +885,11 @@ merge_digestion -l ./02.digestion/*pwm.txt -o sce
 cd ..
 ```
 
-### 4.3 Use RiboParser to create the offset table
+### 4.3 Use `RiboParser` to create the `offset` table
 
-1. Create the offset table for RNA-seq
+1. Create the `offset` table for RNA-seq
 
-Offset prediction is unnecessary for RNA-seq analysis. A constant offset of 12 can be assigned to all entries in the table.
+`Offset` prediction is unnecessary for RNA-seq analysis. A constant `offset` of 12 can be assigned to all entries in the table.
 
 ```bash
 $ cd ./03.offset/
@@ -938,12 +903,11 @@ prefix_name=$(basename $bam .bam)
 rna_Offset -m 27 -M 50 -e 12 -o $prefix_name &> $prefix_name".log"
 
 done
-
 ```
 
-### 4.4 Convert the bam file to reads density
+### 4.4 Convert the `BAM` file to reads density
 
-Transform the read counts in a BAM file into density values and save them in a TXT format file.
+Transform the read counts in a `BAM` file into density values and save them in a `TXT` format file.
 
 1. Transform RNA-seq data output
 
@@ -1014,14 +978,13 @@ $ cd ./06.periodicity/
 rpf_Periodicity \
  -r ../05.merge/RNA_merged.txt \
  -m 30 --tis 0 --tts 0 -o RNA &> RNA.log
-
 ```
 
-### 4.7 Meta-gene analysis
+### 4.7 `Meta-gene` analysis
 
-Investigation of reads density in the vicinity of start and stop codons using meta-gene analysis.
+Investigation of reads density in the vicinity of start and stop codons using `meta-gene` analysis.
 
-1. Meta-gene analysis of RNA-seq
+1. `Meta-gene` analysis of RNA-seq
 
 ```bash
 $ cd ./07.metaplot/
@@ -1032,7 +995,6 @@ rpf_Metaplot \
  -t ../../../1.reference/norm/gene.norm.txt \
  -r ../05.merge/RNA_merged.txt \
  -m 50 --mode bar -o RNA &> RNA.log
-
 ```
 
 ### 4.8 Gene coverage
@@ -1053,7 +1015,6 @@ rpf_Coverage \
  -b 10,100,10 \
  -n --heat \
  -o RNA &> RNA.log
-
 ```
 
 ### 4.9 Check the repeatability of samples
@@ -1068,11 +1029,10 @@ $ cd ./09.correlation/
 rpf_Corr \
  -r ../05.merge/RNA_merged.txt \
  -o RNA &> RNA.log
-
 ```
 
 
-## 5. Perform RNA-seq data analysis of GSE67387 with RiboParser
+## 5. Perform RNA-seq data analysis of `GSE67387` with `RiboParser`
 
 ### 5.0 Prepare the directory to store the results
 
@@ -1084,17 +1044,16 @@ $ mkdir 01.qc 02.digestion 03.offset 04.density 05.merge \
  06.periodicity 07.metaplot 08.coverage 09.correlation 10.quantification \
  11.pausing_score 12.codon_occupancy 13.codon_decoding_time 14.codon_selection_time \
  15.coefficient_of_variation 16.meta_codon 17.shuffle 18.retrieve
-
 ```
 
 ### 5.1 Quality check of sequencing data
 
 To ensure the reliability of downstream analyses, rigorous quality control (QC) of ribosome profiling data must include systematic evaluation of peak detection and gene detection rate.
 
-Peak Detection:\
+`Peak Detection`:\
 Calculate the dominant RPF length (expected range: 26–34 nt) and its proportion within the total reads (QC pass threshold: ≥70% in expected range).
 
-Gene Detection Rate:\
+`Gene Detection Rate`:\
 Sampling from 5% to 95% of the data, the number of covered genes and their expression levels are calculated. When the slope of the gene count curve approaches 0, it typically indicates that the sequencing data is near saturation.
 
 1. Explanation of `rpf_Check`
@@ -1124,10 +1083,9 @@ options:
                         a lot of time and memory.
 
 Required arguments:
-  -t TRANSCRIPT         the input file name of gene annotation
-  -b BAM                the input file name of bam
+  -t TRANSCRIPT         the input file name of gene annotation.
+  -b BAM                the input file name of bam.
   -o OUTPUT             the prefix of output file.
-
 ```
 
 2. Quality check of ribo-seq data
@@ -1146,7 +1104,6 @@ rpf_Check -b $bam -s --thread 10 \
  -o $prefix_name &> $prefix_name".log"
 
 done
-
 ```
 
 3.  Results of `rpf_Check`
@@ -1165,7 +1122,6 @@ SRR1944912.log # Log file of program execution
 SRR1944912_reads_saturation.pdf # Boxplot for reads saturation analysis
 SRR1944912_reads_saturation.png # Boxplot for reads saturation analysis
 SRR1944912_reads_saturation.txt # Statistical results of reads saturation analysis
-
 ```
 
 
@@ -1184,7 +1140,6 @@ Required arguments:
   -l LIST [LIST ...], --list LIST [LIST ...]
                         List for length distribution files (e.g., '*length_distribution.txt').
   -o OUTPUT             prefix of output file name.
-
 ```
 
 5. Integrating Ribo-seq quality check results for all samples
@@ -1203,10 +1158,10 @@ cd ..
 
 Ribonuclease digestion and ligation steps in Ribo-seq can introduce biases that affect the representation of RNA fragments.
 
-Ribonuclease Digestion Bias:\
+`Ribonuclease Digestion Bias`:\
 Ribonucleases may preferentially cleave certain RNA sequences or structures, leading to uneven fragmentation and skewed representation of RNA species in the data.
 
-Ligation Bias:\
+`Ligation Bias`:\
 Ligation efficiency can vary by sequence context, RNA fragment length, or secondary structure.   This may result in overrepresentation of certain fragments due to more favorable ligation sites.
 
 To reduce these biases, it's important to analyze digestion and ligation efficiency, optimize protocols, and include controls to ensure data accuracy and reliability.
@@ -1234,7 +1189,6 @@ Required arguments:
   -s SEQUENCE    the name of input transcript sequence file in FA format.
   -b BAM         the name of mapping file in BAM format.
   -o OUTPUT      the name of output file. (prefix + _digestion_sites.txt)
-
 ```
 
 2. Bias in restriction enzyme digestion and ligation in sequencing data
@@ -1254,10 +1208,9 @@ rpf_Digest -b $bam -m 27 -M 33 --scale \
  -o $prefix_name &> $prefix_name".log"
 
 done
-
 ```
 
-3.  Results of `rpf_Digest`
+3. Results of `rpf_Digest`
 
 ```bash
 # results of SRR1944912
@@ -1270,7 +1223,6 @@ SRR1944912_5end_seqlogo2.pdf # Seqlogo of bases at the 5'-end of reads
 SRR1944912_digestion_sites.txt # Open reading frame aligned at the ends of reads
 SRR1944912.log # Log file of program execution
 SRR1944912_scaled_digestion_sites_plot.pdf # Heatmap of open reading frame aligned at the ends of reads
-
 ```
 
 
@@ -1291,7 +1243,6 @@ Required arguments:
   -l LIST [LIST ...], --list LIST [LIST ...]
                         List for digestion files (e.g., '*_5end_pwm.txt').
   -o OUTPUT             prefix of output file name.
-
 ```
 
 5. Integrating reads digestion results for all samples
@@ -1304,11 +1255,11 @@ cd ..
 ```
 
 
-### 5.3 Use RiboParser to predict the optimal offset
+### 5.3 Use `RiboParser` to predict the optimal offset
 
-The ability of Ribo-seq to analyze translation at codon resolution relies on accurately identifying the codons located at ribosomal A-, P-, and E-sites for each RPF.
-The offset represents the distance of the 5’ end of the RPF to the first nucleotide of the P-site codon. 
-Two commonly used methods are the ribosome structure-based model (RSBM) and the start/stop-based model (SSCBM).
+The ability of Ribo-seq to analyze translation at codon resolution relies on accurately identifying the codons located at ribosomal `A-`, `P-`, and `E-`sites for each RPF.
+The offset represents the distance of the 5’ end of the RPF to the first nucleotide of the `P-site` codon. 
+Two commonly used methods are the ribosome structure-based model (`RSBM`) and the start/stop-based model (`SSCBM`).
 
 1. Explanation of `rpf_Offset`
 
@@ -1337,7 +1288,6 @@ Required arguments:
   -t TRANSCRIPT        the name of input transcript filein TXT format.
   -b BAM               the name of mapping file in BAM format.
   -o OUTPUT            the prefix of output file. (prefix + _offset.txt)
-
 ```
 
 2. Predict the optimal offset of Ribo-seq
@@ -1376,7 +1326,6 @@ SRR1944912_tis_3end.txt # Distribution statistics of reads 3'-end at the start c
 SRR1944912_tis_5end.txt # Distribution statistics of reads 5'-end at the start codon
 SRR1944912_tts_3end.txt # Distribution statistics of reads 3'-end at the stop codon
 SRR1944912_tts_5end.txt # Distribution statistics of reads 5'-end at the stop codon
-
 ```
 
 4. Explanation of `merge_offset`
@@ -1396,7 +1345,6 @@ Required arguments:
   -l LIST [LIST ...], --list LIST [LIST ...]
                         List for RSBM/SSCBM offset files (e.g., '*RSBM_offset.txt').
   -o OUTPUT             prefix of output file name (default: prefix + _offset.txt).
-
 ```
 
 5. Integrating offset table results for all samples
@@ -1412,9 +1360,9 @@ cd ..
 ```
 
 
-### 5.4 Convert the bam file to reads density
+### 5.4 Convert the `BAM` file to reads density
 
-Transform the read counts in a BAM file into density values and save them in a TXT format file.
+Transform the read counts in a `BAM` file into density values and save them in a `TXT` format file.
 
 1. Explanation of `rpf_Density`
 
@@ -1444,7 +1392,6 @@ Required arguments:
   -p PSITE              the name of p-site offset file in TXT format.
   -o OUTPUT             the prefix of output file. (output = prefix + _rpf.txt)
   --period PERIODICITY  the minimum 3nt periodicity to keep. (default: 40).
-
 ```
 
 2. Transform Ribo-seq data output
@@ -1473,7 +1420,6 @@ cd ..
 # results of SRR1944912
 SRR1944912.log # Log file of program execution
 SRR1944912_rpf.txt # File contains RPFs density on each gene
-
 ```
 
 
@@ -1498,7 +1444,6 @@ Required arguments:
   -l LIST [LIST ...], --list LIST [LIST ...]
                         List for density files (e.g., '*_rpf.txt').
   -o OUTPUT             output file name (default: RIBO.file.list).
-
 ```
 
 2. create the samples list
@@ -1525,7 +1470,6 @@ elp6d_ribo_YPD3	/home/sce/4.ribo-seq/5.riboparser/04.density/SRR1944920_rpf.txt 
 ncs2d_elp6d_ribo_YPD1	/home/sce/4.ribo-seq/5.riboparser/04.density/SRR1944921_rpf.txt Ribo
 ncs2d_elp6d_ribo_YPD2	/home/sce/4.ribo-seq/5.riboparser/04.density/SRR1944922_rpf.txt Ribo
 ncs2d_elp6d_ribo_YPD3	/home/sce/4.ribo-seq/5.riboparser/04.density/SRR1944923_rpf.txt Ribo
-
 ```
 
 3. Explanation of `rpf_Merge`
@@ -1546,7 +1490,6 @@ options:
 Required arguments:
   -l LIST     the sample list in TXT format.
   -o OUTPUT   the prefix of output file. (prefix + _merged.txt)
-
 ```
 
 
@@ -1566,18 +1509,17 @@ cd ..
 RIBO.log # Log file of program execution
 RIBO.file.list # RPFs density file list of samples
 RIBO_merged.txt # Merged RPFs density file
-
 ```
 
 
 
 ### 5.6 Calculate tri-nucleotide periodicity
 
-3-nucleotide periodicity serves as a critical quality metric in Ribo-seq data analysis, fundamentally determining the biological interpretability of codon-resolution findings.
+Tri-nucleotide periodicity serves as a critical quality metric in Ribo-seq data analysis, fundamentally determining the biological interpretability of codon-resolution findings.
 
 High-quality periodicity (typically >0.6 phase coherence score) constitutes an essential prerequisite for robust codon-level analysis, whereas insufficient periodicity (<0.45) systematically introduces frame ambiguity artifacts that compromise translational measurements.
 
-Loss of reading frame synchronization leads to misassignment of ribosome A/P/E sites, generating false-positive pause sites from out-of-frame read aggregation.
+Loss of reading frame synchronization leads to misassignment of ribosome `A/P/E` sites, generating false-positive pause sites from out-of-frame read aggregation.
 
 1. Explanation of `rpf_Periodicity`
 
@@ -1602,7 +1544,6 @@ Required arguments:
   -r RPF         the name of input RPFs file in TXT format.
   -o OUTPUT      the prefix of output file.
   -t TRANSCRIPT  the name of input transcript filein TXT format.
-
 ```
 
 2. Check the tri-nucleotide periodicity of Ribo-seq
@@ -1628,19 +1569,18 @@ RIBO.log # Log file of program execution
 RIBO_periodicity.txt # Statistical values of 3-nucleotide periodicity of all samples
 RIBO_ratio_periodicity_plot.pdf # Barplot of read ratios showing 3-nucleotide periodicity
 RIBO_ratio_periodicity_plot.png # Barplot of read ratios showing 3-nucleotide periodicity
-
 ```
 
 
-### 5.7 Meta-gene analysis
+### 5.7 `Meta-gene` analysis
 
-Our metagene analysis framework enables systematic investigation of translation dynamics proximal to start and stop codons.
+Our `Meta-gene` analysis framework enables systematic investigation of translation dynamics proximal to start and stop codons.
 It entails aggregates ribosome-protected fragment (RPF) density across -15 and +60 codon windows relative to initiation/termination sites, normalized by transcript abundance.
 
 This reveals:\
 Peak/trough patterns indicative of translation initiation efficiency,\
 Read accumulation gradients reflecting termination kinetics,\
-3-Nucleotide Periodicity Quantification.
+Tri-Nucleotide Periodicity Quantification.
 
 1. Explanation of `rpf_Metaplot`
 
@@ -1668,10 +1608,9 @@ Required arguments:
   -t TRANSCRIPT      the name of input transcript filein TXT format.
   -r RPF             the name of input RPFs file in TXT format.
   -o OUTPUT          the prefix name of output file.
-
 ```
 
-2. Meta-gene analysis of Ribo-seq
+2. `Meta-gene` analysis of Ribo-seq
 
 ```bash
 $ cd ./07.metaplot/
@@ -1694,7 +1633,6 @@ RIBO_tis_tts_metaplot.txt # Metagene statistical values at start and stop codons
 RIBO_SRR1944912_meta_bar_plot.pdf # Metaplot of all samples at start and stop codons
 RIBO_SRR1944912_meta_bar_plot.png # Metaplot of all samples at start and stop codons
 RIBO_SRR1944912_tis_tts_metaplot.txt # Metagene statistical values at start and stop codons for sample SRR1944912
-
 ```
 
 
@@ -1702,15 +1640,13 @@ RIBO_SRR1944912_tis_tts_metaplot.txt # Metagene statistical values at start and 
 
 To systematically assess potential technical or translation biases in Ribo-seq data, we developed an analytical pipeline that quantifies genome-wide RPF coverage uniformity across gene bodies.
 
-Genes are partitioned into fixed-length intervals (default: 10% of CDS length), with raw RPF counts per bin recorded.   These values undergo library-size normalization using reads per million (RPM) to account for transcript length and sequencing depth variations.
+Genes are partitioned into fixed-length intervals (default: 10% of CDS length), with raw RPF counts per `bin` recorded.
+These values undergo library-size normalization using reads per million (RPM) to account for transcript length and sequencing depth variations.
 
-Processed data is rendered through three complementary analytical views:
-
-Aggregate Density Profile: Smoothed line plot displaying mean RPF density across all genes, highlighting global coverage trends
-
-Gene-specific Heatmap: Matrix visualization of normalized RPF counts (log₂-transformed) ordered by gene expression levels, revealing individual gene coverage patterns
-
-Binned Coverage Distribution: Stacked bar plot showing the percentage of genes achieving threshold coverage (≥50% of expected reads) in each interval.
+Processed data is rendered through three complementary analytical views:\
+`Aggregate Density Profile`: Smoothed line plot displaying mean RPF density across all genes, highlighting global coverage trends.\
+`Gene-specific Heatmap`: Matrix visualization of normalized RPF counts (log₂-transformed) ordered by gene expression levels, revealing individual gene coverage patterns.\
+`Binned Coverage Distribution`: Stacked bar plot showing the percentage of genes achieving threshold coverage (≥50% of expected reads) in each interval.
 
 1. Explanation of `rpf_Coverage`
 
@@ -1741,7 +1677,6 @@ Required arguments:
   -t TRANSCRIPT         the name of input transcript filein TXT format.
   -r RPF                the name of input RPFs file in TXT format.
   -o OUTPUT             the prefix of output file.
-
 ```
 
 2. Check gene density of Ribo-seq
@@ -1772,19 +1707,18 @@ RIBO_SRR1944912_coverage_bar_plot.pdf # Percentage barplot of RPF density distri
 RIBO_SRR1944912_coverage_bar_plot.png # Percentage barplot of RPF density distribution across genes
 RIBO_SRR1944912_coverage_line_plot.pdf # Percentage lineplot of RPF density distribution across genes
 RIBO_SRR1944912_coverage_line_plot.png # Percentage lineplot of RPF density distribution across genes
-
 ```
 
 
 ### 5.9 Check the repeatability of samples
 
-Our analytical pipeline provides a hierarchical framework for assessing sample reproducibility in ribosome profiling studies, implementing dual-level correlation analyses:
+Our analytical pipeline provides a hierarchical framework for assessing sample reproducibility in ribosome profiling studies, implementing dual-level correlation analyses.
 
-Gene-Level Reprodubility:
+`Gene-Level Reproducibility`:\
 Quantifies ribosome-protected fragments (RPFs) across entire gene bodies, followed by inter-sample Pearson correlation coefficient calculation.
 This approach evaluates global translation consistency, particularly suitable for highly expressed genes with robust ribosome coverage.
 
-ORF-Level Reproducibility:
+`ORF-Level Reproducibility`:\
 Performs nucleotide-resolution quantification of RPFs within individual open reading frames (ORFs), then computes Pearson correlations between replicate samples.
 This finer-grained analysis detects localized translational variations while maintaining phase-awareness through in-frame read filtering.
 
@@ -1808,7 +1742,6 @@ options:
 Required arguments:
   -r RPF      the name of input RPFs file in TXT format.
   -o OUTPUT   the prefix of output file. (prefix + _rpf_merged.txt)
-
 ```
 
 2. Check the repeatability of Ribo-seq
@@ -1821,7 +1754,6 @@ $ cd ./09.correlation/
 rpf_Corr \
  -r ../05.merge/RIBO_merged.txt \
  -o RIBO &> RIBO.log
-
 ```
 
 3. Results of `rpf_Corr`
@@ -1840,7 +1772,6 @@ RIBO_rpf_corr_f0.txt # Pearson correlation between RPFs on gene frame 0
 RIBO_rpf_corr_f1.txt # Pearson correlation between RPFs on gene frame 1
 RIBO_rpf_corr_f2.txt # Pearson correlation between RPFs on gene frame 2
 RIBO_rpf_corr_frame.txt # Pearson correlation between RPFs across all gene frames
-
 ```
 
 
@@ -1877,7 +1808,6 @@ options:
 Required arguments:
   -r RPF          the name of input RPFs file in TXT format.
   -o OUTPUT       the prefix of output file. (default: prefix + _rpf_quant.txt)
-
 ```
 
 2. Quantification of Ribo-seq
@@ -1910,7 +1840,6 @@ RIBO_cds_rpm_quant.txt # Statistical results of RPM in the gene CDS region
 RIBO_cds_tpm_quant.txt # Statistical results of TPM in the gene CDS region
 RIBO.log # Log file of program execution
 RIBO_total.txt # Total RPFs across all samples
-
 ```
 
 
@@ -1952,7 +1881,6 @@ Required arguments:
   -r RPF                the name of input RPFs file in TXT format.
   -l LIST               the gene name list in TXT format. (default: whole).
   -o OUTPUT             the prefix of output file.
-
 ```
 
 2. Calculate codon-level pausing scores in Ribo-seq data
@@ -1989,14 +1917,13 @@ A_site_total_pausing_heatplot.pdf # Heatmap of pausing score for all codons at t
 A_site_total_pausing_heatplot.png # Heatmap of pausing score for all codons at the A-site in the gene CDS region
 A_site_valid_pausing_heatplot.pdf # Heatmap of pausing score for valid codons at the A-site in the gene CDS region
 A_site_valid_pausing_heatplot.png # Heatmap of pausing score for valid codons at the A-site in the gene CDS region
-
 ```
 
 
 ### 5.12 Calculate codon occupancy
 
 For global codon occupancy analysis, 
-A(P/E)-site codons were assigned using the established criteria, 
+`A(P/E)-site` codons were assigned using the established criteria, 
 and read counts at each codon were normalized against the average per-codon read density within their respective open reading frames (ORFs).
 
 
@@ -2029,7 +1956,6 @@ Required arguments:
   -r RPF                the name of input RPFs file in TXT format.
   -l LIST               the gene name list in TXT format. (default: whole).
   -o OUTPUT             the prefix of output file.
-
 ```
 
 2. Calculate codon-level occupancy in Ribo-seq data
@@ -2070,7 +1996,6 @@ A_site_occupancy_relative_heatplot.pdf # Heatmap of relative codon occupancy at 
 A_site_occupancy_relative_heatplot.png # Heatmap of relative codon occupancy at the A-site
 A_site_occupancy_relative_lineplot.pdf # Lineplot of relative codon occupancy at the A-site
 A_site_occupancy_relative_lineplot.png # Lineplot of relative codon occupancy at the A-site
-
 ```
 
 
@@ -2107,7 +2032,6 @@ Required arguments:
   --rna RNA             the name of input reads file in TXT format.
   -l LIST               the gene name list in TXT format. (default: whole).
   -o OUTPUT             the prefix of output file.
-
 ```
 
 2. Calculate codon-level decoding time in Ribo-seq data
@@ -2146,7 +2070,6 @@ A_site_cdt_heatplot.pdf # Heatmap of codon decoding time at the A-site
 A_site_cdt_heatplot.png # Heatmap of codon decoding time at the A-site
 A_site_cdt.txt # Codon decoding time for all codon at the A-site in the gene CDS region
 A_site.log # Log file of program execution
-
 ```
 
 
@@ -2154,9 +2077,7 @@ A_site.log # Log file of program execution
 
 Codon usage is not equal across genomes, with some codons being more frequently used than others, thought to improve translational efficiency.
 However, previous studies reveal that translational efficiency is optimized by a mechanism involving proportional codon usage based on tRNA concentrations.
-These results provide new insights into protein translation, explain unequal codon usage, and highlight natural selection for translational efficiency.
-
-密码子的使用在整个基因组中是不平等的，一些密码子比其他密码子使用得更频繁，这被认为是为了提高翻译效率。然而，先前的研究表明，翻译效率是通过基于tRNA浓度的比例密码子使用机制来优化的。这些结果为蛋白质翻译提供了新的见解，解释了密码子的不平等使用，并强调了翻译效率的自然选择
+These results provide new insights into protein translation, explain unequal codon usage, and highlight natural selection for translational efficiency. Codon selection time can be used to quantify this process.
 
 1. Explanation of `rpf_CST`
 
@@ -2187,7 +2108,6 @@ Required arguments:
   --rna RNA             the name of input reads file in TXT format.
   -l LIST               the gene name list in TXT format. (default: whole).
   -o OUTPUT             the prefix of output file.
-
 ```
 
 2. Calculate codon-level selection time in Ribo-seq data
@@ -2227,7 +2147,6 @@ A_site_cst_heatplot.pdf # Heatmap of codon selection time at the A-site
 A_site_cst_heatplot.png # Heatmap of codon selection time at the A-site
 A_site_iterative_codon_selection_time.txt # Codon selection time for all codon at the A-site in the gene CDS region
 A_site.log # Log file of program execution
-
 ```
 
 
@@ -2240,7 +2159,10 @@ To resolve this, Peter et. al developed a gene-level analytical method that expl
 
 $$log_2(CV) = \frac{1}{2} log_2 (\frac{β}{μ} + α)$$
 
-where CV is the coefficient of variation in the ribosome profile of a given gene, μ is mean coverage (RPF reads percodon), and α and β are fitting parameters. Importantly, when α = 0 and β = 1, Equation 1 results from a Poisson distribution, whereas α > 0 and β = 1 indicates a negative binomial distribution.
+where CV is the coefficient of variation in the ribosome profile of a given gene, 
+μ is mean coverage (RPF reads percodon), and α and β are fitting parameters. 
+Importantly, when α = 0 and β = 1, Equation results from a Poisson distribution, 
+whereas α > 0 and β = 1 indicates a negative binomial distribution.
 
 1. Explanation of `rpf_CoV`
 
@@ -2280,7 +2202,6 @@ The group file needs to contain at least two column:
 | ko1      | ko      |
 | ko2      | ko      |
 +----------+---------+
-
 ```
 
 2. Calculate gene coefficient of variation in Ribo-seq data
@@ -2329,7 +2250,6 @@ gene_CoV.txt # Gene coefficient of variation
 gene.log # Log file of program execution
 gene_WT_ribo_YPD_vs_ncs2d_ribo_YPD_CoV_fitplot.pdf # Fitted lineplot of gene coefficient of variation
 gene_WT_ribo_YPD_vs_ncs2d_ribo_YPD_CoV_fitplot.png # Fitted lineplot of gene coefficient of variation
-
 ```
 
 
@@ -2369,7 +2289,6 @@ Required arguments:
   -r RPF           the name of input RPFs file in TXT format.
   -c CODON         the codon list in TXT format.
   -o OUTPUT        the prefix of output file.
-
 ```
 
 2. Calculate meta-codon density in Ribo-seq data
@@ -2399,7 +2318,6 @@ rpf_Meta_Codon \
  -o RIBO &> RIBO.log
 
 cd ..
-
 ```
 
 3. Results of `rpf_Meta_Codon`
@@ -2410,14 +2328,13 @@ RIBO_AAA_97591_8146_meta_density.txt # RPFs density of AAA codon
 RIBO_AAA_97591_8146_meta_sequence.txt # Upstream and downstream sequence around AAA codon
 RIBO_AAA.pdf # Metaplot of AAA codon
 RIBO_AAA.png # Metaplot of AAA codon
-
 ```
 
 
 ## 6. Other toolkits
 ### 6.1 Data shuffling
 
-Some of the analysis processes require randomly assigned data for control,
+Some analysis processes require randomly assigned data for control,
  so a step is added here to reshuffling the RPFs density file.
 
 1. Explanation of `rpf_Shuffle`
@@ -2442,7 +2359,6 @@ options:
 Required arguments:
   -r RPF      the name of input RPFs density file in TXT format.
   -o OUTPUT   the prefix of output file. (prefix + _shuffle.txt)
-
 ```
 
 2. Shuffle gene density values in Ribo-seq data.
@@ -2459,7 +2375,6 @@ rpf_Shuffle \
  -s 0 \
  -i \
  -o RIBO &> RIBO.log
-
 ```
 
 3. Shuffle gene density values in RNA-seq data
@@ -2476,7 +2391,6 @@ rpf_Shuffle \
  -s 0 \
  -i \
  -o RNA &> RNA.log
-
 ```
 
 4. Results of `rpf_Shuffle`
@@ -2485,7 +2399,6 @@ rpf_Shuffle \
 # results of ribo-seq
 RIBO.log # Log file of program execution
 RIBO_shuffle.txt # Shuffled RPFs density file
-
 ```
 
 
@@ -2519,7 +2432,6 @@ options:
 Required arguments:
   -r RPF      the name of input RPFs density file in TXT format.
   -o OUTPUT   prefix of output file name (default: filename + '_retrieve.txt'.
-
 ```
 
 2. Extract and format gene density from Ribo-seq data
@@ -2566,9 +2478,76 @@ cd ..
 # results of ribo-seq
 RIBO.log
 RIBO_retrieve.txt
+```
+
+### 6.3 Filter the frame shifting genes
+
+A frameshift in translation occurs when the ribosome shifts by one or more nucleotides in the mRNA sequence, causing a misreading of the codons.
+This results in a completely altered amino acid sequence downstream of the shift,
+often leading to premature termination or a nonfunctional protein.
+Frameshifts can occur naturally due to mutations or during translation errors, and they can significantly impact protein function.
+Whenever a stable frameshift occurs, we can detect ribosome occupancy in different reading frames from the Ribo-seq data.
+
+1. Explanation of `rpf_Shift`
+
+```bash
+$ rpf_Shift -h
+
+Draw the frame shifting plot.
+
+Step1: Checking the input Arguments.
+
+usage: rpf_Shift.py [-h] -r RPF -o OUTPUT [-t TRANSCRIPT] [-p PERIOD] [-m MIN] [--tis TIS] [--tts TTS]
+
+This script is used to draw the frame shift plot.
+
+options:
+  -h, --help     show this help message and exit
+  -p PERIOD      the minimum in-frame value for frame shifting screen, range [0 - 1]. (default: 0.45).
+  -m MIN         retain transcript with more than minimum RPFs. (default: 50).
+  --tis TIS      the number of codons after TIS will be discarded.. (default: 0 AA).
+  --tts TTS      the number of codons before TTS will be discarded.. (default: 0 AA).
+
+Required arguments:
+  -r RPF         the name of input RPFs file in TXT format.
+  -o OUTPUT      the prefix of output file.
+  -t TRANSCRIPT  the name of input transcript filein TXT format.
 
 ```
 
+2. Filter the frame shifting genes
+
+```bash
+$ cd
+$ cd ./sce/4.ribo-seq/5.riboparser/19.frame_shift/
+
+#################################################
+# filter the frame shifting genes
+rpf_Shift \
+ -t ../../../1.reference/norm/gene.norm.txt \
+ -r ../05.merge/RIBO_merged.txt \
+ --tis 5 --tts 5 \
+ -m 50 \
+ -p 45 \
+ -f \
+ -n \
+ -o RIBO &> RIBO.log
+
+cd ..
+```
+
+4. Results of `rpf_Shift`
+
+```bash
+# results of ribo-seq
+RIBO.log
+RIBO_gene_frame_shift_count_plot.pdf
+RIBO_gene_frame_shift_count_plot.png
+RIBO_gene_frame_shift_count.txt
+RIBO_gene_periodicity.txt
+RIBO_R_GR_in_25d_1_gene_frame_shift.txt
+
+```
 
 ## 7. Contribution
 
@@ -2578,7 +2557,7 @@ Thanks to Nedialkova DD and Leidel SA for providing the excellent dataset.
 
 Contribute to our open-source project by submitting questions and code.
 
-Contact rensc0718@163.com for more information.
+Contact `rensc0718@163.com` for more information.
 
 ## 8. License
 
