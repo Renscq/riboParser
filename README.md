@@ -379,7 +379,7 @@ do
 cutadapt --match-read-wildcards \
  -a AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGC \
  -m 25 -O 6 -j 12 \
- -o `\basename $fq fastq.gz`clean.fastq.gz $fq &> $fq".log"
+ -o `\basename $fq fastq.gz`clean.fastq.gz $fq &>> $fq".log"
 
 done
 ```
@@ -646,7 +646,7 @@ do
 cutadapt --match-read-wildcards \
  -a AAAAAAAA \
  -m 25 -O 6 -j 10 \
- -o `\basename $fq fastq.gz`clean.fastq.gz $fq &> $fq".log"
+ -o `\basename $fq fastq.gz`clean.fastq.gz $fq &>> $fq".log"
 done
 ```
 
@@ -840,7 +840,7 @@ prefix_name=$(basename $bam Aligned.toTranscriptome.out.bam)
 
 rpf_Check -b $bam -s --thread 10 \
  -t ../../../1.reference/norm/gene.norm.txt \
- -o $prefix_name &> $prefix_name".log"
+ -o $prefix_name &>> $prefix_name".log"
 
 done
 ```
@@ -871,7 +871,7 @@ prefix_name=$(basename $bam .bam)
 rpf_Digest -b $bam -m 25 -M 50 --scale \
  -s ../../../1.reference/norm/gene.norm.rna.fa \
  -t ../../../1.reference/norm/gene.norm.txt \
- -o $prefix_name &> $prefix_name".log"
+ -o $prefix_name &>> $prefix_name".log"
 
 done
 ```
@@ -901,7 +901,7 @@ for bam in ../01.qc/*.bam
 do
 
 prefix_name=$(basename $bam .bam)
-rna_Offset -m 27 -M 50 -e 12 -o $prefix_name &> $prefix_name".log"
+rna_Offset -m 27 -M 50 -e 12 -o $prefix_name &>> $prefix_name".log"
 
 done
 ```
@@ -925,7 +925,7 @@ rna_Density -b $bam -m 27 -M 33 -l --thread 10 \
  -p ../03.offset/$prefix_name"_offset.txt" \
  -s ../../../1.reference/norm/gene.norm.rna.fa \
  -t ../../../1.reference/norm/gene.norm.txt \
- -o $prefix_name &> $prefix_name".log"
+ -o $prefix_name &>> $prefix_name".log"
 
 done
 
@@ -963,7 +963,7 @@ ncs2d_elp6d_rna_YPD3  /home/sce/3.rna-seq/5.riboparser/04.density/SRR1944935_rna
 
 #################################################
 # merge all the RNA-seq files
-rpf_Merge -l RNA.file.list -o RNA &> RNA.log
+rpf_Merge -l RNA.file.list -o RNA &>> RNA.log
 
 cd ..
 ```
@@ -978,7 +978,7 @@ $ cd ./06.periodicity/
 # check the periodicity
 rpf_Periodicity \
  -r ../05.merge/RNA_merged.txt \
- -m 30 --tis 0 --tts 0 -o RNA &> RNA.log
+ -m 30 --tis 0 --tts 0 -o RNA &>> RNA.log
 ```
 
 ### 4.7 `Meta-gene` analysis
@@ -995,7 +995,7 @@ $ cd ./07.metaplot/
 rpf_Metaplot \
  -t ../../../1.reference/norm/gene.norm.txt \
  -r ../05.merge/RNA_merged.txt \
- -m 50 --mode bar -o RNA &> RNA.log
+ -m 50 --mode bar -o RNA &>> RNA.log
 ```
 
 ### 4.8 Gene coverage
@@ -1015,7 +1015,7 @@ rpf_Coverage \
  -m 50 --outlier \
  -b 10,100,10 \
  -n --heat \
- -o RNA &> RNA.log
+ -o RNA &>> RNA.log
 ```
 
 ### 4.9 Check the repeatability of samples
@@ -1029,7 +1029,7 @@ $ cd ./09.correlation/
 # calculate the samples replication of RNA-seq
 rpf_Corr \
  -r ../05.merge/RNA_merged.txt \
- -o RNA &> RNA.log
+ -o RNA &>> RNA.log
 ```
 
 
@@ -1102,7 +1102,7 @@ prefix_name=$(basename $bam Aligned.toTranscriptome.out.bam)
 
 rpf_Check -b $bam -s --thread 10 \
  -t ../../../1.reference/norm/gene.norm.txt \
- -o $prefix_name &> $prefix_name".log"
+ -o $prefix_name &>> $prefix_name".log"
 
 done
 ```
@@ -1206,7 +1206,7 @@ prefix_name=$(basename $bam .bam)
 rpf_Digest -b $bam -m 27 -M 33 --scale \
  -s ../../../1.reference/norm/gene.norm.rna.fa \
  -t ../../../1.reference/norm/gene.norm.txt \
- -o $prefix_name &> $prefix_name".log"
+ -o $prefix_name &>> $prefix_name".log"
 
 done
 ```
@@ -1305,7 +1305,7 @@ prefix_name=$(basename $bam .bam)
 rpf_Offset -b $bam -m 27 -M 33 -p 30 -d \
  --mode SSCBM \
  -t ../../../1.reference/norm/gene.norm.txt \
- -o $prefix_name &> $prefix_name".log"
+ -o $prefix_name &>> $prefix_name".log"
 
 done
 ```
@@ -1408,7 +1408,7 @@ rpf_Density -b $bam -m 27 -M 33 --period 40 -l --thread 12 \
  -p ../03.offset/$prefix_name"_SSCBM_offset.txt" \
  -s ../../../1.reference/norm/gene.norm.rna.fa \
  -t ../../../1.reference/norm/gene.norm.txt \
- -o $prefix_name &> $prefix_name".log"
+ -o $prefix_name &>> $prefix_name".log"
 
 done
 
@@ -1499,7 +1499,7 @@ Required arguments:
 ```bash
 #################################################
 # merge all the Ribo-seq files
-rpf_Merge -l RIBO.file.list -o RIBO &> RIBO.log
+rpf_Merge -l RIBO.file.list -o RIBO &>> RIBO.log
 
 cd ..
 ```
@@ -1556,7 +1556,7 @@ $ cd ./06.periodicity/
 # check the periodicity
 rpf_Periodicity \
  -r ../05.merge/RIBO_merged.txt \
- -m 30 --tis 0 --tts 0 -o RIBO &> RIBO.log
+ -m 30 --tis 0 --tts 0 -o RIBO &>> RIBO.log
 
 cd ..
 ```
@@ -1621,7 +1621,7 @@ $ cd ./07.metaplot/
 rpf_Metaplot \
  -t ../../../1.reference/norm/gene.norm.txt \
  -r ../05.merge/RIBO_merged.txt \
- -m 50 --mode bar -o RIBO &> RIBO.log
+ -m 50 --mode bar -o RIBO &>> RIBO.log
 
 cd ..
 ```
@@ -1693,7 +1693,7 @@ rpf_Coverage \
  -m 50 --outlier \
  -b 10,100,10 \
  -n --heat \
- -o RIBO &> RIBO.log
+ -o RIBO &>> RIBO.log
 
 cd ..
 ```
@@ -1754,7 +1754,7 @@ $ cd ./09.correlation/
 # calculate the samples replication of Ribo-seq
 rpf_Corr \
  -r ../05.merge/RIBO_merged.txt \
- -o RIBO &> RIBO.log
+ -o RIBO &>> RIBO.log
 ```
 
 3. Results of `rpf_Corr`
@@ -1822,7 +1822,7 @@ rpf_Quant \
  -r ../05.merge/RIBO_merged.txt \
  --tis 15 \
  --tts 5 \
- -o RIBO &> RIBO.log 
+ -o RIBO &>> RIBO.log 
 
 cd ..
 ```
@@ -1901,7 +1901,7 @@ rpf_Pausing \
  -s $sites \
  -f 0 \
  --scale minmax \
- -o "$sites"_site &> "$sites"_site.log
+ -o "$sites"_site &>> "$sites"_site.log
 done
 
 cd ..
@@ -1975,7 +1975,7 @@ rpf_Occupancy \
  -s "$sites" \
  -f 0 --stop \
  --scale minmax \
- -o "$sites"_site &> "$sites"_site.log
+ -o "$sites"_site &>> "$sites"_site.log
  
 done
 
@@ -2054,7 +2054,7 @@ rpf_CDT \
  -s $sites \
  --tis 10 \
  --tts 5 \
- -o "$sites"_site &> "$sites"_site.log
+ -o "$sites"_site &>> "$sites"_site.log
 
 done
 
@@ -2130,7 +2130,7 @@ rpf_CST \
  -s $sites \
  --tis 10 \
  --tts 5 \
- -o "$sites"_site &> "$sites"_site.log
+ -o "$sites"_site &>> "$sites"_site.log
 
 done
 
@@ -2238,12 +2238,56 @@ rpf_CoV \
  --tts 5 \
  --fig \
  -g design.txt \
- -o RIBO &> RIBO.log
+ -o RIBO &>> RIBO.log
 
-cd ..
 ```
 
-3. Results of `rpf_CoV`
+3. Explanation of `rpf_Cumulative_CoV`
+
+```bash
+$ rpf_Cumulative_CoV -h
+
+Retrieve the RPFs with gene list.
+
+Step1: Checking the input Arguments.
+
+usage: rpf_Cumulative_CoV [-h] -r RPF [-o OUTPUT] [-l LIST] [-m MIN] [-n] [-t TRIM] [-s] [-z]
+
+This script is used to calculate the cumulative CoV.
+
+options:
+  -h, --help  show this help message and exit
+  -l LIST     the list of input genes for transcript id.
+  -m MIN      retain transcript with more than minimum RPFs (default: 0).
+  -n          normalize the RPFs count to RPM (default: False).
+  -t TRIM     trim transcript with specific length (default: 50 nt).
+  -s          split gene rpf to each TXT file (default: False).
+  -z          set the start site to zero (default: False).
+
+Required arguments:
+  -r RPF      the name of input RPFs density file in TXT format.
+  -o OUTPUT   prefix of output file name (default: filename + '_cumulative_CoV.txt'.
+
+```
+
+
+4. Calculate the cumulative gene coefficient of variation in Ribo-seq data
+
+```bash
+
+#################################################
+# calculate the cumulative coefficient of variation
+rpf_Cumulative_CoV \
+ -l ../../../1.reference/norm/gene.norm.txt \
+ -r ../05.merge/RIBO_merged.txt \
+ -m 50 \
+ -n \
+ -z \
+ -t 300 \
+ -o RIBO &>> RIBO.log
+```
+
+5. Results of `rpf_CoV`
 
 ```bash
 gene_compared_CoV.txt # Compared gene coefficient of variation
@@ -2316,7 +2360,7 @@ rpf_Meta_Codon \
  -m 50 -f 0 \
  -c codon_list.txt \
  -a 15 -u -n \
- -o RIBO &> RIBO.log
+ -o RIBO &>> RIBO.log
 
 cd ..
 ```
@@ -2375,7 +2419,7 @@ rpf_Shuffle \
  -r ../05.merge/RIBO_merged.txt \
  -s 0 \
  -i \
- -o RIBO &> RIBO.log
+ -o RIBO &>> RIBO.log
 ```
 
 3. Shuffle gene density values in RNA-seq data
@@ -2391,7 +2435,7 @@ rpf_Shuffle \
  -r ../05.merge/RNA_merged.txt \
  -s 0 \
  -i \
- -o RNA &> RNA.log
+ -o RNA &>> RNA.log
 ```
 
 4. Results of `rpf_Shuffle`
@@ -2449,7 +2493,7 @@ rpf_Retrieve \
  -m 0 \
  -f \
  -n \
- -o RIBO &> RIBO.log
+ -o RIBO &>> RIBO.log
 
 cd ..
 ```
@@ -2468,7 +2512,7 @@ rpf_Retrieve \
  -m 50 \
  -f \
  -n \
- -o RNA &> RNA.log
+ -o RNA &>> RNA.log
 
 cd ..
 ```
@@ -2530,7 +2574,7 @@ rpf_Shift \
  --tis 5 --tts 5 \
  -m 50 \
  -p 45 \
- -o RIBO &> RIBO.log
+ -o RIBO &>> RIBO.log
 
 cd ..
 ```
@@ -2545,7 +2589,6 @@ RIBO_gene_frame_shift_count_plot.png
 RIBO_gene_frame_shift_count.txt
 RIBO_gene_periodicity.txt
 RIBO_SRR1944912_gene_frame_shift.txt
-
 ```
 
 ## 7. Contribution
