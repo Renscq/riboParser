@@ -64,6 +64,7 @@ rpf_Periodicity = utils.rpf_Periodicity:main
 rpf_Quant = utils.rpf_Quant:main
 rpf_Reference = utils.rpf_Reference:main
 rpf_Retrieve = utils.rpf_Retrieve:main
+rpf_Shift = utils.rpf_Shift:main
 rpf_Shuffle = utils.rpf_Shuffle:main
 rpm_smooth = scripts.bedgraph.rpm_smooth:main
 serp_overlap = utils.serp_overlap:main

@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="RiboParser",
-    version="0.1.7.2",
+    version="0.1.7.4",
     packages=find_packages(),
     
     author="Ren Shuchao",
@@ -74,6 +74,7 @@ setup(
             "rpf_Meta_Codon=utils.rpf_Meta_Codon:main",
             # Ribo-utils
             "rpf_Shuffle=utils.rpf_Shuffle:main",
+            "rpf_Shift=utils.rpf_Shift:main",
             "rpf_Retrieve=utils.rpf_Retrieve:main",
             "rpf_Bam2bw=utils.rpf_Bam2bw:main",
             "rpf_Geneplot=utils.rpf_Geneplot:main",

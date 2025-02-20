@@ -4,8 +4,8 @@
 # @Script  : rpf_Shift.py
 
 
-from ribo import ArgsParser
-from ribo import Shift
+from .ribo import ArgsParser
+from .ribo import Shift
 
 def main():
     ArgsParser.now_time()

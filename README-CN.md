@@ -2523,7 +2523,7 @@ This script is used to draw the frame shift plot.
 
 options:
   -h, --help     show this help message and exit
-  -p PERIOD      the minimum in-frame value for frame shifting screen, range [0 - 1]. (default: 0.45).
+  -p PERIOD      the minimum in-frame value for frame shifting screen, range [0 - 100]. (default: 45).
   -m MIN         retain transcript with more than minimum RPFs. (default: 50).
   --tis TIS      the number of codons after TIS will be discarded.. (default: 0 AA).
   --tts TTS      the number of codons before TTS will be discarded.. (default: 0 AA).
@@ -2549,8 +2549,6 @@ rpf_Shift \
  --tis 5 --tts 5 \
  -m 50 \
  -p 45 \
- -f \
- -n \
  -o RIBO &> RIBO.log
 
 cd ..

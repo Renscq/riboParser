@@ -454,7 +454,7 @@ def frame_shift_args_parser():
     # arguments for the ribo-seq parsing
     input_group.add_argument('-t', dest="transcript", required=False, type=str,
                              help="the name of input transcript filein TXT format.")
-    parser.add_argument('-p', dest="period", required=False, type=int, default=0.45,
+    parser.add_argument('-p', dest="period", required=False, type=int, default=45,
                         help="the minimum in-frame value for frame shifting screen, range [0 - 1]. (default: %(default)s).")
     parser.add_argument('-m', dest="min", required=False, type=int, default=50,
                         help="retain transcript with more than minimum RPFs. (default: %(default)s).")
