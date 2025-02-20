@@ -2258,8 +2258,50 @@ rpf_CoV \
 
 cd ..
 ```
+3. `rpf_Cumulative_CoV` 的解释
 
-3. `rpf_CoV`的结果
+```bash
+$ rpf_Cumulative_CoV -h
+
+Retrieve the RPFs with gene list.
+
+Step1: Checking the input Arguments.
+
+usage: rpf_Cumulative_CoV [-h] -r RPF [-o OUTPUT] [-l LIST] [-m MIN] [-n] [-t TRIM] [-s] [-z]
+
+This script is used to calculate the cumulative CoV.
+
+options:
+  -h, --help  show this help message and exit
+  -l LIST     the list of input genes for transcript id.
+  -m MIN      retain transcript with more than minimum RPFs (default: 0).
+  -n          normalize the RPFs count to RPM (default: False).
+  -t TRIM     trim transcript with specific length (default: 50 nt).
+  -s          split gene rpf to each TXT file (default: False).
+  -z          set the start site to zero (default: False).
+
+Required arguments:
+  -r RPF      the name of input RPFs density file in TXT format.
+  -o OUTPUT   prefix of output file name (default: filename + '_cumulative_CoV.txt'.
+```
+
+
+4. 计算Ribo-seq数据中的基因变异系数的累积分布
+
+```bash
+#################################################
+# calculate the cumulative coefficient of variation
+rpf_Cumulative_CoV \
+ -l ../../../1.reference/norm/gene.norm.txt \
+ -r ../05.merge/RIBO_merged.txt \
+ -m 50 \
+ -n \
+ -z \
+ -t 300 \
+ -o RIBO &>> RIBO.log
+```
+
+5. `rpf_CoV` 的结果
 
 ```bash
 gene_compared_CoV.txt # Compared gene coefficient of variation

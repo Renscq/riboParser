@@ -2274,7 +2274,6 @@ Required arguments:
 4. Calculate the cumulative gene coefficient of variation in Ribo-seq data
 
 ```bash
-
 #################################################
 # calculate the cumulative coefficient of variation
 rpf_Cumulative_CoV \
