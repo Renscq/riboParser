@@ -1,6 +1,7 @@
 ###########################################################
 #          Procedure for Database Construction            #
 ###########################################################
+#
 # This step is used for constructing the database, which is
 # essential for the alignment of reads and subsequent 
 # analysis using RiboParser.
