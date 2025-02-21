@@ -2,7 +2,7 @@
 #              PreProcessing for Ribo-seq                 #
 ###########################################################
 #
-# This step is used for analyzing RNA-seq data, including 
+# This step is used for analyzing Ribo-seq data, including 
 # data cleaning, alignment, and expression quantification.
 # 
 # **Note!** 
@@ -17,7 +17,6 @@ adapter_3="" #(Add it to the cutadapt script with parameter "-g" in step0.1 if y
 
 ###########################################################
 # 0.1 RNA-seq data cleaning
-mkdir ./4.ribo-seq
 mkdir ./4.ribo-seq/1.cleandata
 cd ./4.ribo-seq/1.cleandata
 for fq in ../../2.rawdata/ribo-seq/*fastq.gz

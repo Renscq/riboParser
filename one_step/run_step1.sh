@@ -16,7 +16,6 @@
 #
 ###########################################################
 # 0.0 prepare the reference for riboparser
-mkdir ./1.reference
 cd ./1.reference
 mkdir genome mrna ncrna rrna trna norm rsem-index
 

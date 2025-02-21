@@ -1,15 +1,14 @@
 ###########################################################
-#         Pipeline of the Riboparser (RNA-seq)            #
+#         Pipeline of the Riboparser (Ribo-seq)           #
 ###########################################################
 #
-# This step is used for analyzing RNA-seq data, utilizing 
-# RiboParser to check the sequencing quality of the RNA-seq
-# data and prepare formatted files for subsequent joint 
-# analysis with Ribo-seq.
+# This step is used for analyzing Ribo-seq data, utilizing 
+# RiboParser to check the sequencing quality of the Ribo-seq
+# data.
 # 
 # **Note!** 
 #
-# The BAM files, paramaters and reference genome 
+# The BAM files, parameters and reference genome 
 # information files in Step 0.0 may need to be modified 
 # according to the files defined for your project!
 #
@@ -20,7 +19,6 @@ min_length=27
 max_length=33
 
 # set the paramater for the offset detection
-offset_mode="SSCBM" # [RSBM, SSCBM]
 expect_rpf=30
 shift_nt=1
 
@@ -87,14 +85,14 @@ do
 prefix_name=$(basename $bam .bam)
 
 rpf_Offset -b $bam -m "$min_length" -M "$max_length" -p 30 -d \
- --mode "$offset_mode" \
  -t ../../../1.reference/norm/gene.norm.txt \
  -o $prefix_name &> $prefix_name".log"
 
 done
 
 merge_offset_detail -l *end.txt -o RIBO
-merge_offset -l *"$offset_mode"_offset.txt -o RIBO_"$offset_mode"
+merge_offset -l *RSBM_offset.txt -o RIBO_RSBM
+merge_offset -l *SSCBM_offset.txt -o RIBO_SSCBM
 
 cd ../
 ##################################################################

@@ -5,7 +5,7 @@
 # This step is used for analyzing RNA-seq data, utilizing 
 # RiboParser to check the sequencing quality of the RNA-seq
 # data and prepare formatted files for subsequent joint 
-# analysis with Ribo-seq.
+# analysis with Ribo-seq data.
 # 
 # **Note!** 
 #

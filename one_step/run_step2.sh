@@ -17,7 +17,6 @@ adapter_3="" #(Add it to the cutadapt script with parameter "-g" in step0.1 if y
 
 ###########################################################
 # 0.1 RNA-seq data cleaning
-mkdir ./3.rna-seq
 mkdir ./3.rna-seq/1.cleandata
 cd ./3.rna-seq/1.cleandata
 for fq in ../../2.rawdata/rna-seq/*fastq.gz

@@ -2487,9 +2487,9 @@ $ cd ./sce/4.ribo-seq/5.riboparser/18.retrieve/
 #################################################
 # retrieve and format the gene density with gene covered more than 50 reads
 rpf_Retrieve \
- -l ../../../1.reference/norm/gene.norm.txt \
+ -l ../../../1.reference/norm/gene.norm.txt \ 
  -r ../05.merge/RIBO_merged.txt \
- -m 0 \
+ -m 50 \
  -f \
  -n \
  -o RIBO &>> RIBO.log
@@ -2590,7 +2590,103 @@ RIBO_gene_periodicity.txt
 RIBO_SRR1944912_gene_frame_shift.txt
 ```
 
-## 7. Contribution
+
+
+## 7. one step for pipeline
+
+### 7.0 Prepare the directories and design file for your project
+
+1. create the directories to store the raw-data and results
+
+```bash
+$ cd
+$ mkdir sce
+$ cd ./sce/
+$ mkdir -p ./sce/1.reference
+$ mkdir -p ./sce/2.rawdata/ribo-seq ./sce/2.rawdata/rna-seq
+$ mkdir -p ./sce/3.rna-seq
+$ mkdir -p ./sce/4.ribo-seq
+```
+
+2. prepare the design file for your RNA-seq and Ribo-seq data
+
+The design file must contain at least two columns names `Name` and `Group`
+
+```bash
+$ cat design.txt
+
+Name    Group
+SRR1944912      WT_ribo_YPD
+SRR1944913      WT_ribo_YPD
+SRR1944914      WT_ribo_YPD
+SRR1944915      ncs2d_ribo_YPD
+SRR1944916      ncs2d_ribo_YPD
+SRR1944917      ncs2d_ribo_YPD
+```
+
+
+### 7.1 run_step1.sh
+
+This step is used for constructing the database, which is essential for the alignment of reads and subsequent analysis using `RiboParser`.
+
+This step is suitable for most genome and gene annotation files derived from `NCBI`.
+
+`NOTE`: The download files in `Step 0.0` need to be modified according to the `species` used in your project!
+
+```bash
+$ nohup sh run_step1.sh &
+```
+
+### 7.2 run_step2.sh
+
+This step is used for analyzing `RNA-seq` data, including data cleaning, 
+alignment, and expression quantification.
+
+`NOTE`: The `adapter` information in `Step 0.0` needs to be modified according to the sequencing 
+method used in your project!
+
+```bash
+$ nohup sh run_step2.sh &
+```
+
+### 7.3 run_step3.sh
+
+This step is used for analyzing `Ribo-seq` data, including data cleaning, 
+alignment, and expression quantification.
+
+The `adapter` information in `Step 0.0` needs to be modified according to the 
+sequencing method used in your project!
+
+```bash
+$ nohup sh run_step3.sh &
+```
+
+### 7.4 run_step4.sh
+
+This step is used for analyzing `RNA-seq` data, utilizing `RiboParser` to check the 
+sequencing quality of the `RNA-seq` data and prepare formatted files for subsequent 
+joint analysis with `Ribo-seq`.
+
+The `BAM` files and `reference genome information` files in `Step 1.0` may need to be 
+modified according to the files defined for your project!
+
+```bash
+$ nohup sh run_step4.sh &
+```
+
+### 7.5 run_step5.sh
+
+This step is used for analyzing `Ribo-seq` data, utilizing `RiboParser` to check the 
+sequencing quality of the `Ribo-seq` data.
+
+The `BAM` files, `parameters` and `reference genome information` files in `Step 0.0` may 
+need to be modified according to the files defined for your project!
+
+```bash
+$ nohup sh run_step5.sh &
+```
+
+## 8. Contribution
 
 Thanks for all the open source tools used in the process.
 
@@ -2600,6 +2696,6 @@ Contribute to our open-source project by submitting questions and code.
 
 Contact `rensc0718@163.com` for more information.
 
-## 8. License
+## 9. License
 
 GPL License.
